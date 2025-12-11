@@ -75,7 +75,7 @@ cd claude-agent-sdk-java
 
 ## Quick Start
 
-### Iterator Pattern (Blocking)
+### Iterator API
 
 ```java
 try (ClaudeSession session = DefaultClaudeSession.builder()
@@ -97,7 +97,7 @@ try (ClaudeSession session = DefaultClaudeSession.builder()
 }
 ```
 
-### MessageReceiver Pattern (Blocking with Timeout)
+### MessageReceiver API
 
 ```java
 try (ClaudeSession session = DefaultClaudeSession.builder()
@@ -114,7 +114,7 @@ try (ClaudeSession session = DefaultClaudeSession.builder()
 }
 ```
 
-### Reactive Flux Pattern
+### Reactive Flux API
 
 ```java
 ReactiveTransport transport = new ReactiveTransport(Path.of("."));
