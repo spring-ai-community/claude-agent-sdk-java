@@ -22,12 +22,28 @@ Java SDK for interacting with [Claude Code CLI](https://docs.anthropic.com/en/do
 
 ## Installation
 
+### Maven
+
 ```xml
 <dependency>
     <groupId>org.springaicommunity</groupId>
     <artifactId>claude-code-sdk</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
+```
+
+### Gradle
+
+```groovy
+implementation 'org.springaicommunity:claude-code-sdk:1.0.0'
+```
+
+### Building from Source
+
+```bash
+git clone https://github.com/spring-ai-community/claude-agent-sdk-java.git
+cd claude-agent-sdk-java
+./mvnw install
 ```
 
 ## Quick Start
