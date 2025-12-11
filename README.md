@@ -6,13 +6,12 @@ Java SDK for interacting with [Claude Code CLI](https://docs.anthropic.com/en/do
 
 | Feature | Description |
 |---------|-------------|
-| **Multiple API Styles** | Blocking iterator, streaming receiver, and reactive Flux APIs |
-| **Bidirectional Sessions** | Persistent multi-turn conversations with context preservation |
-| **Hook System** | Register callbacks for tool use events (pre/post tool execution) |
-| **Tool Permission Control** | Programmatic control over tool execution approval |
+| **Simple One-Shot API** | `Query.text()` for quick answers in one line |
+| **Reactive API** | `ReactiveQuery` with Mono/Flux for Spring WebFlux |
+| **Session API** | Multi-turn conversations with context preservation |
+| **Hook System** | Register callbacks for tool use events |
 | **MCP Integration** | Support for Model Context Protocol servers |
 | **Resilience** | Built-in retry and circuit breaker patterns |
-| **Streaming** | Real-time message streaming with backpressure support |
 
 ## Requirements
 
@@ -75,7 +74,63 @@ cd claude-agent-sdk-java
 
 ## Quick Start
 
-### Iterator API
+### Simple Query (One Line)
+
+```java
+import org.springaicommunity.claudecode.sdk.Query;
+
+String answer = Query.text("What is 2+2?");
+System.out.println(answer);  // "4"
+```
+
+### With Options
+
+```java
+import org.springaicommunity.claudecode.sdk.Query;
+import org.springaicommunity.claudecode.sdk.QueryOptions;
+
+String answer = Query.text("Explain quantum computing",
+    QueryOptions.builder()
+        .model("claude-sonnet-4-5-20250929")
+        .systemPrompt("Be concise")
+        .build());
+```
+
+### Full Result with Metadata
+
+```java
+import org.springaicommunity.claudecode.sdk.Query;
+import org.springaicommunity.claudecode.sdk.types.QueryResult;
+
+QueryResult result = Query.execute("Write a haiku about Java");
+result.text().ifPresent(System.out::println);
+System.out.println("Cost: $" + result.metadata().cost().calculateTotal());
+```
+
+## API Styles
+
+| API Style | Class | Returns | Best For |
+|-----------|-------|---------|----------|
+| **Blocking** | `Query` | `String`, `QueryResult` | Simple scripts, CLI tools |
+| **Reactive** | `ReactiveQuery` | `Mono<String>`, `Flux<Message>` | Spring WebFlux, async apps |
+| **Session** | `ClaudeSession` | `Iterator<ParsedMessage>` | Multi-turn, hooks, MCP |
+
+### Reactive API (Spring WebFlux)
+
+```java
+import org.springaicommunity.claudecode.sdk.ReactiveQuery;
+
+// Non-blocking with backpressure
+ReactiveQuery.text("What is 2+2?")
+    .subscribe(System.out::println);
+
+// Stream messages as they arrive
+ReactiveQuery.query("Explain recursion")
+    .filter(msg -> msg instanceof AssistantMessage)
+    .subscribe(msg -> System.out.println(msg));
+```
+
+### Session API (Multi-Turn Conversations)
 
 ```java
 try (ClaudeSession session = DefaultClaudeSession.builder()
@@ -95,41 +150,6 @@ try (ClaudeSession session = DefaultClaudeSession.builder()
         }
     }
 }
-```
-
-### MessageReceiver API
-
-```java
-try (ClaudeSession session = DefaultClaudeSession.builder()
-        .workingDirectory(Path.of("."))
-        .build()) {
-
-    session.connect("Explain recursion briefly.");
-
-    MessageReceiver receiver = session.responseReceiver();
-    ParsedMessage msg;
-    while ((msg = receiver.receive(Duration.ofSeconds(30))) != null) {
-        // Process message
-    }
-}
-```
-
-### Reactive Flux API
-
-```java
-ReactiveTransport transport = new ReactiveTransport(Path.of("."));
-
-CLIOptions options = CLIOptions.builder()
-    .model("claude-sonnet-4-20250514")
-    .permissionMode(PermissionMode.BYPASS_PERMISSIONS)
-    .build();
-
-transport.streamQuery("Explain quantum computing", options)
-    .filter(msg -> msg instanceof AssistantMessage)
-    .map(msg -> ((AssistantMessage) msg).getTextContent())
-    .filter(Optional::isPresent)
-    .map(Optional::get)
-    .subscribe(System.out::println);
 ```
 
 ## Multi-Turn Conversations

@@ -16,73 +16,65 @@
 
 package org.springaicommunity.claudecode.examples;
 
-import org.springaicommunity.claudecode.sdk.session.ClaudeSession;
-import org.springaicommunity.claudecode.sdk.session.DefaultClaudeSession;
-import org.springaicommunity.claudecode.sdk.parsing.ParsedMessage;
-import org.springaicommunity.claudecode.sdk.types.AssistantMessage;
-import org.springaicommunity.claudecode.sdk.types.ContentBlock;
-import org.springaicommunity.claudecode.sdk.types.Message;
-import org.springaicommunity.claudecode.sdk.types.ResultMessage;
-import org.springaicommunity.claudecode.sdk.types.TextBlock;
-
-import java.nio.file.Path;
-import java.util.Iterator;
+import org.springaicommunity.claudecode.sdk.Query;
+import org.springaicommunity.claudecode.sdk.QueryOptions;
+import org.springaicommunity.claudecode.sdk.types.QueryResult;
 
 /**
- * Simple example demonstrating Claude Code SDK usage.
+ * Simple example demonstrating Claude Agent SDK usage.
  *
- * <p>This example shows how to:
- * <ul>
- *   <li>Create a ClaudeSession with a working directory</li>
- *   <li>Connect to Claude CLI with an initial prompt</li>
- *   <li>Receive and process streaming responses</li>
- * </ul>
+ * <p>
+ * This example shows the simplest way to use the SDK - just one line of code!
+ * </p>
+ *
+ * <p>
+ * For multi-turn conversations, hooks, or MCP integration, see the session-example.
+ * </p>
  */
 public class HelloWorld {
 
 	public static void main(String[] args) {
-		// Use current directory as working directory
-		Path workingDir = Path.of(System.getProperty("user.dir"));
-
-		System.out.println("Claude Code SDK - Hello World Example");
-		System.out.println("Working directory: " + workingDir);
+		System.out.println("Claude Agent SDK - Hello World Example");
+		System.out.println("=" .repeat(50));
 		System.out.println();
 
-		try (ClaudeSession session = DefaultClaudeSession.builder()
-			.workingDirectory(workingDir)
-			.build()) {
+		try {
+			// ============================================================
+			// SIMPLE API - One line!
+			// ============================================================
+			System.out.println("1. Simple Query (one line):");
+			System.out.println("-".repeat(50));
 
-			// Connect with initial prompt
-			session.connect("Say hello and tell me a fun fact about Java programming.");
+			String answer = Query.text("What is 2+2? Reply with just the number.");
+			System.out.println("Answer: " + answer);
+			System.out.println();
 
-			// Receive response messages
-			System.out.println("Response from Claude:");
-			System.out.println("─".repeat(50));
+			// ============================================================
+			// WITH OPTIONS
+			// ============================================================
+			System.out.println("2. Query with Options:");
+			System.out.println("-".repeat(50));
 
-			Iterator<ParsedMessage> messages = session.receiveResponse();
-			while (messages.hasNext()) {
-				ParsedMessage parsed = messages.next();
+			String funFact = Query.text("Tell me a fun fact about Java programming.",
+					QueryOptions.builder().appendSystemPrompt("Be concise, one sentence max.").build());
+			System.out.println("Fun fact: " + funFact);
+			System.out.println();
 
-				if (parsed.isRegularMessage()) {
-					Message msg = parsed.asMessage();
+			// ============================================================
+			// FULL RESULT WITH METADATA
+			// ============================================================
+			System.out.println("3. Full Result with Metadata:");
+			System.out.println("-".repeat(50));
 
-					if (msg instanceof AssistantMessage assistant) {
-						// Print assistant text content
-						if (assistant.content() != null) {
-							for (ContentBlock block : assistant.content()) {
-								if (block instanceof TextBlock text) {
-									System.out.print(text.text());
-								}
-							}
-						}
-					}
-					else if (msg instanceof ResultMessage result) {
-						System.out.println();
-						System.out.println("─".repeat(50));
-						System.out.println("Session completed. Cost: $" + result.totalCostUsd());
-					}
-				}
-			}
+			QueryResult result = Query.execute("Write a haiku about coding.");
+			result.text().ifPresent(text -> System.out.println("Haiku:\n" + text));
+			System.out.println();
+			System.out.println("Metadata:");
+			System.out.println("  - Model: " + result.metadata().model());
+			System.out.println("  - Cost: $" + result.metadata().cost().calculateTotal());
+			System.out.println("  - Duration: " + result.metadata().getDuration().toMillis() + "ms");
+			System.out.println("  - Turns: " + result.metadata().numTurns());
+
 		}
 		catch (Exception e) {
 			System.err.println("Error: " + e.getMessage());

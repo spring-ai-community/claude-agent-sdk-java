@@ -27,25 +27,187 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
- * Main entry point for synchronous Claude Code queries. Corresponds to query() function
- * in Python SDK.
+ * Main entry point for one-shot Claude Code queries. Provides a simple, stateless API
+ * for sending prompts and receiving responses.
+ *
+ * <p>
+ * This class corresponds to the {@code query()} function in the Python SDK. For
+ * multi-turn conversations, hooks, or MCP integration, use
+ * {@link org.springaicommunity.claudecode.sdk.session.ClaudeSession} instead.
+ *
+ * <h2>Quick Start</h2>
+ *
+ * <pre>{@code
+ * // Simplest usage - get text response
+ * String answer = Query.text("What is 2+2?");
+ *
+ * // Iterate over messages (for streaming-style processing)
+ * for (Message msg : Query.query("Explain recursion")) {
+ *     if (msg instanceof AssistantMessage assistant) {
+ *         assistant.getTextContent().ifPresent(System.out::print);
+ *     }
+ * }
+ *
+ * // Full result with metadata
+ * QueryResult result = Query.execute("Write a haiku");
+ * System.out.println("Cost: $" + result.metadata().cost().calculateTotal());
+ * }</pre>
+ *
+ * <h2>With Options</h2>
+ *
+ * <pre>{@code
+ * String response = Query.text("Explain quantum computing",
+ *     QueryOptions.builder()
+ *         .model("claude-sonnet-4-5-20250929")
+ *         .systemPrompt("Be concise")
+ *         .timeout(Duration.ofMinutes(5))
+ *         .build());
+ * }</pre>
+ *
+ * @see QueryOptions
+ * @see QueryResult
+ * @see org.springaicommunity.claudecode.sdk.session.ClaudeSession
  */
 public class Query {
 
 	private static final Logger logger = LoggerFactory.getLogger(Query.class);
 
+	// ========================================================================
+	// Simple API - text()
+	// ========================================================================
+
 	/**
-	 * Executes a synchronous query with default options.
+	 * Executes a query and returns just the text response. This is the simplest way to
+	 * use Claude.
+	 *
+	 * <pre>{@code
+	 * String answer = Query.text("What is 2+2?");
+	 * System.out.println(answer);  // "4"
+	 * }</pre>
+	 * @param prompt the prompt to send to Claude
+	 * @return the text response, or empty string if no response
+	 * @throws ClaudeSDKException if the query fails
 	 */
-	public static QueryResult execute(String prompt) throws ClaudeSDKException {
-		return execute(prompt, CLIOptions.defaultOptions());
+	public static String text(String prompt) throws ClaudeSDKException {
+		return text(prompt, QueryOptions.defaults());
 	}
 
 	/**
-	 * Executes a synchronous query with specified options.
+	 * Executes a query with options and returns just the text response.
+	 * @param prompt the prompt to send to Claude
+	 * @param options configuration options
+	 * @return the text response, or empty string if no response
+	 * @throws ClaudeSDKException if the query fails
 	 */
+	public static String text(String prompt, QueryOptions options) throws ClaudeSDKException {
+		QueryResult result = execute(prompt, options);
+		return result.text().orElse("");
+	}
+
+	// ========================================================================
+	// Streaming API - query()
+	// ========================================================================
+
+	/**
+	 * Executes a query and returns an iterable over messages. Useful for processing
+	 * messages as they arrive (streaming-style).
+	 *
+	 * <pre>{@code
+	 * for (Message msg : Query.query("Explain recursion")) {
+	 *     if (msg instanceof AssistantMessage assistant) {
+	 *         assistant.getTextContent().ifPresent(System.out::print);
+	 *     }
+	 * }
+	 * }</pre>
+	 * @param prompt the prompt to send to Claude
+	 * @return an iterable over the response messages
+	 * @throws ClaudeSDKException if the query fails
+	 */
+	public static Iterable<Message> query(String prompt) throws ClaudeSDKException {
+		return query(prompt, QueryOptions.defaults());
+	}
+
+	/**
+	 * Executes a query with options and returns an iterable over messages.
+	 * @param prompt the prompt to send to Claude
+	 * @param options configuration options
+	 * @return an iterable over the response messages
+	 * @throws ClaudeSDKException if the query fails
+	 */
+	public static Iterable<Message> query(String prompt, QueryOptions options) throws ClaudeSDKException {
+		QueryResult result = execute(prompt, options);
+		return result.messages();
+	}
+
+	// ========================================================================
+	// Stream API - stream()
+	// ========================================================================
+
+	/**
+	 * Executes a query and returns a Stream of messages. Useful for functional-style
+	 * processing with filter, map, collect, etc.
+	 *
+	 * <pre>{@code
+	 * Query.stream("Explain recursion")
+	 *     .filter(msg -> msg instanceof AssistantMessage)
+	 *     .map(msg -> ((AssistantMessage) msg).getTextContent())
+	 *     .filter(Optional::isPresent)
+	 *     .map(Optional::get)
+	 *     .forEach(System.out::println);
+	 * }</pre>
+	 * @param prompt the prompt to send to Claude
+	 * @return a Stream over the response messages
+	 * @throws ClaudeSDKException if the query fails
+	 */
+	public static Stream<Message> stream(String prompt) throws ClaudeSDKException {
+		return stream(prompt, QueryOptions.defaults());
+	}
+
+	/**
+	 * Executes a query with options and returns a Stream of messages.
+	 * @param prompt the prompt to send to Claude
+	 * @param options configuration options
+	 * @return a Stream over the response messages
+	 * @throws ClaudeSDKException if the query fails
+	 */
+	public static Stream<Message> stream(String prompt, QueryOptions options) throws ClaudeSDKException {
+		QueryResult result = execute(prompt, options);
+		return result.messages().stream();
+	}
+
+	// ========================================================================
+	// Full API - execute()
+	// ========================================================================
+
+	/**
+	 * Executes a query and returns the full result with metadata.
+	 * @param prompt the prompt to send to Claude
+	 * @return the complete query result including messages and metadata
+	 * @throws ClaudeSDKException if the query fails
+	 */
+	public static QueryResult execute(String prompt) throws ClaudeSDKException {
+		return execute(prompt, QueryOptions.defaults());
+	}
+
+	/**
+	 * Executes a query with options and returns the full result.
+	 * @param prompt the prompt to send to Claude
+	 * @param options configuration options
+	 * @return the complete query result including messages and metadata
+	 * @throws ClaudeSDKException if the query fails
+	 */
+	public static QueryResult execute(String prompt, QueryOptions options) throws ClaudeSDKException {
+		return execute(prompt, options.toCLIOptions(), options.workingDirectory());
+	}
+
+	/**
+	 * Executes a synchronous query with full CLIOptions.
+	 * @deprecated Use {@link #execute(String, QueryOptions)} instead for simpler API
+	 */
+	@Deprecated
 	public static QueryResult execute(String prompt, CLIOptions options) throws ClaudeSDKException {
 		return execute(prompt, options, Paths.get(System.getProperty("user.dir")));
 	}

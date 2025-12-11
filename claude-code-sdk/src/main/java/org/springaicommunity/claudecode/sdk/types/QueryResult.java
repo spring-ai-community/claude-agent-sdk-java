@@ -22,12 +22,69 @@ import java.util.Optional;
 /**
  * Top-level response object containing messages and metadata. Provides convenient
  * accessors and domain-specific operations.
+ *
+ * <p>
+ * Example usage:
+ *
+ * <pre>{@code
+ * QueryResult result = Query.execute("What is 2+2?");
+ *
+ * // Get text response (most common)
+ * result.text().ifPresent(System.out::println);
+ *
+ * // Or get all text responses
+ * result.allText().forEach(System.out::println);
+ *
+ * // Check status
+ * if (result.isSuccessful()) {
+ *     System.out.println("Cost: $" + result.metadata().cost().calculateTotal());
+ * }
+ * }</pre>
  */
 public record QueryResult(List<Message> messages, Metadata metadata, ResultStatus status) {
 
 	/**
-	 * Returns the first assistant response text, if any.
+	 * Returns the combined text from all assistant responses. This is the most common way
+	 * to get the response text.
+	 *
+	 * <pre>{@code
+	 * result.text().ifPresent(System.out::println);
+	 * }</pre>
+	 * @return the combined text, or empty if no text responses
 	 */
+	public Optional<String> text() {
+		StringBuilder sb = new StringBuilder();
+		for (Message msg : messages) {
+			if (msg instanceof AssistantMessage assistant) {
+				assistant.getTextContent().ifPresent(text -> {
+					if (sb.length() > 0) {
+						sb.append("\n");
+					}
+					sb.append(text);
+				});
+			}
+		}
+		return sb.length() > 0 ? Optional.of(sb.toString()) : Optional.empty();
+	}
+
+	/**
+	 * Returns all text responses as a list.
+	 * @return list of text responses from assistant messages
+	 */
+	public List<String> allText() {
+		return messages.stream()
+			.filter(m -> m instanceof AssistantMessage)
+			.map(m -> ((AssistantMessage) m).getTextContent())
+			.filter(Optional::isPresent)
+			.map(Optional::get)
+			.toList();
+	}
+
+	/**
+	 * Returns the first assistant response text, if any.
+	 * @deprecated Use {@link #text()} instead
+	 */
+	@Deprecated
 	public Optional<String> getFirstAssistantResponse() {
 		return messages.stream()
 			.filter(m -> m instanceof AssistantMessage)
