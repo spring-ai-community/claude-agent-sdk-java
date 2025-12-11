@@ -77,7 +77,7 @@ cd claude-agent-sdk-java
 ### Simple Query (One Line)
 
 ```java
-import org.springaicommunity.claudecode.sdk.Query;
+import org.springaicommunity.claude.agent.sdk.Query;
 
 String answer = Query.text("What is 2+2?");
 System.out.println(answer);  // "4"
@@ -86,8 +86,8 @@ System.out.println(answer);  // "4"
 ### With Options
 
 ```java
-import org.springaicommunity.claudecode.sdk.Query;
-import org.springaicommunity.claudecode.sdk.QueryOptions;
+import org.springaicommunity.claude.agent.sdk.Query;
+import org.springaicommunity.claude.agent.sdk.QueryOptions;
 
 String answer = Query.text("Explain quantum computing",
     QueryOptions.builder()
@@ -99,8 +99,8 @@ String answer = Query.text("Explain quantum computing",
 ### Full Result with Metadata
 
 ```java
-import org.springaicommunity.claudecode.sdk.Query;
-import org.springaicommunity.claudecode.sdk.types.QueryResult;
+import org.springaicommunity.claude.agent.sdk.Query;
+import org.springaicommunity.claude.agent.sdk.types.QueryResult;
 
 QueryResult result = Query.execute("Write a haiku about Java");
 result.text().ifPresent(System.out::println);
@@ -118,7 +118,7 @@ System.out.println("Cost: $" + result.metadata().cost().calculateTotal());
 ### Reactive API (Spring WebFlux)
 
 ```java
-import org.springaicommunity.claudecode.sdk.ReactiveQuery;
+import org.springaicommunity.claude.agent.sdk.ReactiveQuery;
 
 // Non-blocking with backpressure
 ReactiveQuery.text("What is 2+2?")
@@ -227,7 +227,7 @@ session.setToolPermissionCallback((toolName, input, context) -> {
 claude-agent-sdk-java/
 ├── claude-code-sdk/          # Core SDK module
 │   └── src/
-│       ├── main/java/org/springaicommunity/claudecode/sdk/
+│       ├── main/java/org/springaicommunity/claude/agent/sdk/
 │       │   ├── session/      # ClaudeSession, DefaultClaudeSession
 │       │   ├── transport/    # BidirectionalTransport, ReactiveTransport
 │       │   ├── streaming/    # MessageReceiver, MessageStreamIterator
