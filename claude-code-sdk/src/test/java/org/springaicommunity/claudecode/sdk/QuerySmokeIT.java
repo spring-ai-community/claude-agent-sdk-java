@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * available.
  * </p>
  */
-class QuerySmokeTest extends ClaudeCliTestBase {
+class QuerySmokeIT extends ClaudeCliTestBase {
 
 	@Test
 	void testBasicQuery() throws Exception {
