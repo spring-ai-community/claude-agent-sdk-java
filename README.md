@@ -22,20 +22,47 @@ Java SDK for interacting with [Claude Code CLI](https://docs.anthropic.com/en/do
 
 ## Installation
 
+> **Note**: This project is currently available as a SNAPSHOT. Releases to Maven Central are coming soon.
+
 ### Maven
 
+Add the snapshot repository and dependency to your `pom.xml`:
+
 ```xml
-<dependency>
-    <groupId>org.springaicommunity</groupId>
-    <artifactId>claude-code-sdk</artifactId>
-    <version>1.0.0</version>
-</dependency>
+<repositories>
+    <repository>
+        <id>central-snapshots</id>
+        <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>org.springaicommunity</groupId>
+        <artifactId>claude-code-sdk</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+</dependencies>
 ```
 
 ### Gradle
 
+Add the snapshot repository and dependency to your `build.gradle`:
+
 ```groovy
-implementation 'org.springaicommunity:claude-code-sdk:1.0.0'
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://central.sonatype.com/repository/maven-snapshots/'
+    }
+}
+
+dependencies {
+    implementation 'org.springaicommunity:claude-code-sdk:1.0.0-SNAPSHOT'
+}
 ```
 
 ### Building from Source
@@ -200,4 +227,4 @@ Apache License 2.0
 
 ## Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions are welcome! Please open an issue or submit a pull request.
