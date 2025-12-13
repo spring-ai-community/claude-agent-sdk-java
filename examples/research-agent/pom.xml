@@ -11,11 +11,11 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>hello-world</artifactId>
+    <artifactId>research-agent</artifactId>
     <packaging>jar</packaging>
 
-    <name>Claude Code SDK Hello World Example</name>
-    <description>Simple example demonstrating Claude Code SDK usage</description>
+    <name>Claude Code SDK Research Agent Example</name>
+    <description>Multi-agent research coordination demo using Task tool and hooks</description>
 
     <dependencies>
         <dependency>
@@ -29,6 +29,13 @@
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
             <version>${reactor.version}</version>
+        </dependency>
+
+        <!-- Jackson for JSON logging -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- Logging for examples -->
@@ -68,7 +75,7 @@
                     <arguments>
                         <argument>-classpath</argument>
                         <classpath/>
-                        <argument>org.springaicommunity.claude.agent.examples.HelloWorld</argument>
+                        <argument>org.springaicommunity.claude.agent.examples.research.ResearchAgent</argument>
                     </arguments>
                 </configuration>
             </plugin>

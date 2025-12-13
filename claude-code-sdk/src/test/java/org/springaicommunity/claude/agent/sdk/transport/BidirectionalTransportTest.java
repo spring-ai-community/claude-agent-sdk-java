@@ -67,7 +67,7 @@ class BidirectionalTransportTest {
 			// Then - verify bidirectional flags
 			assertThat(command).contains("--input-format", "stream-json");
 			assertThat(command).contains("--output-format", "stream-json");
-			assertThat(command).contains("--permission-prompt-tool", "stdio");
+			// NOTE: --permission-prompt-tool is NOT added by default (matches Python SDK)
 			assertThat(command).contains("--verbose");
 			// Should NOT contain --print in bidirectional mode
 			assertThat(command).doesNotContain("--print");
@@ -102,7 +102,7 @@ class BidirectionalTransportTest {
 			List<String> command = transport.buildBidirectionalCommand(options);
 
 			// Then
-			int promptIndex = command.indexOf("--append-system-prompt");
+			int promptIndex = command.indexOf("--system-prompt");
 			assertThat(promptIndex).isGreaterThan(-1);
 			assertThat(command.get(promptIndex + 1)).isEqualTo("You are a helpful assistant");
 		}
@@ -119,7 +119,7 @@ class BidirectionalTransportTest {
 			List<String> command = transport.buildBidirectionalCommand(options);
 
 			// Then
-			int toolsIndex = command.indexOf("--allowed-tools");
+			int toolsIndex = command.indexOf("--allowedTools");
 			assertThat(toolsIndex).isGreaterThan(-1);
 			assertThat(command.get(toolsIndex + 1)).isEqualTo("Bash,Read,Write");
 		}
@@ -136,7 +136,7 @@ class BidirectionalTransportTest {
 			List<String> command = transport.buildBidirectionalCommand(options);
 
 			// Then
-			int toolsIndex = command.indexOf("--disallowed-tools");
+			int toolsIndex = command.indexOf("--disallowedTools");
 			assertThat(toolsIndex).isGreaterThan(-1);
 			assertThat(command.get(toolsIndex + 1)).isEqualTo("WebFetch");
 		}
@@ -191,9 +191,9 @@ class BidirectionalTransportTest {
 			// Then - should still have bidirectional flags
 			assertThat(command).contains("--input-format");
 			assertThat(command).contains("--output-format");
-			assertThat(command).contains("--permission-prompt-tool");
+			// NOTE: --permission-prompt-tool is NOT added by default (matches Python SDK)
 			// Should not have empty tool lists
-			assertThat(command).doesNotContain("--allowed-tools");
+			assertThat(command).doesNotContain("--allowedTools");
 		}
 
 		@Test
@@ -219,9 +219,9 @@ class BidirectionalTransportTest {
 			assertThat(command).doesNotContain("--print");
 			assertThat(command).contains("--input-format", "stream-json");
 			assertThat(command).contains("--output-format", "stream-json");
-			assertThat(command).contains("--permission-prompt-tool", "stdio");
+			// NOTE: --permission-prompt-tool is NOT added by default (matches Python SDK)
 			assertThat(command).contains("--model", "claude-sonnet-4-20250514");
-			assertThat(command).contains("--append-system-prompt", "Be helpful");
+			assertThat(command).contains("--system-prompt", "Be helpful");
 			// No prompt separator or prompt in bidirectional mode
 			assertThat(command).doesNotContain("--");
 		}
@@ -396,11 +396,10 @@ class BidirectionalTransportTest {
 			// Then - these flags together enable bidirectional control protocol:
 			// 1. --input-format stream-json: allows writing JSON messages to stdin
 			// 2. --output-format stream-json: outputs JSON messages on stdout
-			// 3. --permission-prompt-tool stdio: enables control protocol for
-			// permissions/hooks
+			// NOTE: --permission-prompt-tool is NOT added by default (matches Python SDK)
+			// Hooks work via the input-format stream-json protocol
 			assertThat(command).containsSubsequence("--input-format", "stream-json");
 			assertThat(command).containsSubsequence("--output-format", "stream-json");
-			assertThat(command).containsSubsequence("--permission-prompt-tool", "stdio");
 
 			transport.close();
 		}
@@ -441,6 +440,43 @@ class BidirectionalTransportTest {
 	@Nested
 	@DisplayName("Advanced Python SDK Parity Options Tests")
 	class AdvancedOptionsTests {
+
+		@Test
+		@DisplayName("Should include agents JSON for multi-agent coordination")
+		void buildCommandWithAgents() {
+			// Given
+			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+					"/usr/bin/claude");
+			String agentsJson = "{\"researcher\":{\"description\":\"Research agent\",\"tools\":[\"WebSearch\"],\"prompt\":\"You are a researcher\",\"model\":\"haiku\"}}";
+			CLIOptions options = CLIOptions.builder().agents(agentsJson).build();
+
+			// When
+			List<String> command = transport.buildBidirectionalCommand(options);
+
+			// Then
+			int agentsIndex = command.indexOf("--agents");
+			assertThat(agentsIndex).isGreaterThan(-1);
+			assertThat(command.get(agentsIndex + 1)).isEqualTo(agentsJson);
+
+			transport.close();
+		}
+
+		@Test
+		@DisplayName("Should NOT include agents flag when agents is null or empty")
+		void buildCommandWithoutAgentsWhenEmpty() {
+			// Given
+			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+					"/usr/bin/claude");
+			CLIOptions options = CLIOptions.builder().agents("").build();
+
+			// When
+			List<String> command = transport.buildBidirectionalCommand(options);
+
+			// Then - empty agents should not produce --agents flag
+			assertThat(command).doesNotContain("--agents");
+
+			transport.close();
+		}
 
 		@Test
 		@DisplayName("Should include add-dir flags for each directory")

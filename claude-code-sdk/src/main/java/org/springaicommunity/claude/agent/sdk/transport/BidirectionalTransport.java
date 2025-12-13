@@ -401,8 +401,9 @@ public class BidirectionalTransport implements AutoCloseable {
 		command.add("stream-json");
 		command.add("--output-format");
 		command.add("stream-json");
-		command.add("--permission-prompt-tool");
-		command.add("stdio");
+		// NOTE: --permission-prompt-tool is NOT added unconditionally
+		// This matches Python SDK behavior where it's only added if explicitly configured
+		// Adding it unconditionally may affect how --allowedTools restrictions are enforced
 		command.add("--verbose");
 
 		// Standard options
@@ -411,18 +412,36 @@ public class BidirectionalTransport implements AutoCloseable {
 			command.add(options.getModel());
 		}
 
+		// Use --system-prompt to set the system prompt (matching Python SDK behavior)
+		// Note: --append-system-prompt adds to the default, --system-prompt replaces it
 		if (options.getSystemPrompt() != null) {
-			command.add("--append-system-prompt");
+			command.add("--system-prompt");
 			command.add(options.getSystemPrompt());
 		}
 
+		// Handle --tools option (base set of tools) - added in Python SDK v0.1.10
+		// null = don't add flag (use CLI defaults)
+		// empty list = --tools "" (disable all built-in tools)
+		// non-empty list = --tools "Read,Edit,Bash" (specific tools)
+		if (options.getTools() != null) {
+			command.add("--tools");
+			if (options.getTools().isEmpty()) {
+				command.add("");
+			}
+			else {
+				command.add(String.join(",", options.getTools()));
+			}
+		}
+
+		// Use --allowedTools (camelCase) to match Python SDK
 		if (!options.getAllowedTools().isEmpty()) {
-			command.add("--allowed-tools");
+			command.add("--allowedTools");
 			command.add(String.join(",", options.getAllowedTools()));
 		}
 
+		// Use --disallowedTools (camelCase) to match Python SDK
 		if (!options.getDisallowedTools().isEmpty()) {
-			command.add("--disallowed-tools");
+			command.add("--disallowedTools");
 			command.add(String.join(",", options.getDisallowedTools()));
 		}
 
@@ -436,6 +455,12 @@ public class BidirectionalTransport implements AutoCloseable {
 				command.add("--permission-mode");
 				command.add(options.getPermissionMode().getValue());
 			}
+		}
+
+		// Add agents JSON for multi-agent coordination (Task tool with subagents)
+		if (options.getAgents() != null && !options.getAgents().trim().isEmpty()) {
+			command.add("--agents");
+			command.add(options.getAgents());
 		}
 
 		// Add max thinking tokens for extended thinking support
@@ -513,17 +538,16 @@ public class BidirectionalTransport implements AutoCloseable {
 			command.add(options.getSettings());
 		}
 
-		// Permission prompt tool name override (note: bidirectional mode already sets
-		// stdio,
-		// but this allows override for custom implementations)
+		// Add setting sources for skill/config loading (matching CLITransport)
+		if (options.getSettingSources() != null && !options.getSettingSources().isEmpty()) {
+			command.add("--setting-sources");
+			command.add(String.join(",", options.getSettingSources()));
+		}
+
+		// Permission prompt tool - only add if explicitly configured (matches Python SDK)
+		// NOTE: Python SDK does NOT add --permission-prompt-tool unless explicitly set
+		// Adding it unconditionally may affect how --allowedTools restrictions are enforced
 		if (options.getPermissionPromptToolName() != null && !options.getPermissionPromptToolName().isBlank()) {
-			// Remove the default --permission-prompt-tool stdio if user specified
-			// custom
-			int idx = command.indexOf("--permission-prompt-tool");
-			if (idx >= 0 && idx + 1 < command.size()) {
-				command.remove(idx + 1);
-				command.remove(idx);
-			}
 			command.add("--permission-prompt-tool");
 			command.add(options.getPermissionPromptToolName());
 		}

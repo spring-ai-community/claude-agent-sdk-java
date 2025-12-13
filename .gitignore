@@ -37,3 +37,15 @@ build/
 
 .flattened-pom.xml
 it-output.log
+
+### Research Agent Outputs ###
+examples/research-agent/files/research_notes/
+examples/research-agent/files/reports/
+examples/research-agent/logs/
+examples/research-agent/research_notes/
+examples/research-agent/*.md
+!examples/research-agent/README.md
+
+### Root-level output directories (stray from test runs) ###
+/files/
+/logs/

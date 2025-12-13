@@ -33,10 +33,11 @@ import java.util.Map;
  * Python SDK.
  */
 public record CLIOptions(String model, String systemPrompt, Integer maxTokens, Integer maxThinkingTokens,
-		Duration timeout, List<String> allowedTools, List<String> disallowedTools, PermissionMode permissionMode,
-		boolean interactive, OutputFormat outputFormat, List<String> settingSources, String agents, boolean forkSession,
-		boolean includePartialMessages, Map<String, Object> jsonSchema, Map<String, McpServerConfig> mcpServers,
-		Integer maxTurns, Double maxBudgetUsd, String fallbackModel, String appendSystemPrompt,
+		Duration timeout, List<String> tools, List<String> allowedTools, List<String> disallowedTools,
+		PermissionMode permissionMode, boolean interactive, OutputFormat outputFormat, List<String> settingSources,
+		String agents, boolean forkSession, boolean includePartialMessages, Map<String, Object> jsonSchema,
+		Map<String, McpServerConfig> mcpServers, Integer maxTurns, Double maxBudgetUsd, String fallbackModel,
+		String appendSystemPrompt,
 		// Advanced options for full Python SDK parity
 		List<Path> addDirs, String settings, String permissionPromptToolName, Map<String, String> extraArgs,
 		List<PluginConfig> plugins, Map<String, String> env, Integer maxBufferSize, String user,
@@ -63,6 +64,7 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 		if (timeout == null) {
 			timeout = Duration.ofMinutes(2);
 		}
+		// tools can be null (don't add --tools flag), empty list (--tools ""), or list of tool names
 		if (allowedTools == null) {
 			allowedTools = List.of();
 		}
@@ -101,7 +103,7 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 	}
 
 	public static CLIOptions defaultOptions() {
-		return new CLIOptions(null, null, null, null, Duration.ofMinutes(2), List.of(), List.of(),
+		return new CLIOptions(null, null, null, null, Duration.ofMinutes(2), null, List.of(), List.of(),
 				PermissionMode.DANGEROUSLY_SKIP_PERMISSIONS, false, OutputFormat.JSON, List.of(), null, false, false,
 				null, Map.of(), null, null, null, null, List.of(), null, null, Map.of(), List.of(), Map.of(), null,
 				null, null, null);
@@ -126,6 +128,10 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 
 	public Integer getMaxThinkingTokens() {
 		return maxThinkingTokens;
+	}
+
+	public List<String> getTools() {
+		return tools;
 	}
 
 	public List<String> getAllowedTools() {
@@ -245,6 +251,8 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 
 		private Duration timeout = Duration.ofMinutes(2);
 
+		private List<String> tools; // null = don't add --tools, empty = --tools "", non-empty = --tools "Read,Edit"
+
 		private List<String> allowedTools = List.of();
 
 		private List<String> disallowedTools = List.of();
@@ -318,6 +326,17 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 
 		public Builder timeout(Duration timeout) {
 			this.timeout = timeout;
+			return this;
+		}
+
+		/**
+		 * Sets the base set of tools available. This is different from allowedTools which
+		 * filters the available tools.
+		 * @param tools list of tool names, empty list for no tools, or null to use defaults
+		 * @return this builder
+		 */
+		public Builder tools(List<String> tools) {
+			this.tools = tools != null ? List.copyOf(tools) : null;
 			return this;
 		}
 
@@ -611,7 +630,7 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 		}
 
 		public CLIOptions build() {
-			return new CLIOptions(model, systemPrompt, maxTokens, maxThinkingTokens, timeout, allowedTools,
+			return new CLIOptions(model, systemPrompt, maxTokens, maxThinkingTokens, timeout, tools, allowedTools,
 					disallowedTools, permissionMode, interactive, outputFormat, settingSources, agents, forkSession,
 					includePartialMessages, jsonSchema, mcpServers, maxTurns, maxBudgetUsd, fallbackModel,
 					appendSystemPrompt, addDirs, settings, permissionPromptToolName, extraArgs, plugins, env,
