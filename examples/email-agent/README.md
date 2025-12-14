@@ -16,7 +16,6 @@ This demo showcases:
 - Maven 3.9+
 - Docker (for GreenMail test server)
 - Claude CLI installed and authenticated
-- swaks (for seeding test emails): `sudo apt install swaks`
 
 ## Quick Start
 
@@ -31,22 +30,21 @@ This starts GreenMail with:
 - SMTP on port 3025
 - User: `user` / Password: `password`
 
-### 2. Seed Test Emails
-
-```bash
-chmod +x src/test/resources/seed-emails.sh
-./src/test/resources/seed-emails.sh
-```
-
-This creates 5 test emails simulating a meeting planning thread.
-
-### 3. Run the Application
+### 2. Run the Application
 
 ```bash
 ../../mvnw spring-boot:run
 ```
 
 The application starts at http://localhost:8081
+
+### 3. Seed Test Emails
+
+```bash
+curl -X POST http://localhost:8081/api/test/seed
+```
+
+This creates 5 test emails simulating a meeting planning thread.
 
 ## Test Endpoints
 
@@ -90,18 +88,17 @@ email-agent/
 │   ├── controller/
 │   │   └── TestController.java     # REST endpoints (non-SSE)
 │   ├── view/
-│   │   └── EmailChatView.java      # Vaadin chat UI
+│   │   └── EmailAgentView.java     # Vaadin 3-pane UI
 │   ├── service/
 │   │   ├── ClaudeService.java      # Claude SDK wrapper
+│   │   ├── EmailSeeder.java        # Seeds test emails via SMTP
 │   │   └── ImapService.java        # Direct IMAP access
 │   └── model/
 │       └── Email.java              # Email record
-├── src/main/resources/
-│   ├── application.properties      # Config (port 8081)
-│   └── prompts/
-│       └── email-system-prompt.txt
-└── src/test/resources/
-    └── seed-emails.sh              # Test data script
+└── src/main/resources/
+    ├── application.properties      # Config (port 8081)
+    └── prompts/
+        └── email-system-prompt.txt
 ```
 
 ## Architecture
