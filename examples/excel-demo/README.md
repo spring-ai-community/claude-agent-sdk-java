@@ -24,6 +24,12 @@ Try these prompts in the chat interface:
 - Java 21+
 - Maven 3.9+
 - Claude CLI installed and authenticated
+- **Python 3.x with openpyxl** - Claude uses Python to generate Excel files
+
+```bash
+# Install openpyxl if not present
+pip install openpyxl
+```
 
 ## Running
 
