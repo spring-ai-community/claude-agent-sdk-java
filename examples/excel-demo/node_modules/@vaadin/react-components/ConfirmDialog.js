@@ -1,0 +1,2 @@
+export*from"@vaadin/confirm-dialog/vaadin-confirm-dialog.js";import{ConfirmDialog as e}from"@vaadin/confirm-dialog/vaadin-confirm-dialog.js";import*as n from"react";import{createComponent as t}from"./utils/createComponent.js";var i={onClosed:"closed",onCancel:"cancel",onConfirm:"confirm",onReject:"reject",onOpenedChanged:"opened-changed"},o=t({elementClass:e,events:i,react:n,tagName:"vaadin-confirm-dialog"});var f=o;export{f as ConfirmDialog,e as ConfirmDialogElement};
+//# sourceMappingURL=ConfirmDialog.js.map

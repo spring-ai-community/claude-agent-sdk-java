@@ -1,0 +1,2 @@
+export*from"@vaadin/message-input/vaadin-message-input.js";import{MessageInput as e}from"@vaadin/message-input/vaadin-message-input.js";import*as t from"react";import{createComponent as p}from"./utils/createComponent.js";var s={onSubmit:"submit"},o=p({elementClass:e,events:s,react:t,tagName:"vaadin-message-input"});export{o as MessageInput,e as MessageInputElement};
+//# sourceMappingURL=MessageInput.js.map

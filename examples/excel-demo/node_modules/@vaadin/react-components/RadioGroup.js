@@ -1,0 +1,2 @@
+export*from"@vaadin/radio-group/vaadin-radio-group.js";import{RadioGroup as a}from"@vaadin/radio-group/vaadin-radio-group.js";import*as e from"react";import{createComponent as o}from"./utils/createComponent.js";var t={onValidated:"validated",onInvalidChanged:"invalid-changed",onValueChanged:"value-changed"},r=o({elementClass:a,events:t,react:e,tagName:"vaadin-radio-group"});export{r as RadioGroup,a as RadioGroupElement};
+//# sourceMappingURL=RadioGroup.js.map

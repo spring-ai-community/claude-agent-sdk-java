@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/SplitLayout.ts", "src/generated/SplitLayout.ts"],
+  "sourcesContent": ["export * from \"@vaadin/split-layout/vaadin-split-layout.js\";\nexport * from './generated/SplitLayout.js';\n", "import type { EventName } from \"@lit/react\";\nimport { SplitLayout as SplitLayoutElement, type SplitLayoutEventMap as _SplitLayoutEventMap, } from \"@vaadin/split-layout/vaadin-split-layout.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { SplitLayoutElement, };\nexport type SplitLayoutEventMap = Readonly<{\n    onSplitterDragend: EventName<_SplitLayoutEventMap[\"splitter-dragend\"]>;\n}>;\nconst events = { onSplitterDragend: \"splitter-dragend\" } as SplitLayoutEventMap;\nexport type SplitLayoutProps = WebComponentProps<SplitLayoutElement, SplitLayoutEventMap>;\nexport const SplitLayout = createComponent({\n    elementClass: SplitLayoutElement, events, react: React, tagName: \"vaadin-split-layout\"\n});\n"],
+  "mappings": "AAAA,WAAc,8CCCd,OAAS,eAAeA,MAA6E,8CACrG,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAKxD,IAAMC,EAAS,CAAE,kBAAmB,kBAAmB,EAE1CC,EAAcC,EAAgB,CACvC,aAAcC,EAAoB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,qBACrE,CAAC",
+  "names": ["SplitLayoutElement", "React", "createComponent", "events", "SplitLayout", "createComponent", "SplitLayoutElement", "React"]
+}

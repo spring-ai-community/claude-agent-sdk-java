@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/DetailsSummary.ts", "src/generated/DetailsSummary.ts"],
+  "sourcesContent": ["export * from \"@vaadin/details/vaadin-details-summary.js\";\nexport * from './generated/DetailsSummary.js';\n", "import type {} from \"@lit/react\";\nimport { DetailsSummary as DetailsSummaryElement, } from \"@vaadin/details/vaadin-details-summary.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { DetailsSummaryElement, };\nexport type DetailsSummaryEventMap = Readonly<{}>;\nconst events = {} as DetailsSummaryEventMap;\nexport type DetailsSummaryProps = WebComponentProps<DetailsSummaryElement, DetailsSummaryEventMap>;\nexport const DetailsSummary = createComponent({\n    elementClass: DetailsSummaryElement, events, react: React, tagName: \"vaadin-details-summary\"\n});\n"],
+  "mappings": "AAAA,WAAc,4CCCd,OAAS,kBAAkBA,MAA8B,4CACzD,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAiBC,EAAgB,CAC1C,aAAcC,EAAuB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,wBACxE,CAAC",
+  "names": ["DetailsSummaryElement", "React", "createComponent", "events", "DetailsSummary", "createComponent", "DetailsSummaryElement", "React"]
+}

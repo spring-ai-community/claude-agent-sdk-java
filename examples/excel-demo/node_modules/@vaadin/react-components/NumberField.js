@@ -1,0 +1,2 @@
+export*from"@vaadin/number-field/vaadin-number-field.js";import{NumberField as e}from"@vaadin/number-field/vaadin-number-field.js";import*as n from"react";import{createComponent as a}from"./utils/createComponent.js";var t={onValidated:"validated",onChange:"change",onInput:"input",onInvalidChanged:"invalid-changed",onValueChanged:"value-changed"},o=a({elementClass:e,events:t,react:n,tagName:"vaadin-number-field"});export{o as NumberField,e as NumberFieldElement};
+//# sourceMappingURL=NumberField.js.map

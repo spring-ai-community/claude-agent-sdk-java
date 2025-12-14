@@ -1,0 +1,2 @@
+export*from"@vaadin/side-nav/vaadin-side-nav-item.js";import{SideNavItem as e}from"@vaadin/side-nav/vaadin-side-nav-item.js";import*as t from"react";import{createComponent as a}from"./utils/createComponent.js";var n={onExpandedChanged:"expanded-changed"},o=a({elementClass:e,events:n,react:t,tagName:"vaadin-side-nav-item"});export{o as SideNavItem,e as SideNavItemElement};
+//# sourceMappingURL=SideNavItem.js.map

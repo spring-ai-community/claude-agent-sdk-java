@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/ProgressBar.ts", "src/generated/ProgressBar.ts"],
+  "sourcesContent": ["export * from \"@vaadin/progress-bar/vaadin-progress-bar.js\";\nexport * from './generated/ProgressBar.js';\n", "import type {} from \"@lit/react\";\nimport { ProgressBar as ProgressBarElement, } from \"@vaadin/progress-bar/vaadin-progress-bar.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { ProgressBarElement, };\nexport type ProgressBarEventMap = Readonly<{}>;\nconst events = {} as ProgressBarEventMap;\nexport type ProgressBarProps = WebComponentProps<ProgressBarElement, ProgressBarEventMap>;\nexport const ProgressBar = createComponent({\n    elementClass: ProgressBarElement, events, react: React, tagName: \"vaadin-progress-bar\"\n});\n"],
+  "mappings": "AAAA,WAAc,8CCCd,OAAS,eAAeA,MAA2B,8CACnD,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAcC,EAAgB,CACvC,aAAcC,EAAoB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,qBACrE,CAAC",
+  "names": ["ProgressBarElement", "React", "createComponent", "events", "ProgressBar", "createComponent", "ProgressBarElement", "React"]
+}

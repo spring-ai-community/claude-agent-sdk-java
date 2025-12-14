@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/utils/useMergedRefs.ts"],
+  "sourcesContent": ["import { type ForwardedRef, type RefCallback, useCallback } from 'react';\n\nexport default function useMergedRefs<T extends HTMLElement>(...refs: ReadonlyArray<ForwardedRef<T>>): RefCallback<T> {\n  return useCallback((element: T) => {\n    refs.forEach((ref) => {\n      if (typeof ref === 'function') {\n        ref(element);\n      } else if (!!ref) {\n        ref.current = element;\n      }\n    });\n  }, refs);\n}\n"],
+  "mappings": "AAAA,OAA8C,eAAAA,MAAmB,QAElD,SAARC,KAAyDC,EAAsD,CACpH,OAAOF,EAAaG,GAAe,CACjCD,EAAK,QAASE,GAAQ,CAChB,OAAOA,GAAQ,WACjBA,EAAID,CAAO,EACAC,IACXA,EAAI,QAAUD,EAElB,CAAC,CACH,EAAGD,CAAI,CACT",
+  "names": ["useCallback", "useMergedRefs", "refs", "element", "ref"]
+}

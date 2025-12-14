@@ -1,0 +1,2 @@
+export*from"@vaadin/checkbox/vaadin-checkbox.js";import{Checkbox as e}from"@vaadin/checkbox/vaadin-checkbox.js";import*as n from"react";import{createComponent as a}from"./utils/createComponent.js";var t={onValidated:"validated",onChange:"change",onCheckedChanged:"checked-changed",onInvalidChanged:"invalid-changed",onIndeterminateChanged:"indeterminate-changed"},h=a({elementClass:e,events:t,react:n,tagName:"vaadin-checkbox"});export{h as Checkbox,e as CheckboxElement};
+//# sourceMappingURL=Checkbox.js.map

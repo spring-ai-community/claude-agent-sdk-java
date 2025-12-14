@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/HorizontalLayout.ts", "src/generated/HorizontalLayout.ts"],
+  "sourcesContent": ["export * from \"@vaadin/horizontal-layout/vaadin-horizontal-layout.js\";\nexport * from './generated/HorizontalLayout.js';\n", "import type {} from \"@lit/react\";\nimport { HorizontalLayout as HorizontalLayoutElement, } from \"@vaadin/horizontal-layout/vaadin-horizontal-layout.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { HorizontalLayoutElement, };\nexport type HorizontalLayoutEventMap = Readonly<{}>;\nconst events = {} as HorizontalLayoutEventMap;\nexport type HorizontalLayoutProps = WebComponentProps<HorizontalLayoutElement, HorizontalLayoutEventMap>;\nexport const HorizontalLayout = createComponent({\n    elementClass: HorizontalLayoutElement, events, react: React, tagName: \"vaadin-horizontal-layout\"\n});\n"],
+  "mappings": "AAAA,WAAc,wDCCd,OAAS,oBAAoBA,MAAgC,wDAC7D,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAmBC,EAAgB,CAC5C,aAAcC,EAAyB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,0BAC1E,CAAC",
+  "names": ["HorizontalLayoutElement", "React", "createComponent", "events", "HorizontalLayout", "createComponent", "HorizontalLayoutElement", "React"]
+}

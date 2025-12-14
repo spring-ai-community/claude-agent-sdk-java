@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/Card.ts", "src/generated/Card.ts"],
+  "sourcesContent": ["export * from \"@vaadin/card/vaadin-card.js\";\nexport * from './generated/Card.js';\n", "import type {} from \"@lit/react\";\nimport { Card as CardElement, } from \"@vaadin/card/vaadin-card.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { CardElement, };\nexport type CardEventMap = Readonly<{}>;\nconst events = {} as CardEventMap;\nexport type CardProps = WebComponentProps<CardElement, CardEventMap>;\nexport const Card = createComponent({\n    elementClass: CardElement, events, react: React, tagName: \"vaadin-card\"\n});\n"],
+  "mappings": "AAAA,WAAc,8BCCd,OAAS,QAAQA,MAAoB,8BACrC,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAOC,EAAgB,CAChC,aAAcC,EAAa,OAAAH,EAAQ,MAAOI,EAAO,QAAS,aAC9D,CAAC",
+  "names": ["CardElement", "React", "createComponent", "events", "Card", "createComponent", "CardElement", "React"]
+}

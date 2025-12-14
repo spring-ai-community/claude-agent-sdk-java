@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/Tab.ts", "src/generated/Tab.ts"],
+  "sourcesContent": ["export * from \"@vaadin/tabs/vaadin-tab.js\";\nexport * from './generated/Tab.js';\n", "import type {} from \"@lit/react\";\nimport { Tab as TabElement, } from \"@vaadin/tabs/vaadin-tab.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { TabElement, };\nexport type TabEventMap = Readonly<{}>;\nconst events = {} as TabEventMap;\nexport type TabProps = WebComponentProps<TabElement, TabEventMap>;\nexport const Tab = createComponent({\n    elementClass: TabElement, events, react: React, tagName: \"vaadin-tab\"\n});\n"],
+  "mappings": "AAAA,WAAc,6BCCd,OAAS,OAAOA,MAAmB,6BACnC,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAMC,EAAgB,CAC/B,aAAcC,EAAY,OAAAH,EAAQ,MAAOI,EAAO,QAAS,YAC7D,CAAC",
+  "names": ["TabElement", "React", "createComponent", "events", "Tab", "createComponent", "TabElement", "React"]
+}

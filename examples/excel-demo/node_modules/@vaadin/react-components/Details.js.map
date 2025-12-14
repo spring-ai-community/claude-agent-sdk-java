@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/Details.ts", "src/generated/Details.ts"],
+  "sourcesContent": ["export * from \"@vaadin/details/vaadin-details.js\";\nexport * from './generated/Details.js';\n", "import type { EventName } from \"@lit/react\";\nimport { Details as DetailsElement, type DetailsEventMap as _DetailsEventMap, } from \"@vaadin/details/vaadin-details.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { DetailsElement, };\nexport type DetailsEventMap = Readonly<{\n    onOpenedChanged: EventName<_DetailsEventMap[\"opened-changed\"]>;\n}>;\nconst events = { onOpenedChanged: \"opened-changed\" } as DetailsEventMap;\nexport type DetailsProps = WebComponentProps<DetailsElement, DetailsEventMap>;\nexport const Details = createComponent({\n    elementClass: DetailsElement, events, react: React, tagName: \"vaadin-details\"\n});\n"],
+  "mappings": "AAAA,WAAc,oCCCd,OAAS,WAAWA,MAAiE,oCACrF,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAKxD,IAAMC,EAAS,CAAE,gBAAiB,gBAAiB,EAEtCC,EAAUC,EAAgB,CACnC,aAAcC,EAAgB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,gBACjE,CAAC",
+  "names": ["DetailsElement", "React", "createComponent", "events", "Details", "createComponent", "DetailsElement", "React"]
+}

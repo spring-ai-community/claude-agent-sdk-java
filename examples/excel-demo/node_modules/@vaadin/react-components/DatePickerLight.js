@@ -1,0 +1,2 @@
+export*from"@vaadin/date-picker/vaadin-date-picker-light.js";import{DatePickerLight as e}from"@vaadin/date-picker/vaadin-date-picker-light.js";import*as t from"react";import{createComponent as a}from"./utils/createComponent.js";var n={onValidated:"validated",onChange:"change",onOpenedChanged:"opened-changed",onValueChanged:"value-changed",onInvalidChanged:"invalid-changed"},r=a({elementClass:e,events:n,react:t,tagName:"vaadin-date-picker-light"});export{r as DatePickerLight,e as DatePickerLightElement};
+//# sourceMappingURL=DatePickerLight.js.map

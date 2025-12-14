@@ -1,0 +1,2 @@
+export*from"@vaadin/horizontal-layout/vaadin-horizontal-layout.js";import{HorizontalLayout as o}from"@vaadin/horizontal-layout/vaadin-horizontal-layout.js";import*as t from"react";import{createComponent as a}from"./utils/createComponent.js";var e={},p=a({elementClass:o,events:e,react:t,tagName:"vaadin-horizontal-layout"});export{p as HorizontalLayout,o as HorizontalLayoutElement};
+//# sourceMappingURL=HorizontalLayout.js.map

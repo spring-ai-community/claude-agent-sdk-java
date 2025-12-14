@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/Avatar.ts", "src/generated/Avatar.ts"],
+  "sourcesContent": ["export * from \"@vaadin/avatar/vaadin-avatar.js\";\nexport * from './generated/Avatar.js';\n", "import type {} from \"@lit/react\";\nimport { Avatar as AvatarElement, } from \"@vaadin/avatar/vaadin-avatar.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { AvatarElement, };\nexport type AvatarEventMap = Readonly<{}>;\nconst events = {} as AvatarEventMap;\nexport type AvatarProps = WebComponentProps<AvatarElement, AvatarEventMap>;\nexport const Avatar = createComponent({\n    elementClass: AvatarElement, events, react: React, tagName: \"vaadin-avatar\"\n});\n"],
+  "mappings": "AAAA,WAAc,kCCCd,OAAS,UAAUA,MAAsB,kCACzC,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAASC,EAAgB,CAClC,aAAcC,EAAe,OAAAH,EAAQ,MAAOI,EAAO,QAAS,eAChE,CAAC",
+  "names": ["AvatarElement", "React", "createComponent", "events", "Avatar", "createComponent", "AvatarElement", "React"]
+}

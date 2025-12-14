@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/DrawerToggle.ts", "src/generated/DrawerToggle.ts"],
+  "sourcesContent": ["export * from \"@vaadin/app-layout/vaadin-drawer-toggle.js\";\nexport * from './generated/DrawerToggle.js';\n", "import type {} from \"@lit/react\";\nimport { DrawerToggle as DrawerToggleElement, } from \"@vaadin/app-layout/vaadin-drawer-toggle.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { DrawerToggleElement, };\nexport type DrawerToggleEventMap = Readonly<{}>;\nconst events = {} as DrawerToggleEventMap;\nexport type DrawerToggleProps = WebComponentProps<DrawerToggleElement, DrawerToggleEventMap>;\nexport const DrawerToggle = createComponent({\n    elementClass: DrawerToggleElement, events, react: React, tagName: \"vaadin-drawer-toggle\"\n});\n"],
+  "mappings": "AAAA,WAAc,6CCCd,OAAS,gBAAgBA,MAA4B,6CACrD,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAeC,EAAgB,CACxC,aAAcC,EAAqB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,sBACtE,CAAC",
+  "names": ["DrawerToggleElement", "React", "createComponent", "events", "DrawerToggle", "createComponent", "DrawerToggleElement", "React"]
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/Button.ts", "src/generated/Button.ts"],
+  "sourcesContent": ["export * from \"@vaadin/button/vaadin-button.js\";\nexport * from './generated/Button.js';\n", "import type {} from \"@lit/react\";\nimport { Button as ButtonElement, } from \"@vaadin/button/vaadin-button.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { ButtonElement, };\nexport type ButtonEventMap = Readonly<{}>;\nconst events = {} as ButtonEventMap;\nexport type ButtonProps = WebComponentProps<ButtonElement, ButtonEventMap>;\nexport const Button = createComponent({\n    elementClass: ButtonElement, events, react: React, tagName: \"vaadin-button\"\n});\n"],
+  "mappings": "AAAA,WAAc,kCCCd,OAAS,UAAUA,MAAsB,kCACzC,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAASC,EAAgB,CAClC,aAAcC,EAAe,OAAAH,EAAQ,MAAOI,EAAO,QAAS,eAChE,CAAC",
+  "names": ["ButtonElement", "React", "createComponent", "events", "Button", "createComponent", "ButtonElement", "React"]
+}

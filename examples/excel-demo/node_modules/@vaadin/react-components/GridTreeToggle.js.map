@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/GridTreeToggle.ts", "src/generated/GridTreeToggle.ts"],
+  "sourcesContent": ["export * from \"@vaadin/grid/vaadin-grid-tree-toggle.js\";\nexport * from './generated/GridTreeToggle.js';\n", "import type { EventName } from \"@lit/react\";\nimport { GridTreeToggle as GridTreeToggleElement, type GridTreeToggleEventMap as _GridTreeToggleEventMap, } from \"@vaadin/grid/vaadin-grid-tree-toggle.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { GridTreeToggleElement, };\nexport type GridTreeToggleEventMap = Readonly<{\n    onExpandedChanged: EventName<_GridTreeToggleEventMap[\"expanded-changed\"]>;\n}>;\nconst events = { onExpandedChanged: \"expanded-changed\" } as GridTreeToggleEventMap;\nexport type GridTreeToggleProps = WebComponentProps<GridTreeToggleElement, GridTreeToggleEventMap>;\nexport const GridTreeToggle = createComponent({\n    elementClass: GridTreeToggleElement, events, react: React, tagName: \"vaadin-grid-tree-toggle\"\n});\n"],
+  "mappings": "AAAA,WAAc,0CCCd,OAAS,kBAAkBA,MAAsF,0CACjH,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAKxD,IAAMC,EAAS,CAAE,kBAAmB,kBAAmB,EAE1CC,EAAiBC,EAAgB,CAC1C,aAAcC,EAAuB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,yBACxE,CAAC",
+  "names": ["GridTreeToggleElement", "React", "createComponent", "events", "GridTreeToggle", "createComponent", "GridTreeToggleElement", "React"]
+}

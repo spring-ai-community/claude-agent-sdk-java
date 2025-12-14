@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/RadioGroup.ts", "src/generated/RadioGroup.ts"],
+  "sourcesContent": ["export * from \"@vaadin/radio-group/vaadin-radio-group.js\";\nexport * from './generated/RadioGroup.js';\n", "import type { EventName } from \"@lit/react\";\nimport { RadioGroup as RadioGroupElement, type RadioGroupEventMap as _RadioGroupEventMap, } from \"@vaadin/radio-group/vaadin-radio-group.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { RadioGroupElement, };\nexport type RadioGroupEventMap = Readonly<{\n    onValidated: EventName<_RadioGroupEventMap[\"validated\"]>;\n    onInvalidChanged: EventName<_RadioGroupEventMap[\"invalid-changed\"]>;\n    onValueChanged: EventName<_RadioGroupEventMap[\"value-changed\"]>;\n}>;\nconst events = { onValidated: \"validated\", onInvalidChanged: \"invalid-changed\", onValueChanged: \"value-changed\" } as RadioGroupEventMap;\nexport type RadioGroupProps = WebComponentProps<RadioGroupElement, RadioGroupEventMap>;\nexport const RadioGroup = createComponent({\n    elementClass: RadioGroupElement, events, react: React, tagName: \"vaadin-radio-group\"\n});\n"],
+  "mappings": "AAAA,WAAc,4CCCd,OAAS,cAAcA,MAA0E,4CACjG,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAOxD,IAAMC,EAAS,CAAE,YAAa,YAAa,iBAAkB,kBAAmB,eAAgB,eAAgB,EAEnGC,EAAaC,EAAgB,CACtC,aAAcC,EAAmB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,oBACpE,CAAC",
+  "names": ["RadioGroupElement", "React", "createComponent", "events", "RadioGroup", "createComponent", "RadioGroupElement", "React"]
+}

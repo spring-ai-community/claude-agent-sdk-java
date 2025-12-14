@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/AccordionHeading.ts", "src/generated/AccordionHeading.ts"],
+  "sourcesContent": ["export * from \"@vaadin/accordion/vaadin-accordion-heading.js\";\nexport * from './generated/AccordionHeading.js';\n", "import type {} from \"@lit/react\";\nimport { AccordionHeading as AccordionHeadingElement, } from \"@vaadin/accordion/vaadin-accordion-heading.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { AccordionHeadingElement, };\nexport type AccordionHeadingEventMap = Readonly<{}>;\nconst events = {} as AccordionHeadingEventMap;\nexport type AccordionHeadingProps = WebComponentProps<AccordionHeadingElement, AccordionHeadingEventMap>;\nexport const AccordionHeading = createComponent({\n    elementClass: AccordionHeadingElement, events, react: React, tagName: \"vaadin-accordion-heading\"\n});\n"],
+  "mappings": "AAAA,WAAc,gDCCd,OAAS,oBAAoBA,MAAgC,gDAC7D,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAmBC,EAAgB,CAC5C,aAAcC,EAAyB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,0BAC1E,CAAC",
+  "names": ["AccordionHeadingElement", "React", "createComponent", "events", "AccordionHeading", "createComponent", "AccordionHeadingElement", "React"]
+}

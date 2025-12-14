@@ -1,0 +1,1 @@
+{"version":3,"file":"node_modules_open-wc_dedupe-mixin_index_js.js","mappings":";;;;;;;;;;;;;AAAmD","sources":["webpack://@vaadin/bundles/./node_modules/@open-wc/dedupe-mixin/index.js"],"sourcesContent":["export { dedupeMixin } from './src/dedupeMixin.js';\n"],"names":[],"sourceRoot":""}

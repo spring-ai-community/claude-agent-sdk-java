@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/GridSorter.ts", "src/generated/GridSorter.ts"],
+  "sourcesContent": ["export * from \"@vaadin/grid/vaadin-grid-sorter.js\";\nexport * from './generated/GridSorter.js';\n", "import type { EventName } from \"@lit/react\";\nimport { GridSorter as GridSorterElement, type GridSorterEventMap as _GridSorterEventMap, } from \"@vaadin/grid/vaadin-grid-sorter.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { GridSorterElement, };\nexport type GridSorterEventMap = Readonly<{\n    onDirectionChanged: EventName<_GridSorterEventMap[\"direction-changed\"]>;\n}>;\nconst events = { onDirectionChanged: \"direction-changed\" } as GridSorterEventMap;\nexport type GridSorterProps = WebComponentProps<GridSorterElement, GridSorterEventMap>;\nexport const GridSorter = createComponent({\n    elementClass: GridSorterElement, events, react: React, tagName: \"vaadin-grid-sorter\"\n});\n"],
+  "mappings": "AAAA,WAAc,qCCCd,OAAS,cAAcA,MAA0E,qCACjG,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAKxD,IAAMC,EAAS,CAAE,mBAAoB,mBAAoB,EAE5CC,EAAaC,EAAgB,CACtC,aAAcC,EAAmB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,oBACpE,CAAC",
+  "names": ["GridSorterElement", "React", "createComponent", "events", "GridSorter", "createComponent", "GridSorterElement", "React"]
+}

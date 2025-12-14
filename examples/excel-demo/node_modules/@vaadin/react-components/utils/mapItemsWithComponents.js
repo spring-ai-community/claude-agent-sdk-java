@@ -1,0 +1,2 @@
+import"react";import{createPortal as h}from"react-dom";function s(e,m="div"){const n=[],l=e?.map(o=>{const{component:t,children:p,...r}=o,[a,i]=s(p,m);if(n.push(...a),t&&typeof t!="string"){const c=document.createElement(m);return n.push(h(t,c)),{...r,component:c,children:i,__item:o}}else return{...r,component:t,children:i,__item:o}});return[n,l]}function C(e){return e.__item}export{C as getOriginalItem,s as mapItemsWithComponents};
+//# sourceMappingURL=mapItemsWithComponents.js.map

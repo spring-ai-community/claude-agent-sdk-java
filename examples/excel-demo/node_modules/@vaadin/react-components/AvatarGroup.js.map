@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/AvatarGroup.ts", "src/generated/AvatarGroup.ts"],
+  "sourcesContent": ["export * from \"@vaadin/avatar-group/vaadin-avatar-group.js\";\nexport * from './generated/AvatarGroup.js';\n", "import type {} from \"@lit/react\";\nimport { AvatarGroup as AvatarGroupElement, } from \"@vaadin/avatar-group/vaadin-avatar-group.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { AvatarGroupElement, };\nexport type AvatarGroupEventMap = Readonly<{}>;\nconst events = {} as AvatarGroupEventMap;\nexport type AvatarGroupProps = WebComponentProps<AvatarGroupElement, AvatarGroupEventMap>;\nexport const AvatarGroup = createComponent({\n    elementClass: AvatarGroupElement, events, react: React, tagName: \"vaadin-avatar-group\"\n});\n"],
+  "mappings": "AAAA,WAAc,8CCCd,OAAS,eAAeA,MAA2B,8CACnD,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAcC,EAAgB,CACvC,aAAcC,EAAoB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,qBACrE,CAAC",
+  "names": ["AvatarGroupElement", "React", "createComponent", "events", "AvatarGroup", "createComponent", "AvatarGroupElement", "React"]
+}

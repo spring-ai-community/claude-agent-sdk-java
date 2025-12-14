@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/VerticalLayout.ts", "src/generated/VerticalLayout.ts"],
+  "sourcesContent": ["export * from \"@vaadin/vertical-layout/vaadin-vertical-layout.js\";\nexport * from './generated/VerticalLayout.js';\n", "import type {} from \"@lit/react\";\nimport { VerticalLayout as VerticalLayoutElement, } from \"@vaadin/vertical-layout/vaadin-vertical-layout.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { VerticalLayoutElement, };\nexport type VerticalLayoutEventMap = Readonly<{}>;\nconst events = {} as VerticalLayoutEventMap;\nexport type VerticalLayoutProps = WebComponentProps<VerticalLayoutElement, VerticalLayoutEventMap>;\nexport const VerticalLayout = createComponent({\n    elementClass: VerticalLayoutElement, events, react: React, tagName: \"vaadin-vertical-layout\"\n});\n"],
+  "mappings": "AAAA,WAAc,oDCCd,OAAS,kBAAkBA,MAA8B,oDACzD,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAiBC,EAAgB,CAC1C,aAAcC,EAAuB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,wBACxE,CAAC",
+  "names": ["VerticalLayoutElement", "React", "createComponent", "events", "VerticalLayout", "createComponent", "VerticalLayoutElement", "React"]
+}

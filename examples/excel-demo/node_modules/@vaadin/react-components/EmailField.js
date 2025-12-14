@@ -1,0 +1,2 @@
+export*from"@vaadin/email-field/vaadin-email-field.js";import{EmailField as e}from"@vaadin/email-field/vaadin-email-field.js";import*as a from"react";import{createComponent as n}from"./utils/createComponent.js";var t={onValidated:"validated",onChange:"change",onInput:"input",onInvalidChanged:"invalid-changed",onValueChanged:"value-changed"},m=n({elementClass:e,events:t,react:a,tagName:"vaadin-email-field"});export{m as EmailField,e as EmailFieldElement};
+//# sourceMappingURL=EmailField.js.map

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/renderers/useContextRenderer.ts"],
+  "sourcesContent": ["import type { ComponentType } from 'react';\nimport type { Slice } from './renderer.js';\nimport { useRenderer, type UseRendererResult } from './useRenderer.js';\n\nexport type ReactContextRendererProps<C, O extends HTMLElement> = Readonly<{\n  context: C;\n  original: O;\n}>;\n\nexport type WebComponentContextRenderer<C, O extends HTMLElement> = (\n  root: HTMLElement,\n  original: O,\n  context: C,\n) => void;\n\nexport function convertContextRendererArgs<C, O extends HTMLElement>([original, context]: Slice<\n  Parameters<WebComponentContextRenderer<C, O>>,\n  1\n>): ReactContextRendererProps<C, O> {\n  return { context, original };\n}\n\nexport function useContextRenderer<C, O extends HTMLElement>(\n  reactRenderer?: ComponentType<ReactContextRendererProps<C, O>> | null,\n): UseRendererResult<WebComponentContextRenderer<C, O>> {\n  return useRenderer(reactRenderer, convertContextRendererArgs);\n}\n"],
+  "mappings": "AAEA,OAAS,eAAAA,MAA2C,mBAa7C,SAASC,EAAqD,CAACC,EAAUC,CAAO,EAGnD,CAClC,MAAO,CAAE,QAAAA,EAAS,SAAAD,CAAS,CAC7B,CAEO,SAASE,EACdC,EACsD,CACtD,OAAOL,EAAYK,EAAeJ,CAA0B,CAC9D",
+  "names": ["useRenderer", "convertContextRendererArgs", "original", "context", "useContextRenderer", "reactRenderer"]
+}

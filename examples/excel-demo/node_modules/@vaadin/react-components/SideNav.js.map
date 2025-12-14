@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/SideNav.ts", "src/generated/SideNav.ts"],
+  "sourcesContent": ["export * from \"@vaadin/side-nav/vaadin-side-nav.js\";\nexport * from './generated/SideNav.js';\n", "import type { EventName } from \"@lit/react\";\nimport { SideNav as SideNavElement, type SideNavEventMap as _SideNavEventMap, } from \"@vaadin/side-nav/vaadin-side-nav.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { SideNavElement, };\nexport type SideNavEventMap = Readonly<{\n    onCollapsedChanged: EventName<_SideNavEventMap[\"collapsed-changed\"]>;\n}>;\nconst events = { onCollapsedChanged: \"collapsed-changed\" } as SideNavEventMap;\nexport type SideNavProps = WebComponentProps<SideNavElement, SideNavEventMap>;\nexport const SideNav = createComponent({\n    elementClass: SideNavElement, events, react: React, tagName: \"vaadin-side-nav\"\n});\n"],
+  "mappings": "AAAA,WAAc,sCCCd,OAAS,WAAWA,MAAiE,sCACrF,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAKxD,IAAMC,EAAS,CAAE,mBAAoB,mBAAoB,EAE5CC,EAAUC,EAAgB,CACnC,aAAcC,EAAgB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,iBACjE,CAAC",
+  "names": ["SideNavElement", "React", "createComponent", "events", "SideNav", "createComponent", "SideNavElement", "React"]
+}

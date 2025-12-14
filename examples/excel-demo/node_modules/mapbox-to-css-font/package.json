@@ -1,0 +1,29 @@
+{
+  "name": "mapbox-to-css-font",
+  "version": "2.4.5",
+  "description": "Utility to convert Mapbox GL Style font names to CSS font definitions",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/openlayers/mapbox-to-css-font.git"
+  },
+  "keywords": [
+    "mapbox",
+    "font"
+  ],
+  "author": "Andreas Hocevar",
+  "license": "BSD-2-Clause",
+  "scripts": {
+    "lint": "eslint *.js test",
+    "pretest": "npm run lint",
+    "test": "mocha test/index.test.js"
+  },
+  "devDependencies": {
+    "eslint": "^5.15.0",
+    "eslint-config-openlayers": "^11.0.0",
+    "karma-mocha": "^2.0.1",
+    "mocha": "^10.2.0",
+    "should": "^13.2.3",
+    "sinon": "^7.2.7"
+  }
+}

@@ -1,0 +1,2 @@
+export*from"@vaadin/app-layout/vaadin-app-layout.js";import{AppLayout as e}from"@vaadin/app-layout/vaadin-app-layout.js";import*as a from"react";import{createComponent as p}from"./utils/createComponent.js";var t={onPrimarySectionChanged:"primary-section-changed",onDrawerOpenedChanged:"drawer-opened-changed",onOverlayChanged:"overlay-changed"},r=p({elementClass:e,events:t,react:a,tagName:"vaadin-app-layout"});export{r as AppLayout,e as AppLayoutElement};
+//# sourceMappingURL=AppLayout.js.map

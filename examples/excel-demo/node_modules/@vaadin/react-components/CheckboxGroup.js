@@ -1,0 +1,2 @@
+export*from"@vaadin/checkbox-group/vaadin-checkbox-group.js";import{CheckboxGroup as e}from"@vaadin/checkbox-group/vaadin-checkbox-group.js";import*as o from"react";import{createComponent as a}from"./utils/createComponent.js";var t={onValidated:"validated",onInvalidChanged:"invalid-changed",onValueChanged:"value-changed"},r=a({elementClass:e,events:t,react:o,tagName:"vaadin-checkbox-group"});export{r as CheckboxGroup,e as CheckboxGroupElement};
+//# sourceMappingURL=CheckboxGroup.js.map

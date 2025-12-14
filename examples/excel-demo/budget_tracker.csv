@@ -1,0 +1,6 @@
+Category,Budgeted,Actual,Difference,Status
+Rent,1500,1500,0,On Budget
+Utilities,200,185,15,Under Budget
+Groceries,400,425,-25,Over Budget
+Entertainment,150,120,30,Under Budget
+TOTALS,2250,2230,20,Under Budget

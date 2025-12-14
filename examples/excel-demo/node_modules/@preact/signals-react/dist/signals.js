@@ -1,0 +1,1 @@
+var r=require("@preact/signals-core"),e=require("@preact/signals-react/runtime");exports.Signal=r.Signal;exports.batch=r.batch;exports.computed=r.computed;exports.effect=r.effect;exports.signal=r.signal;exports.untracked=r.untracked;exports.useComputed=e.useComputed;exports.useSignal=e.useSignal;exports.useSignalEffect=e.useSignalEffect;//# sourceMappingURL=signals.js.map

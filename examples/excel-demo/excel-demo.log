@@ -1,0 +1,631 @@
+2025-12-14 05:59:11.509 INFO  [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - Starting ExcelDemoApplication using Java 21.0.9 with PID 154733 (/home/mark/community/claude-agent-sdk-java/examples/excel-demo/target/classes started by mark in /home/mark/community/claude-agent-sdk-java/examples/excel-demo)
+2025-12-14 05:59:11.510 DEBUG [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-12-14 05:59:11.510 INFO  [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-14 05:59:11.534 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-14 05:59:11.534 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-14 05:59:12.184 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-12-14 05:59:12.192 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-14 05:59:12.192 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-12-14 05:59:12.212 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-12-14 05:59:12.212 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 678 ms
+2025-12-14 05:59:12.287 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereHandler com.vaadin.hilla.push.PushEndpoint mapped to context-path: /HILLA/push
+2025-12-14 05:59:12.287 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed the following AtmosphereInterceptor mapped to AtmosphereHandler com.vaadin.hilla.push.PushEndpoint
+2025-12-14 05:59:12.287 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor : Atmosphere LifeCycle
+2025-12-14 05:59:12.287 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.client.TrackMessageSizeInterceptor :  Track Message Size Interceptor using |
+2025-12-14 05:59:12.287 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.SuspendTrackerInterceptor : UUID Tracking Interceptor
+2025-12-14 05:59:12.299 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing AtmosphereFramework
+2025-12-14 05:59:14.593 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/polymer-legacy-adapter found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 05:59:14.594 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/integer-field found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 05:59:14.594 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/polymer-legacy-adapter found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 05:59:14.594 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/integer-field found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 05:59:14.865 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-12-14 05:59:14.879 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereHandler com.vaadin.flow.server.communication.PushAtmosphereHandler mapped to context-path: /*
+2025-12-14 05:59:14.879 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed the following AtmosphereInterceptor mapped to AtmosphereHandler com.vaadin.flow.server.communication.PushAtmosphereHandler
+2025-12-14 05:59:14.884 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using org.atmosphere.util.VoidAnnotationProcessor for processing annotation
+2025-12-14 05:59:14.885 INFO  [restartedMain] org.atmosphere.util.ForkJoinPool - Using ForkJoinPool  java.util.concurrent.ForkJoinPool. Set the org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads to -1 to fully use its power.
+2025-12-14 05:59:14.890 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed WebSocketProtocol org.atmosphere.websocket.protocol.SimpleHttpProtocol 
+2025-12-14 05:59:14.892 INFO  [restartedMain] o.a.container.JSR356AsyncSupport - JSR 356 Mapping path /VAADIN/push
+2025-12-14 05:59:14.896 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installing Default AtmosphereInterceptors
+2025-12-14 05:59:14.896 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.CorsInterceptor : CORS Interceptor Support
+2025-12-14 05:59:14.896 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.CacheHeadersInterceptor : Default Response's Headers Interceptor
+2025-12-14 05:59:14.896 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.PaddingAtmosphereInterceptor : Browser Padding Interceptor Support
+2025-12-14 05:59:14.896 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.AndroidAtmosphereInterceptor : Android Interceptor Support
+2025-12-14 05:59:14.896 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.HeartbeatInterceptor : Heartbeat Interceptor Support
+2025-12-14 05:59:14.897 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.SSEAtmosphereInterceptor : SSE Interceptor Support
+2025-12-14 05:59:14.897 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.JSONPAtmosphereInterceptor : JSONP Interceptor Support
+2025-12-14 05:59:14.897 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.JavaScriptProtocol : Atmosphere JavaScript Protocol
+2025-12-14 05:59:14.897 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor : org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor
+2025-12-14 05:59:14.897 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.OnDisconnectInterceptor : Browser disconnection detection
+2025-12-14 05:59:14.897 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.IdleResourceInterceptor : org.atmosphere.interceptor.IdleResourceInterceptor
+2025-12-14 05:59:14.897 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Set org.atmosphere.cpr.AtmosphereInterceptor.disableDefaults to disable them.
+2025-12-14 05:59:14.897 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor CORS Interceptor Support with priority FIRST_BEFORE_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Default Response's Headers Interceptor with priority AFTER_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Browser Padding Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Android Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.a.interceptor.HeartbeatInterceptor - HeartbeatInterceptor configured with padding value 'X', client frequency 0 seconds and server frequency 60 seconds
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Heartbeat Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor SSE Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor JSONP Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Atmosphere JavaScript Protocol with priority AFTER_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor with priority AFTER_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Browser disconnection detection with priority AFTER_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor org.atmosphere.interceptor.IdleResourceInterceptor with priority BEFORE_DEFAULT 
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using EndpointMapper class org.atmosphere.util.DefaultEndpointMapper
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using BroadcasterCache: org.atmosphere.cache.UUIDBroadcasterCache
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Default Broadcaster Class: org.atmosphere.cpr.DefaultBroadcaster
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Broadcaster Shared List Resources: false
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Broadcaster Polling Wait Time 100
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Shared ExecutorService supported: true
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Messaging ExecutorService Pool Size unavailable - Not instance of ThreadPoolExecutor
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Async I/O Thread Pool Size: 200
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using BroadcasterFactory: org.atmosphere.cpr.DefaultBroadcasterFactory
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using AtmosphereResurceFactory: org.atmosphere.cpr.DefaultAtmosphereResourceFactory
+2025-12-14 05:59:14.899 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using WebSocketProcessor: org.atmosphere.websocket.DefaultWebSocketProcessor
+2025-12-14 05:59:14.900 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Invoke AtmosphereInterceptor on WebSocket message true
+2025-12-14 05:59:14.900 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - HttpSession supported: true
+2025-12-14 05:59:14.900 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using DefaultAtmosphereObjectFactory for dependency injection and object creation
+2025-12-14 05:59:14.900 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using async support: org.atmosphere.container.JSR356AsyncSupport running under container: Apache Tomcat/10.1.42 using jakarta.servlet/3.0 and jsr356/WebSocket API
+2025-12-14 05:59:14.900 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere Framework 3.0.5.slf4jvaadin1 started.
+2025-12-14 05:59:14.901 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor  Track Message Size Interceptor using | with priority BEFORE_DEFAULT 
+2025-12-14 05:59:14.930 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using org.atmosphere.cpr.DefaultAnnotationProcessor for processing annotation
+2025-12-14 05:59:14.930 INFO  [restartedMain] o.a.cpr.DefaultAnnotationProcessor - AnnotationProcessor class org.atmosphere.cpr.DefaultAnnotationProcessor$BytecodeBasedAnnotationProcessor being used
+2025-12-14 05:59:16.018 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Auto detecting WebSocketHandler in /WEB-INF/classes/
+2025-12-14 05:59:16.018 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed WebSocketProtocol org.atmosphere.websocket.protocol.SimpleHttpProtocol 
+2025-12-14 05:59:16.018 INFO  [restartedMain] o.a.container.JSR356AsyncSupport - JSR 356 Mapping path /HILLA/push
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installing Default AtmosphereInterceptors
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.CorsInterceptor : CORS Interceptor Support
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.CacheHeadersInterceptor : Default Response's Headers Interceptor
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.PaddingAtmosphereInterceptor : Browser Padding Interceptor Support
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.AndroidAtmosphereInterceptor : Android Interceptor Support
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.HeartbeatInterceptor : Heartbeat Interceptor Support
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.SSEAtmosphereInterceptor : SSE Interceptor Support
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.JSONPAtmosphereInterceptor : JSONP Interceptor Support
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.JavaScriptProtocol : Atmosphere JavaScript Protocol
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor : org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.OnDisconnectInterceptor : Browser disconnection detection
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.IdleResourceInterceptor : org.atmosphere.interceptor.IdleResourceInterceptor
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Set org.atmosphere.cpr.AtmosphereInterceptor.disableDefaults to disable them.
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor CORS Interceptor Support with priority FIRST_BEFORE_DEFAULT 
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Default Response's Headers Interceptor with priority AFTER_DEFAULT 
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Browser Padding Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Android Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.a.interceptor.HeartbeatInterceptor - HeartbeatInterceptor configured with padding value 'X', client frequency 0 seconds and server frequency 60 seconds
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Heartbeat Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor SSE Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor JSONP Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Atmosphere JavaScript Protocol with priority AFTER_DEFAULT 
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor with priority AFTER_DEFAULT 
+2025-12-14 05:59:16.019 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Browser disconnection detection with priority AFTER_DEFAULT 
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor org.atmosphere.interceptor.IdleResourceInterceptor with priority BEFORE_DEFAULT 
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using EndpointMapper class org.atmosphere.util.DefaultEndpointMapper
+2025-12-14 05:59:16.020 WARN  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - No BroadcasterCache configured. Broadcasted message between client reconnection will be LOST. It is recommended to configure the org.atmosphere.cache.UUIDBroadcasterCache
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Default Broadcaster Class: org.atmosphere.util.SimpleBroadcaster
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Broadcaster Shared List Resources: false
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Broadcaster Polling Wait Time 100
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Shared ExecutorService supported: true
+2025-12-14 05:59:16.020 INFO  [restartedMain] org.atmosphere.util.ForkJoinPool - Using ForkJoinPool  java.util.concurrent.ForkJoinPool. Set the org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads to -1 to fully use its power.
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Messaging ExecutorService Pool Size unavailable - Not instance of ThreadPoolExecutor
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Async I/O Thread Pool Size: 200
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using BroadcasterFactory: org.atmosphere.cpr.DefaultBroadcasterFactory
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using AtmosphereResurceFactory: org.atmosphere.cpr.DefaultAtmosphereResourceFactory
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using WebSocketProcessor: org.atmosphere.websocket.DefaultWebSocketProcessor
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Invoke AtmosphereInterceptor on WebSocket message true
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - HttpSession supported: false
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using DefaultAtmosphereObjectFactory for dependency injection and object creation
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using async support: org.atmosphere.container.JSR356AsyncSupport running under container: Apache Tomcat/10.1.42 using jakarta.servlet/3.0 and jsr356/WebSocket API
+2025-12-14 05:59:16.020 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere Framework 3.0.5.slf4jvaadin1 started.
+2025-12-14 05:59:16.087 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-12-14 05:59:16.091 INFO  [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - Started ExcelDemoApplication in 4.86 seconds (process running for 5.056)
+2025-12-14 05:59:16.960 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-14 05:59:16.960 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-14 05:59:16.961 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-12-14 06:06:21.471 INFO  [http-nio-8080-exec-5] o.s.c.a.e.e.c.TestController - === TEST QUERY RECEIVED ===
+2025-12-14 06:06:21.472 INFO  [http-nio-8080-exec-5] o.s.c.a.e.e.c.TestController - Prompt: Create a simple 3-column budget table
+2025-12-14 06:06:21.473 INFO  [http-nio-8080-exec-5] o.s.c.a.e.e.service.ClaudeService - ========================================
+2025-12-14 06:06:21.474 INFO  [http-nio-8080-exec-5] o.s.c.a.e.e.service.ClaudeService - STARTING CLAUDE QUERY
+2025-12-14 06:06:21.474 INFO  [http-nio-8080-exec-5] o.s.c.a.e.e.service.ClaudeService - Prompt: Create a simple 3-column budget table
+2025-12-14 06:06:21.474 INFO  [http-nio-8080-exec-5] o.s.c.a.e.e.service.ClaudeService - Timeout: 10 minutes
+2025-12-14 06:06:21.474 INFO  [http-nio-8080-exec-5] o.s.c.a.e.e.service.ClaudeService - ========================================
+2025-12-14 06:06:21.522 INFO  [http-nio-8080-exec-5] o.s.c.a.e.e.service.ClaudeService - [STREAM] Subscribed to ReactiveQuery
+2025-12-14 06:06:21.523 INFO  [http-nio-8080-exec-5] o.s.c.a.e.e.c.TestController - >>> Stream subscribed
+2025-12-14 06:06:21.550 DEBUG [http-nio-8080-exec-5] o.s.c.a.s.r.ResilienceManager - Starting resilient flux operation 'reactive-query'
+2025-12-14 06:06:21.559 INFO  [boundedElastic-1] o.s.c.a.s.t.ReactiveTransport - Starting reactive query with BidirectionalTransport
+2025-12-14 06:06:22.060 DEBUG [boundedElastic-1] o.s.c.a.s.config.ClaudeCliDiscovery - Found Claude CLI at claude with version: 2.0.67 (Claude Code)
+2025-12-14 06:06:22.063 DEBUG [boundedElastic-1] o.s.c.a.s.config.ClaudeCliDiscovery - Resolved command 'claude' to full path: /home/mark/.local/bin/claude
+2025-12-14 06:06:22.063 INFO  [boundedElastic-1] o.s.c.a.s.config.ClaudeCliDiscovery - Claude CLI found at: /home/mark/.local/bin/claude
+2025-12-14 06:06:22.075 DEBUG [boundedElastic-1] o.s.c.a.s.t.BidirectionalTransport - State transition: DISCONNECTED -> CONNECTING
+2025-12-14 06:06:22.076 INFO  [boundedElastic-1] o.s.c.a.s.t.BidirectionalTransport - Starting bidirectional session: [/home/mark/.local/bin/claude, --input-format, stream-json, --output-format, stream-json, --verbose, --system-prompt, You are an AI assistant specialized in creating Excel spreadsheets and helping with spreadsheet-related tasks.
+
+## Your Capabilities
+
+1. **Spreadsheet Design**: Help users design spreadsheet structures with appropriate columns, rows, and organization.
+
+2. **Formula Recommendations**: Suggest Excel formulas for calculations, including:
+   - Basic math (SUM, AVERAGE, COUNT)
+   - Lookup functions (VLOOKUP, HLOOKUP, INDEX/MATCH)
+   - Conditional logic (IF, IFS, SWITCH)
+   - Date/time functions
+   - Text manipulation
+
+3. **Data Organization**: Advise on:
+   - Data validation rules
+   - Conditional formatting
+   - Pivot table designs
+   - Chart recommendations
+
+4. **Templates**: Provide structured data for common spreadsheet types:
+   - Budget trackers
+   - Project timelines
+   - Sales reports
+   - Inventory management
+   - Invoice templates
+
+## Response Guidelines
+
+- Be concise but thorough
+- When suggesting data structures, present them in a clear tabular format
+- Explain any complex formulas you recommend
+- Consider the user's skill level and explain concepts when needed
+- Suggest best practices for spreadsheet organization
+
+## Example Interaction
+
+User: "I need a simple budget tracker"
+
+You should respond with:
+1. A clear structure (columns: Category, Budgeted, Actual, Difference)
+2. Sample data rows
+3. Relevant formulas (e.g., =B2-C2 for difference, =SUM for totals)
+4. Tips for customization
+, --permission-mode, bypassPermissions]
+2025-12-14 06:06:22.084 DEBUG [boundedElastic-1] o.s.c.a.s.t.BidirectionalTransport - State transition: CONNECTING -> CONNECTED
+2025-12-14 06:06:22.086 DEBUG [boundedElastic-1] o.s.c.a.s.t.BidirectionalTransport - Sending user message: {"session_id":"default","type":"user","message":{"role":"user","content":"Create a simple 3-column budget table"}}
+2025-12-14 06:06:23.305 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=SystemMessage
+2025-12-14 06:06:26.428 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:06:26.429 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:06:26.429 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:06:26.430 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Text only: 109 chars
+2025-12-14 06:06:26.430 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 109 chars
+2025-12-14 06:06:26.430 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Chunk received: 109 chars - preview: I'll create a simple 3-column budget table for you
+2025-12-14 06:06:28.754 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:06:28.754 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:06:28.754 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:06:28.755 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [TOOL USE] Tool: Write
+2025-12-14 06:06:28.755 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 26 chars
+2025-12-14 06:06:28.755 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Chunk received: 26 chars - preview: \n\n*Using tool: Write...*\n\n
+2025-12-14 06:06:29.785 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=UserMessage
+2025-12-14 06:06:39.246 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:06:39.247 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:06:39.247 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:06:39.247 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Text only: 1251 chars
+2025-12-14 06:06:39.247 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 1251 chars
+2025-12-14 06:06:39.247 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Chunk received: 1251 chars - preview: I don't have permission to write to that location.
+2025-12-14 06:06:39.253 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=ResultMessage
+2025-12-14 06:06:39.254 DEBUG [claude-inbound] o.s.c.a.s.r.ResilienceManager - Flux operation 'reactive-query' completed
+2025-12-14 06:06:39.254 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Query COMPLETED successfully
+2025-12-14 06:06:39.254 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Stream completed
+2025-12-14 06:06:39.258 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Stream finished with signal: onComplete
+2025-12-14 06:06:39.258 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Final signal: onComplete
+2025-12-14 06:06:39.258 DEBUG [claude-inbound] o.s.c.a.s.t.ReactiveTransport - ReactiveTransport closed
+2025-12-14 06:06:39.258 DEBUG [claude-inbound] o.s.c.a.s.t.ReactiveTransport - Closing ephemeral transport on disposal
+2025-12-14 06:06:39.513 DEBUG [claude-inbound] o.s.c.a.s.t.BidirectionalTransport - BidirectionalTransport closed
+2025-12-14 06:06:39.513 DEBUG [claude-inbound] o.s.c.a.s.t.BidirectionalTransport - Message processing loop ended
+2025-12-14 06:08:25.976 INFO  [http-nio-8080-exec-10] o.s.c.a.e.e.c.TestController - === TEST QUERY RECEIVED ===
+2025-12-14 06:08:25.976 INFO  [http-nio-8080-exec-10] o.s.c.a.e.e.c.TestController - Prompt: Create a simple monthly budget tracker with categories for income and expenses
+2025-12-14 06:08:25.976 INFO  [http-nio-8080-exec-10] o.s.c.a.e.e.service.ClaudeService - ========================================
+2025-12-14 06:08:25.976 INFO  [http-nio-8080-exec-10] o.s.c.a.e.e.service.ClaudeService - STARTING CLAUDE QUERY
+2025-12-14 06:08:25.976 INFO  [http-nio-8080-exec-10] o.s.c.a.e.e.service.ClaudeService - Prompt: Create a simple monthly budget tracker with categories for income and expenses
+2025-12-14 06:08:25.976 INFO  [http-nio-8080-exec-10] o.s.c.a.e.e.service.ClaudeService - Timeout: 10 minutes
+2025-12-14 06:08:25.976 INFO  [http-nio-8080-exec-10] o.s.c.a.e.e.service.ClaudeService - ========================================
+2025-12-14 06:08:25.977 INFO  [http-nio-8080-exec-10] o.s.c.a.e.e.service.ClaudeService - [STREAM] Subscribed to ReactiveQuery
+2025-12-14 06:08:25.977 INFO  [http-nio-8080-exec-10] o.s.c.a.e.e.c.TestController - >>> Stream subscribed
+2025-12-14 06:08:25.977 DEBUG [http-nio-8080-exec-10] o.s.c.a.s.r.ResilienceManager - Starting resilient flux operation 'reactive-query'
+2025-12-14 06:08:25.978 INFO  [boundedElastic-2] o.s.c.a.s.t.ReactiveTransport - Starting reactive query with BidirectionalTransport
+2025-12-14 06:08:25.978 DEBUG [boundedElastic-2] o.s.c.a.s.t.BidirectionalTransport - State transition: DISCONNECTED -> CONNECTING
+2025-12-14 06:08:25.979 INFO  [boundedElastic-2] o.s.c.a.s.t.BidirectionalTransport - Starting bidirectional session: [/home/mark/.local/bin/claude, --input-format, stream-json, --output-format, stream-json, --verbose, --system-prompt, You are an AI assistant specialized in creating Excel spreadsheets and helping with spreadsheet-related tasks.
+
+## Your Capabilities
+
+1. **Spreadsheet Design**: Help users design spreadsheet structures with appropriate columns, rows, and organization.
+
+2. **Formula Recommendations**: Suggest Excel formulas for calculations, including:
+   - Basic math (SUM, AVERAGE, COUNT)
+   - Lookup functions (VLOOKUP, HLOOKUP, INDEX/MATCH)
+   - Conditional logic (IF, IFS, SWITCH)
+   - Date/time functions
+   - Text manipulation
+
+3. **Data Organization**: Advise on:
+   - Data validation rules
+   - Conditional formatting
+   - Pivot table designs
+   - Chart recommendations
+
+4. **Templates**: Provide structured data for common spreadsheet types:
+   - Budget trackers
+   - Project timelines
+   - Sales reports
+   - Inventory management
+   - Invoice templates
+
+## Response Guidelines
+
+- Be concise but thorough
+- When suggesting data structures, present them in a clear tabular format
+- Explain any complex formulas you recommend
+- Consider the user's skill level and explain concepts when needed
+- Suggest best practices for spreadsheet organization
+
+## Example Interaction
+
+User: "I need a simple budget tracker"
+
+You should respond with:
+1. A clear structure (columns: Category, Budgeted, Actual, Difference)
+2. Sample data rows
+3. Relevant formulas (e.g., =B2-C2 for difference, =SUM for totals)
+4. Tips for customization
+, --permission-mode, bypassPermissions]
+2025-12-14 06:08:25.981 DEBUG [boundedElastic-2] o.s.c.a.s.t.BidirectionalTransport - State transition: CONNECTING -> CONNECTED
+2025-12-14 06:08:25.982 DEBUG [boundedElastic-2] o.s.c.a.s.t.BidirectionalTransport - Sending user message: {"session_id":"default","type":"user","message":{"role":"user","content":"Create a simple monthly budget tracker with categories for income and expenses"}}
+2025-12-14 06:08:27.080 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=SystemMessage
+2025-12-14 06:08:29.802 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:08:29.802 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:08:29.802 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:08:29.802 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Text only: 131 chars
+2025-12-14 06:08:29.802 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 131 chars
+2025-12-14 06:08:29.802 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Chunk received: 131 chars - preview: I'll create a simple monthly budget tracker Excel 
+2025-12-14 06:08:34.981 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:08:34.982 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:08:34.982 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:08:34.982 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [TOOL USE] Tool: Write
+2025-12-14 06:08:34.982 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 26 chars
+2025-12-14 06:08:34.982 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Chunk received: 26 chars - preview: \n\n*Using tool: Write...*\n\n
+2025-12-14 06:08:36.007 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=UserMessage
+2025-12-14 06:08:39.110 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:08:39.110 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:08:39.110 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:08:39.110 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Text only: 69 chars
+2025-12-14 06:08:39.110 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 69 chars
+2025-12-14 06:08:39.110 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Chunk received: 69 chars - preview: Let me check the current directory and create the 
+2025-12-14 06:08:39.887 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:08:39.887 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:08:39.887 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:08:39.887 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [TOOL USE] Tool: Bash
+2025-12-14 06:08:39.887 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 25 chars
+2025-12-14 06:08:39.887 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Chunk received: 25 chars - preview: \n\n*Using tool: Bash...*\n\n
+2025-12-14 06:08:40.039 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=UserMessage
+2025-12-14 06:08:46.006 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:08:46.007 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:08:46.007 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:08:46.007 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [TOOL USE] Tool: Write
+2025-12-14 06:08:46.007 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 26 chars
+2025-12-14 06:08:46.007 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Chunk received: 26 chars - preview: \n\n*Using tool: Write...*\n\n
+2025-12-14 06:08:46.028 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=UserMessage
+2025-12-14 06:08:56.925 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:08:56.926 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:08:56.926 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:08:56.926 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Text only: 1682 chars
+2025-12-14 06:08:56.926 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 1682 chars
+2025-12-14 06:08:56.926 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Chunk received: 1682 chars - preview: I've created your **Monthly Budget Tracker**! The 
+2025-12-14 06:08:56.946 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=ResultMessage
+2025-12-14 06:08:56.946 DEBUG [claude-inbound] o.s.c.a.s.r.ResilienceManager - Flux operation 'reactive-query' completed
+2025-12-14 06:08:56.946 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Query COMPLETED successfully
+2025-12-14 06:08:56.946 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Stream completed
+2025-12-14 06:08:56.947 INFO  [claude-inbound] o.s.c.a.e.e.c.TestController - >>> Stream finished with signal: onComplete
+2025-12-14 06:08:56.947 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Final signal: onComplete
+2025-12-14 06:08:56.947 DEBUG [claude-inbound] o.s.c.a.s.t.ReactiveTransport - ReactiveTransport closed
+2025-12-14 06:08:56.947 DEBUG [claude-inbound] o.s.c.a.s.t.ReactiveTransport - Closing ephemeral transport on disposal
+2025-12-14 06:08:57.115 DEBUG [claude-inbound] o.s.c.a.s.t.BidirectionalTransport - BidirectionalTransport closed
+2025-12-14 06:08:57.115 DEBUG [claude-inbound] o.s.c.a.s.t.BidirectionalTransport - Message processing loop ended
+2025-12-14 06:09:53.462 INFO  [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - Starting ExcelDemoApplication using Java 21.0.9 with PID 157041 (/home/mark/community/claude-agent-sdk-java/examples/excel-demo/target/classes started by mark in /home/mark/community/claude-agent-sdk-java/examples/excel-demo)
+2025-12-14 06:09:53.463 DEBUG [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-12-14 06:09:53.464 INFO  [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-14 06:09:53.494 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-14 06:09:53.495 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-14 06:09:54.292 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-12-14 06:09:54.300 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-14 06:09:54.301 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-12-14 06:09:54.341 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-12-14 06:09:54.342 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 846 ms
+2025-12-14 06:09:54.422 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereHandler com.vaadin.hilla.push.PushEndpoint mapped to context-path: /HILLA/push
+2025-12-14 06:09:54.422 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed the following AtmosphereInterceptor mapped to AtmosphereHandler com.vaadin.hilla.push.PushEndpoint
+2025-12-14 06:09:54.422 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor : Atmosphere LifeCycle
+2025-12-14 06:09:54.422 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.client.TrackMessageSizeInterceptor :  Track Message Size Interceptor using |
+2025-12-14 06:09:54.422 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.SuspendTrackerInterceptor : UUID Tracking Interceptor
+2025-12-14 06:09:54.434 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing AtmosphereFramework
+2025-12-14 06:09:56.780 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/polymer-legacy-adapter found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 06:09:56.780 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/integer-field found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 06:09:56.781 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/polymer-legacy-adapter found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 06:09:56.781 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/integer-field found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 06:09:57.097 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 42111
+2025-12-14 06:09:57.111 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereHandler com.vaadin.flow.server.communication.PushAtmosphereHandler mapped to context-path: /*
+2025-12-14 06:09:57.111 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed the following AtmosphereInterceptor mapped to AtmosphereHandler com.vaadin.flow.server.communication.PushAtmosphereHandler
+2025-12-14 06:09:57.117 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using org.atmosphere.util.VoidAnnotationProcessor for processing annotation
+2025-12-14 06:09:57.118 INFO  [restartedMain] org.atmosphere.util.ForkJoinPool - Using ForkJoinPool  java.util.concurrent.ForkJoinPool. Set the org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads to -1 to fully use its power.
+2025-12-14 06:09:57.119 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed WebSocketProtocol org.atmosphere.websocket.protocol.SimpleHttpProtocol 
+2025-12-14 06:09:57.120 INFO  [restartedMain] o.a.container.JSR356AsyncSupport - JSR 356 Mapping path /VAADIN/push
+2025-12-14 06:09:57.129 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installing Default AtmosphereInterceptors
+2025-12-14 06:09:57.130 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.CorsInterceptor : CORS Interceptor Support
+2025-12-14 06:09:57.131 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.CacheHeadersInterceptor : Default Response's Headers Interceptor
+2025-12-14 06:09:57.131 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.PaddingAtmosphereInterceptor : Browser Padding Interceptor Support
+2025-12-14 06:09:57.132 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.AndroidAtmosphereInterceptor : Android Interceptor Support
+2025-12-14 06:09:57.132 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.HeartbeatInterceptor : Heartbeat Interceptor Support
+2025-12-14 06:09:57.133 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.SSEAtmosphereInterceptor : SSE Interceptor Support
+2025-12-14 06:09:57.133 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.JSONPAtmosphereInterceptor : JSONP Interceptor Support
+2025-12-14 06:09:57.134 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.JavaScriptProtocol : Atmosphere JavaScript Protocol
+2025-12-14 06:09:57.134 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor : org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor
+2025-12-14 06:09:57.134 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.OnDisconnectInterceptor : Browser disconnection detection
+2025-12-14 06:09:57.135 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.IdleResourceInterceptor : org.atmosphere.interceptor.IdleResourceInterceptor
+2025-12-14 06:09:57.135 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Set org.atmosphere.cpr.AtmosphereInterceptor.disableDefaults to disable them.
+2025-12-14 06:09:57.135 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor CORS Interceptor Support with priority FIRST_BEFORE_DEFAULT 
+2025-12-14 06:09:57.139 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Default Response's Headers Interceptor with priority AFTER_DEFAULT 
+2025-12-14 06:09:57.139 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Browser Padding Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:09:57.139 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Android Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:09:57.139 INFO  [restartedMain] o.a.interceptor.HeartbeatInterceptor - HeartbeatInterceptor configured with padding value 'X', client frequency 0 seconds and server frequency 60 seconds
+2025-12-14 06:09:57.140 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Heartbeat Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:09:57.140 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor SSE Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:09:57.140 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor JSONP Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:09:57.140 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Atmosphere JavaScript Protocol with priority AFTER_DEFAULT 
+2025-12-14 06:09:57.140 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor with priority AFTER_DEFAULT 
+2025-12-14 06:09:57.140 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Browser disconnection detection with priority AFTER_DEFAULT 
+2025-12-14 06:09:57.140 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor org.atmosphere.interceptor.IdleResourceInterceptor with priority BEFORE_DEFAULT 
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using EndpointMapper class org.atmosphere.util.DefaultEndpointMapper
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using BroadcasterCache: org.atmosphere.cache.UUIDBroadcasterCache
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Default Broadcaster Class: org.atmosphere.cpr.DefaultBroadcaster
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Broadcaster Shared List Resources: false
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Broadcaster Polling Wait Time 100
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Shared ExecutorService supported: true
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Messaging ExecutorService Pool Size unavailable - Not instance of ThreadPoolExecutor
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Async I/O Thread Pool Size: 200
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using BroadcasterFactory: org.atmosphere.cpr.DefaultBroadcasterFactory
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using AtmosphereResurceFactory: org.atmosphere.cpr.DefaultAtmosphereResourceFactory
+2025-12-14 06:09:57.141 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using WebSocketProcessor: org.atmosphere.websocket.DefaultWebSocketProcessor
+2025-12-14 06:09:57.144 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Invoke AtmosphereInterceptor on WebSocket message true
+2025-12-14 06:09:57.144 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - HttpSession supported: true
+2025-12-14 06:09:57.144 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using DefaultAtmosphereObjectFactory for dependency injection and object creation
+2025-12-14 06:09:57.144 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using async support: org.atmosphere.container.JSR356AsyncSupport running under container: Apache Tomcat/10.1.42 using jakarta.servlet/3.0 and jsr356/WebSocket API
+2025-12-14 06:09:57.145 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere Framework 3.0.5.slf4jvaadin1 started.
+2025-12-14 06:09:57.146 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor  Track Message Size Interceptor using | with priority BEFORE_DEFAULT 
+2025-12-14 06:09:57.179 WARN  [restartedMain] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-12-14 06:09:57.192 INFO  [restartedMain] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-14 06:09:57.200 ERROR [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2025-12-14 06:10:13.880 INFO  [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - Starting ExcelDemoApplication using Java 21.0.9 with PID 157436 (/home/mark/community/claude-agent-sdk-java/examples/excel-demo/target/classes started by mark in /home/mark/community/claude-agent-sdk-java/examples/excel-demo)
+2025-12-14 06:10:13.882 DEBUG [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-12-14 06:10:13.882 INFO  [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-14 06:10:13.920 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-14 06:10:13.920 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-14 06:10:14.581 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-12-14 06:10:14.589 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-14 06:10:14.589 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-12-14 06:10:14.616 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-12-14 06:10:14.617 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 697 ms
+2025-12-14 06:10:14.697 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereHandler com.vaadin.hilla.push.PushEndpoint mapped to context-path: /HILLA/push
+2025-12-14 06:10:14.697 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed the following AtmosphereInterceptor mapped to AtmosphereHandler com.vaadin.hilla.push.PushEndpoint
+2025-12-14 06:10:14.697 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor : Atmosphere LifeCycle
+2025-12-14 06:10:14.697 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.client.TrackMessageSizeInterceptor :  Track Message Size Interceptor using |
+2025-12-14 06:10:14.697 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.SuspendTrackerInterceptor : UUID Tracking Interceptor
+2025-12-14 06:10:14.710 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing AtmosphereFramework
+2025-12-14 06:10:17.083 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/polymer-legacy-adapter found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 06:10:17.083 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/integer-field found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 06:10:17.083 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/polymer-legacy-adapter found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 06:10:17.083 WARN  [restartedMain] c.v.f.s.f.s.FullDependenciesScanner - Multiple npm versions for @vaadin/integer-field found:  [24.9.2, 24.5.2]. First version found '24.9.2' will be considered.
+2025-12-14 06:10:17.373 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-12-14 06:10:17.387 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereHandler com.vaadin.flow.server.communication.PushAtmosphereHandler mapped to context-path: /*
+2025-12-14 06:10:17.387 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed the following AtmosphereInterceptor mapped to AtmosphereHandler com.vaadin.flow.server.communication.PushAtmosphereHandler
+2025-12-14 06:10:17.391 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using org.atmosphere.util.VoidAnnotationProcessor for processing annotation
+2025-12-14 06:10:17.392 INFO  [restartedMain] org.atmosphere.util.ForkJoinPool - Using ForkJoinPool  java.util.concurrent.ForkJoinPool. Set the org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads to -1 to fully use its power.
+2025-12-14 06:10:17.394 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed WebSocketProtocol org.atmosphere.websocket.protocol.SimpleHttpProtocol 
+2025-12-14 06:10:17.395 INFO  [restartedMain] o.a.container.JSR356AsyncSupport - JSR 356 Mapping path /VAADIN/push
+2025-12-14 06:10:17.400 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installing Default AtmosphereInterceptors
+2025-12-14 06:10:17.400 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.CorsInterceptor : CORS Interceptor Support
+2025-12-14 06:10:17.400 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.CacheHeadersInterceptor : Default Response's Headers Interceptor
+2025-12-14 06:10:17.400 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.PaddingAtmosphereInterceptor : Browser Padding Interceptor Support
+2025-12-14 06:10:17.401 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.AndroidAtmosphereInterceptor : Android Interceptor Support
+2025-12-14 06:10:17.401 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.HeartbeatInterceptor : Heartbeat Interceptor Support
+2025-12-14 06:10:17.401 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.SSEAtmosphereInterceptor : SSE Interceptor Support
+2025-12-14 06:10:17.401 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.JSONPAtmosphereInterceptor : JSONP Interceptor Support
+2025-12-14 06:10:17.402 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.JavaScriptProtocol : Atmosphere JavaScript Protocol
+2025-12-14 06:10:17.402 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor : org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor
+2025-12-14 06:10:17.402 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.OnDisconnectInterceptor : Browser disconnection detection
+2025-12-14 06:10:17.402 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.IdleResourceInterceptor : org.atmosphere.interceptor.IdleResourceInterceptor
+2025-12-14 06:10:17.402 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Set org.atmosphere.cpr.AtmosphereInterceptor.disableDefaults to disable them.
+2025-12-14 06:10:17.402 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor CORS Interceptor Support with priority FIRST_BEFORE_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Default Response's Headers Interceptor with priority AFTER_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Browser Padding Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Android Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.a.interceptor.HeartbeatInterceptor - HeartbeatInterceptor configured with padding value 'X', client frequency 0 seconds and server frequency 60 seconds
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Heartbeat Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor SSE Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor JSONP Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Atmosphere JavaScript Protocol with priority AFTER_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor with priority AFTER_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Browser disconnection detection with priority AFTER_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor org.atmosphere.interceptor.IdleResourceInterceptor with priority BEFORE_DEFAULT 
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using EndpointMapper class org.atmosphere.util.DefaultEndpointMapper
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using BroadcasterCache: org.atmosphere.cache.UUIDBroadcasterCache
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Default Broadcaster Class: org.atmosphere.cpr.DefaultBroadcaster
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Broadcaster Shared List Resources: false
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Broadcaster Polling Wait Time 100
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Shared ExecutorService supported: true
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Messaging ExecutorService Pool Size unavailable - Not instance of ThreadPoolExecutor
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Async I/O Thread Pool Size: 200
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using BroadcasterFactory: org.atmosphere.cpr.DefaultBroadcasterFactory
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using AtmosphereResurceFactory: org.atmosphere.cpr.DefaultAtmosphereResourceFactory
+2025-12-14 06:10:17.404 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using WebSocketProcessor: org.atmosphere.websocket.DefaultWebSocketProcessor
+2025-12-14 06:10:17.406 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Invoke AtmosphereInterceptor on WebSocket message true
+2025-12-14 06:10:17.406 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - HttpSession supported: true
+2025-12-14 06:10:17.406 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using DefaultAtmosphereObjectFactory for dependency injection and object creation
+2025-12-14 06:10:17.406 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using async support: org.atmosphere.container.JSR356AsyncSupport running under container: Apache Tomcat/10.1.42 using jakarta.servlet/3.0 and jsr356/WebSocket API
+2025-12-14 06:10:17.406 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere Framework 3.0.5.slf4jvaadin1 started.
+2025-12-14 06:10:17.407 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor  Track Message Size Interceptor using | with priority BEFORE_DEFAULT 
+2025-12-14 06:10:17.433 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using org.atmosphere.cpr.DefaultAnnotationProcessor for processing annotation
+2025-12-14 06:10:17.434 INFO  [restartedMain] o.a.cpr.DefaultAnnotationProcessor - AnnotationProcessor class org.atmosphere.cpr.DefaultAnnotationProcessor$BytecodeBasedAnnotationProcessor being used
+2025-12-14 06:10:17.796 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-14 06:10:17.796 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-14 06:10:17.797 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2025-12-14 06:10:17.844 WARN  [http-nio-8080-exec-2] c.v.f.s.c.PushAtmosphereHandler - AtmosphereHandler.onRequest called before PushHandler has been set. This should really not happen
+2025-12-14 06:10:17.844 WARN  [http-nio-8080-exec-1] c.v.f.s.c.PushAtmosphereHandler - AtmosphereHandler.onRequest called before PushHandler has been set. This should really not happen
+2025-12-14 06:10:18.593 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Auto detecting WebSocketHandler in /WEB-INF/classes/
+2025-12-14 06:10:18.593 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed WebSocketProtocol org.atmosphere.websocket.protocol.SimpleHttpProtocol 
+2025-12-14 06:10:18.593 INFO  [restartedMain] o.a.container.JSR356AsyncSupport - JSR 356 Mapping path /HILLA/push
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installing Default AtmosphereInterceptors
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.CorsInterceptor : CORS Interceptor Support
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.CacheHeadersInterceptor : Default Response's Headers Interceptor
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.PaddingAtmosphereInterceptor : Browser Padding Interceptor Support
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.AndroidAtmosphereInterceptor : Android Interceptor Support
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.HeartbeatInterceptor : Heartbeat Interceptor Support
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.SSEAtmosphereInterceptor : SSE Interceptor Support
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.JSONPAtmosphereInterceptor : JSONP Interceptor Support
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.JavaScriptProtocol : Atmosphere JavaScript Protocol
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor : org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.OnDisconnectInterceptor : Browser disconnection detection
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - 	org.atmosphere.interceptor.IdleResourceInterceptor : org.atmosphere.interceptor.IdleResourceInterceptor
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Set org.atmosphere.cpr.AtmosphereInterceptor.disableDefaults to disable them.
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor CORS Interceptor Support with priority FIRST_BEFORE_DEFAULT 
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Default Response's Headers Interceptor with priority AFTER_DEFAULT 
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Browser Padding Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Android Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.a.interceptor.HeartbeatInterceptor - HeartbeatInterceptor configured with padding value 'X', client frequency 0 seconds and server frequency 60 seconds
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Heartbeat Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor SSE Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor JSONP Interceptor Support with priority AFTER_DEFAULT 
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Atmosphere JavaScript Protocol with priority AFTER_DEFAULT 
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor with priority AFTER_DEFAULT 
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor Browser disconnection detection with priority AFTER_DEFAULT 
+2025-12-14 06:10:18.594 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Installed AtmosphereInterceptor org.atmosphere.interceptor.IdleResourceInterceptor with priority BEFORE_DEFAULT 
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using EndpointMapper class org.atmosphere.util.DefaultEndpointMapper
+2025-12-14 06:10:18.595 WARN  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - No BroadcasterCache configured. Broadcasted message between client reconnection will be LOST. It is recommended to configure the org.atmosphere.cache.UUIDBroadcasterCache
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Default Broadcaster Class: org.atmosphere.util.SimpleBroadcaster
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Broadcaster Shared List Resources: false
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Broadcaster Polling Wait Time 100
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Shared ExecutorService supported: true
+2025-12-14 06:10:18.595 INFO  [restartedMain] org.atmosphere.util.ForkJoinPool - Using ForkJoinPool  java.util.concurrent.ForkJoinPool. Set the org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads to -1 to fully use its power.
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Messaging ExecutorService Pool Size unavailable - Not instance of ThreadPoolExecutor
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Async I/O Thread Pool Size: 200
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using BroadcasterFactory: org.atmosphere.cpr.DefaultBroadcasterFactory
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using AtmosphereResurceFactory: org.atmosphere.cpr.DefaultAtmosphereResourceFactory
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Using WebSocketProcessor: org.atmosphere.websocket.DefaultWebSocketProcessor
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Invoke AtmosphereInterceptor on WebSocket message true
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - HttpSession supported: false
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using DefaultAtmosphereObjectFactory for dependency injection and object creation
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere is using async support: org.atmosphere.container.JSR356AsyncSupport running under container: Apache Tomcat/10.1.42 using jakarta.servlet/3.0 and jsr356/WebSocket API
+2025-12-14 06:10:18.595 INFO  [restartedMain] o.atmosphere.cpr.AtmosphereFramework - Atmosphere Framework 3.0.5.slf4jvaadin1 started.
+2025-12-14 06:10:18.645 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-12-14 06:10:18.649 INFO  [restartedMain] o.s.c.a.e.excel.ExcelDemoApplication - Started ExcelDemoApplication in 4.993 seconds (process running for 5.216)
+2025-12-14 06:10:40.619 WARN  [http-nio-8080-exec-1] c.v.f.s.c.UidlRequestHandler - Invalid security key received from 0:0:0:0:0:0:0:1
+2025-12-14 06:11:19.888 INFO  [http-nio-8080-exec-2] o.s.c.a.e.e.service.ClaudeService - ========================================
+2025-12-14 06:11:19.888 INFO  [http-nio-8080-exec-2] o.s.c.a.e.e.service.ClaudeService - STARTING CLAUDE QUERY
+2025-12-14 06:11:19.888 INFO  [http-nio-8080-exec-2] o.s.c.a.e.e.service.ClaudeService - Prompt: Create a simple budget tracker with categories for rent, utilities, groceries, and entertainment
+2025-12-14 06:11:19.888 INFO  [http-nio-8080-exec-2] o.s.c.a.e.e.service.ClaudeService - Timeout: 10 minutes
+2025-12-14 06:11:19.888 INFO  [http-nio-8080-exec-2] o.s.c.a.e.e.service.ClaudeService - ========================================
+2025-12-14 06:11:19.932 INFO  [http-nio-8080-exec-2] o.s.c.a.e.e.service.ClaudeService - [STREAM] Subscribed to ReactiveQuery
+2025-12-14 06:11:19.954 DEBUG [http-nio-8080-exec-2] o.s.c.a.s.r.ResilienceManager - Starting resilient flux operation 'reactive-query'
+2025-12-14 06:11:19.961 INFO  [boundedElastic-1] o.s.c.a.s.t.ReactiveTransport - Starting reactive query with BidirectionalTransport
+2025-12-14 06:11:20.479 DEBUG [boundedElastic-1] o.s.c.a.s.config.ClaudeCliDiscovery - Found Claude CLI at claude with version: 2.0.67 (Claude Code)
+2025-12-14 06:11:20.484 DEBUG [boundedElastic-1] o.s.c.a.s.config.ClaudeCliDiscovery - Resolved command 'claude' to full path: /home/mark/.local/bin/claude
+2025-12-14 06:11:20.484 INFO  [boundedElastic-1] o.s.c.a.s.config.ClaudeCliDiscovery - Claude CLI found at: /home/mark/.local/bin/claude
+2025-12-14 06:11:20.496 DEBUG [boundedElastic-1] o.s.c.a.s.t.BidirectionalTransport - State transition: DISCONNECTED -> CONNECTING
+2025-12-14 06:11:20.497 INFO  [boundedElastic-1] o.s.c.a.s.t.BidirectionalTransport - Starting bidirectional session: [/home/mark/.local/bin/claude, --input-format, stream-json, --output-format, stream-json, --verbose, --system-prompt, You are an AI assistant specialized in creating Excel spreadsheets and helping with spreadsheet-related tasks.
+
+## Your Capabilities
+
+1. **Spreadsheet Design**: Help users design spreadsheet structures with appropriate columns, rows, and organization.
+
+2. **Formula Recommendations**: Suggest Excel formulas for calculations, including:
+   - Basic math (SUM, AVERAGE, COUNT)
+   - Lookup functions (VLOOKUP, HLOOKUP, INDEX/MATCH)
+   - Conditional logic (IF, IFS, SWITCH)
+   - Date/time functions
+   - Text manipulation
+
+3. **Data Organization**: Advise on:
+   - Data validation rules
+   - Conditional formatting
+   - Pivot table designs
+   - Chart recommendations
+
+4. **Templates**: Provide structured data for common spreadsheet types:
+   - Budget trackers
+   - Project timelines
+   - Sales reports
+   - Inventory management
+   - Invoice templates
+
+## Response Guidelines
+
+- Be concise but thorough
+- When suggesting data structures, present them in a clear tabular format
+- Explain any complex formulas you recommend
+- Consider the user's skill level and explain concepts when needed
+- Suggest best practices for spreadsheet organization
+
+## Example Interaction
+
+User: "I need a simple budget tracker"
+
+You should respond with:
+1. A clear structure (columns: Category, Budgeted, Actual, Difference)
+2. Sample data rows
+3. Relevant formulas (e.g., =B2-C2 for difference, =SUM for totals)
+4. Tips for customization
+, --permission-mode, bypassPermissions]
+2025-12-14 06:11:20.505 DEBUG [boundedElastic-1] o.s.c.a.s.t.BidirectionalTransport - State transition: CONNECTING -> CONNECTED
+2025-12-14 06:11:20.506 DEBUG [boundedElastic-1] o.s.c.a.s.t.BidirectionalTransport - Sending user message: {"session_id":"default","type":"user","message":{"role":"user","content":"Create a simple budget tracker with categories for rent, utilities, groceries, and entertainment"}}
+2025-12-14 06:11:22.809 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=SystemMessage
+2025-12-14 06:11:25.333 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:11:25.334 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:11:25.334 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:11:25.335 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Text only: 77 chars
+2025-12-14 06:11:25.335 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 77 chars
+2025-12-14 06:11:30.670 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:11:30.671 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:11:30.671 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:11:30.672 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [TOOL USE] Tool: Write
+2025-12-14 06:11:30.672 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 26 chars
+2025-12-14 06:11:31.695 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=UserMessage
+2025-12-14 06:11:34.790 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:11:34.790 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:11:34.790 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:11:34.790 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Text only: 48 chars
+2025-12-14 06:11:34.791 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 48 chars
+2025-12-14 06:11:35.562 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:11:35.562 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:11:35.562 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:11:35.563 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [TOOL USE] Tool: Bash
+2025-12-14 06:11:35.563 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 25 chars
+2025-12-14 06:11:35.671 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=UserMessage
+2025-12-14 06:11:41.413 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:11:41.413 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:11:41.413 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:11:41.413 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [TOOL USE] Tool: Write
+2025-12-14 06:11:41.414 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 26 chars
+2025-12-14 06:11:41.460 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=UserMessage
+2025-12-14 06:11:50.239 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=AssistantMessage
+2025-12-14 06:11:50.240 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] AssistantMessage passed filter
+2025-12-14 06:11:50.240 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Content blocks: 1
+2025-12-14 06:11:50.240 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [ASSISTANT] Text only: 1353 chars
+2025-12-14 06:11:50.240 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [OUTPUT] Emitting chunk: 1353 chars
+2025-12-14 06:11:50.260 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Message received: type=ResultMessage
+2025-12-14 06:11:50.261 DEBUG [claude-inbound] o.s.c.a.s.r.ResilienceManager - Flux operation 'reactive-query' completed
+2025-12-14 06:11:50.261 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Query COMPLETED successfully
+2025-12-14 06:11:50.266 INFO  [claude-inbound] o.s.c.a.e.e.service.ClaudeService - [STREAM] Final signal: onComplete
+2025-12-14 06:11:50.266 DEBUG [claude-inbound] o.s.c.a.s.t.ReactiveTransport - ReactiveTransport closed
+2025-12-14 06:11:50.266 DEBUG [claude-inbound] o.s.c.a.s.t.ReactiveTransport - Closing ephemeral transport on disposal
+2025-12-14 06:11:50.448 DEBUG [claude-inbound] o.s.c.a.s.t.BidirectionalTransport - BidirectionalTransport closed
+2025-12-14 06:11:50.449 DEBUG [claude-inbound] o.s.c.a.s.t.BidirectionalTransport - Message processing loop ended

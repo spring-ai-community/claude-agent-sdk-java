@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/MessageInput.ts", "src/generated/MessageInput.ts"],
+  "sourcesContent": ["export * from \"@vaadin/message-input/vaadin-message-input.js\";\nexport * from './generated/MessageInput.js';\n", "import type { EventName } from \"@lit/react\";\nimport { MessageInput as MessageInputElement, type MessageInputEventMap as _MessageInputEventMap, } from \"@vaadin/message-input/vaadin-message-input.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { MessageInputElement, };\nexport type MessageInputEventMap = Readonly<{\n    onSubmit: EventName<_MessageInputEventMap[\"submit\"]>;\n}>;\nconst events = { onSubmit: \"submit\" } as MessageInputEventMap;\nexport type MessageInputProps = WebComponentProps<MessageInputElement, MessageInputEventMap>;\nexport const MessageInput = createComponent({\n    elementClass: MessageInputElement, events, react: React, tagName: \"vaadin-message-input\"\n});\n"],
+  "mappings": "AAAA,WAAc,gDCCd,OAAS,gBAAgBA,MAAgF,gDACzG,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAKxD,IAAMC,EAAS,CAAE,SAAU,QAAS,EAEvBC,EAAeC,EAAgB,CACxC,aAAcC,EAAqB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,sBACtE,CAAC",
+  "names": ["MessageInputElement", "React", "createComponent", "events", "MessageInput", "createComponent", "MessageInputElement", "React"]
+}

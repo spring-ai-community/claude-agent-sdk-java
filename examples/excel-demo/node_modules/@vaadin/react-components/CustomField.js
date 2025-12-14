@@ -1,0 +1,2 @@
+export*from"@vaadin/custom-field/vaadin-custom-field.js";import{CustomField as e}from"@vaadin/custom-field/vaadin-custom-field.js";import*as t from"react";import{createComponent as a}from"./utils/createComponent.js";var n={onValidated:"validated",onChange:"change",onInvalidChanged:"invalid-changed",onValueChanged:"value-changed"},m=a({elementClass:e,events:n,react:t,tagName:"vaadin-custom-field"});export{m as CustomField,e as CustomFieldElement};
+//# sourceMappingURL=CustomField.js.map

@@ -1,0 +1,2 @@
+export*from"@vaadin/split-layout/vaadin-split-layout.js";import{SplitLayout as t}from"@vaadin/split-layout/vaadin-split-layout.js";import*as e from"react";import{createComponent as p}from"./utils/createComponent.js";var o={onSplitterDragend:"splitter-dragend"},n=p({elementClass:t,events:o,react:e,tagName:"vaadin-split-layout"});export{n as SplitLayout,t as SplitLayoutElement};
+//# sourceMappingURL=SplitLayout.js.map

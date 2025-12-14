@@ -1,0 +1,2 @@
+export*from"@vaadin/accordion/vaadin-accordion-panel.js";import{AccordionPanel as e}from"@vaadin/accordion/vaadin-accordion-panel.js";import*as n from"react";import{createComponent as o}from"./utils/createComponent.js";var a={onOpenedChanged:"opened-changed"},c=o({elementClass:e,events:a,react:n,tagName:"vaadin-accordion-panel"});export{c as AccordionPanel,e as AccordionPanelElement};
+//# sourceMappingURL=AccordionPanel.js.map

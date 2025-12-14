@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/Iconset.ts", "src/generated/Iconset.ts"],
+  "sourcesContent": ["export * from \"@vaadin/icon/vaadin-iconset.js\";\nexport * from './generated/Iconset.js';\n", "import type {} from \"@lit/react\";\nimport { Iconset as IconsetElement, } from \"@vaadin/icon/vaadin-iconset.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { IconsetElement, };\nexport type IconsetEventMap = Readonly<{}>;\nconst events = {} as IconsetEventMap;\nexport type IconsetProps = WebComponentProps<IconsetElement, IconsetEventMap>;\nexport const Iconset = createComponent({\n    elementClass: IconsetElement, events, react: React, tagName: \"vaadin-iconset\"\n});\n"],
+  "mappings": "AAAA,WAAc,iCCCd,OAAS,WAAWA,MAAuB,iCAC3C,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAUC,EAAgB,CACnC,aAAcC,EAAgB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,gBACjE,CAAC",
+  "names": ["IconsetElement", "React", "createComponent", "events", "Iconset", "createComponent", "IconsetElement", "React"]
+}

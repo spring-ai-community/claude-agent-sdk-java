@@ -1,0 +1,2 @@
+export*from"@vaadin/radio-group/vaadin-radio-button.js";import{RadioButton as t}from"@vaadin/radio-group/vaadin-radio-button.js";import*as e from"react";import{createComponent as o}from"./utils/createComponent.js";var n={onCheckedChanged:"checked-changed"},r=o({elementClass:t,events:n,react:e,tagName:"vaadin-radio-button"});export{r as RadioButton,t as RadioButtonElement};
+//# sourceMappingURL=RadioButton.js.map

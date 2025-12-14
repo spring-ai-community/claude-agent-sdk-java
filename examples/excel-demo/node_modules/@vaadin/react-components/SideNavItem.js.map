@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/SideNavItem.ts", "src/generated/SideNavItem.ts"],
+  "sourcesContent": ["export * from \"@vaadin/side-nav/vaadin-side-nav-item.js\";\nexport * from './generated/SideNavItem.js';\n", "import type { EventName } from \"@lit/react\";\nimport { SideNavItem as SideNavItemElement, type SideNavItemEventMap as _SideNavItemEventMap, } from \"@vaadin/side-nav/vaadin-side-nav-item.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { SideNavItemElement, };\nexport type SideNavItemEventMap = Readonly<{\n    onExpandedChanged: EventName<_SideNavItemEventMap[\"expanded-changed\"]>;\n}>;\nconst events = { onExpandedChanged: \"expanded-changed\" } as SideNavItemEventMap;\nexport type SideNavItemProps = WebComponentProps<SideNavItemElement, SideNavItemEventMap>;\nexport const SideNavItem = createComponent({\n    elementClass: SideNavItemElement, events, react: React, tagName: \"vaadin-side-nav-item\"\n});\n"],
+  "mappings": "AAAA,WAAc,2CCCd,OAAS,eAAeA,MAA6E,2CACrG,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAKxD,IAAMC,EAAS,CAAE,kBAAmB,kBAAmB,EAE1CC,EAAcC,EAAgB,CACvC,aAAcC,EAAoB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,sBACrE,CAAC",
+  "names": ["SideNavItemElement", "React", "createComponent", "events", "SideNavItem", "createComponent", "SideNavItemElement", "React"]
+}

@@ -1,0 +1,2 @@
+export*from"@vaadin/accordion/vaadin-accordion.js";import{Accordion as e}from"@vaadin/accordion/vaadin-accordion.js";import*as o from"react";import{createComponent as n}from"./utils/createComponent.js";var t={onOpenedChanged:"opened-changed",onItemsChanged:"items-changed"},a=n({elementClass:e,events:t,react:o,tagName:"vaadin-accordion"});export{a as Accordion,e as AccordionElement};
+//# sourceMappingURL=Accordion.js.map

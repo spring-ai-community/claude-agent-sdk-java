@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/FormItem.ts", "src/generated/FormItem.ts"],
+  "sourcesContent": ["export * from \"@vaadin/form-layout/vaadin-form-item.js\";\nexport * from './generated/FormItem.js';\n", "import type {} from \"@lit/react\";\nimport { FormItem as FormItemElement, } from \"@vaadin/form-layout/vaadin-form-item.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { FormItemElement, };\nexport type FormItemEventMap = Readonly<{}>;\nconst events = {} as FormItemEventMap;\nexport type FormItemProps = WebComponentProps<FormItemElement, FormItemEventMap>;\nexport const FormItem = createComponent({\n    elementClass: FormItemElement, events, react: React, tagName: \"vaadin-form-item\"\n});\n"],
+  "mappings": "AAAA,WAAc,0CCCd,OAAS,YAAYA,MAAwB,0CAC7C,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAWC,EAAgB,CACpC,aAAcC,EAAiB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,kBAClE,CAAC",
+  "names": ["FormItemElement", "React", "createComponent", "events", "FormItem", "createComponent", "FormItemElement", "React"]
+}

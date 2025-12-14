@@ -1,0 +1,2 @@
+export*from"@vaadin/vertical-layout/vaadin-vertical-layout.js";import{VerticalLayout as t}from"@vaadin/vertical-layout/vaadin-vertical-layout.js";import*as e from"react";import{createComponent as o}from"./utils/createComponent.js";var a={},m=o({elementClass:t,events:a,react:e,tagName:"vaadin-vertical-layout"});export{m as VerticalLayout,t as VerticalLayoutElement};
+//# sourceMappingURL=VerticalLayout.js.map

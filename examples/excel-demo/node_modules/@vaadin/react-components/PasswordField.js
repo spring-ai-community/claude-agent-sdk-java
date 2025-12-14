@@ -1,0 +1,2 @@
+export*from"@vaadin/password-field/vaadin-password-field.js";import{PasswordField as e}from"@vaadin/password-field/vaadin-password-field.js";import*as a from"react";import{createComponent as n}from"./utils/createComponent.js";var d={onValidated:"validated",onChange:"change",onInput:"input",onInvalidChanged:"invalid-changed",onValueChanged:"value-changed"},s=n({elementClass:e,events:d,react:a,tagName:"vaadin-password-field"});export{s as PasswordField,e as PasswordFieldElement};
+//# sourceMappingURL=PasswordField.js.map

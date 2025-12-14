@@ -1,0 +1,2 @@
+import{createElement as p,useCallback as l,useReducer as i}from"react";import{createPortal as m,flushSync as W}from"react-dom";import{flushMicrotask as c}from"../utils/flushMicrotask.js";const R=new Map;function u(r,[t,...n]){return new Map(r).set(t,n)}function y(r,t,n){const[s,o]=i(u,R),a=l((...e)=>{n?.renderMode==="microtask"?c(()=>o(e)):n?.renderMode==="sync"?W(()=>o(e)):o(e)},[]);return r?[Array.from(s.entries()).filter(([e,d])=>n?.shouldRenderPortal?.(e,...d)??!0).map(([e,d])=>m(t?p(r,t(d)):r,e)),a]:[]}export{y as useRenderer};
+//# sourceMappingURL=useRenderer.js.map

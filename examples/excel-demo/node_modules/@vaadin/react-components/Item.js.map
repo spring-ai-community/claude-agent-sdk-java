@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/Item.ts", "src/generated/Item.ts"],
+  "sourcesContent": ["export * from \"@vaadin/item/vaadin-item.js\";\nexport * from './generated/Item.js';\n", "import type {} from \"@lit/react\";\nimport { Item as ItemElement, } from \"@vaadin/item/vaadin-item.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { ItemElement, };\nexport type ItemEventMap = Readonly<{}>;\nconst events = {} as ItemEventMap;\nexport type ItemProps = WebComponentProps<ItemElement, ItemEventMap>;\nexport const Item = createComponent({\n    elementClass: ItemElement, events, react: React, tagName: \"vaadin-item\"\n});\n"],
+  "mappings": "AAAA,WAAc,8BCCd,OAAS,QAAQA,MAAoB,8BACrC,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAOC,EAAgB,CAChC,aAAcC,EAAa,OAAAH,EAAQ,MAAOI,EAAO,QAAS,aAC9D,CAAC",
+  "names": ["ItemElement", "React", "createComponent", "events", "Item", "createComponent", "ItemElement", "React"]
+}

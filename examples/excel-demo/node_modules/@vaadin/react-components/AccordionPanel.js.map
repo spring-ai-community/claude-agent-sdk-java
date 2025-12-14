@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/AccordionPanel.ts", "src/generated/AccordionPanel.ts"],
+  "sourcesContent": ["export * from \"@vaadin/accordion/vaadin-accordion-panel.js\";\nexport * from './generated/AccordionPanel.js';\n", "import type { EventName } from \"@lit/react\";\nimport { AccordionPanel as AccordionPanelElement, type AccordionPanelEventMap as _AccordionPanelEventMap, } from \"@vaadin/accordion/vaadin-accordion-panel.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { AccordionPanelElement, };\nexport type AccordionPanelEventMap = Readonly<{\n    onOpenedChanged: EventName<_AccordionPanelEventMap[\"opened-changed\"]>;\n}>;\nconst events = { onOpenedChanged: \"opened-changed\" } as AccordionPanelEventMap;\nexport type AccordionPanelProps = WebComponentProps<AccordionPanelElement, AccordionPanelEventMap>;\nexport const AccordionPanel = createComponent({\n    elementClass: AccordionPanelElement, events, react: React, tagName: \"vaadin-accordion-panel\"\n});\n"],
+  "mappings": "AAAA,WAAc,8CCCd,OAAS,kBAAkBA,MAAsF,8CACjH,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAKxD,IAAMC,EAAS,CAAE,gBAAiB,gBAAiB,EAEtCC,EAAiBC,EAAgB,CAC1C,aAAcC,EAAuB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,wBACxE,CAAC",
+  "names": ["AccordionPanelElement", "React", "createComponent", "events", "AccordionPanel", "createComponent", "AccordionPanelElement", "React"]
+}

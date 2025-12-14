@@ -1,0 +1,2 @@
+export*from"@vaadin/integer-field/vaadin-integer-field.js";import{IntegerField as e}from"@vaadin/integer-field/vaadin-integer-field.js";import*as n from"react";import{createComponent as t}from"./utils/createComponent.js";var a={onValidated:"validated",onChange:"change",onInput:"input",onInvalidChanged:"invalid-changed",onValueChanged:"value-changed"},r=t({elementClass:e,events:a,react:n,tagName:"vaadin-integer-field"});export{r as IntegerField,e as IntegerFieldElement};
+//# sourceMappingURL=IntegerField.js.map

@@ -1,0 +1,2 @@
+export*from"@vaadin/login/vaadin-login-form.js";import{LoginForm as o}from"@vaadin/login/vaadin-login-form.js";import*as e from"react";import{createComponent as n}from"./utils/createComponent.js";var r={onForgotPassword:"forgot-password",onLogin:"login",onDisabledChanged:"disabled-changed",onErrorChanged:"error-changed"},m=n({elementClass:o,events:r,react:e,tagName:"vaadin-login-form"});export{m as LoginForm,o as LoginFormElement};
+//# sourceMappingURL=LoginForm.js.map

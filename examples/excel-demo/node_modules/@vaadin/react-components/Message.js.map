@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/Message.ts", "src/generated/Message.ts"],
+  "sourcesContent": ["export * from \"@vaadin/message-list/vaadin-message.js\";\nexport * from './generated/Message.js';\n", "import type {} from \"@lit/react\";\nimport { Message as MessageElement, } from \"@vaadin/message-list/vaadin-message.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { MessageElement, };\nexport type MessageEventMap = Readonly<{}>;\nconst events = {} as MessageEventMap;\nexport type MessageProps = WebComponentProps<MessageElement, MessageEventMap>;\nexport const Message = createComponent({\n    elementClass: MessageElement, events, react: React, tagName: \"vaadin-message\"\n});\n"],
+  "mappings": "AAAA,WAAc,yCCCd,OAAS,WAAWA,MAAuB,yCAC3C,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAUC,EAAgB,CACnC,aAAcC,EAAgB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,gBACjE,CAAC",
+  "names": ["MessageElement", "React", "createComponent", "events", "Message", "createComponent", "MessageElement", "React"]
+}

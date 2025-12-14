@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/utils/createComponentWithOrderedProps.ts"],
+  "sourcesContent": ["import { createElement, type ForwardedRef, type RefAttributes, type FC } from 'react';\n\nexport default function createComponentWithOrderedProps<P extends {}, E extends HTMLElement>(\n  component: FC<P>,\n  ...names: ReadonlyArray<keyof P>\n) {\n  return (props: P, ref: ForwardedRef<E>) => {\n    const orderedProps: Partial<P> & RefAttributes<E> = {};\n\n    for (const name of Object.keys(props) as Array<keyof P>) {\n      if (!names.includes(name)) {\n        orderedProps[name] = props[name];\n      }\n    }\n\n    for (const name of names) {\n      if (props.hasOwnProperty(name)) {\n        orderedProps[name] = props[name];\n      }\n    }\n\n    orderedProps.ref = ref;\n\n    return createElement(component, orderedProps as Required<P & RefAttributes<E>>);\n  };\n}\n"],
+  "mappings": "AAAA,OAAS,iBAAAA,MAAqE,QAE/D,SAARC,EACLC,KACGC,EACH,CACA,MAAO,CAACC,EAAUC,IAAyB,CACzC,MAAMC,EAA8C,CAAC,EAErD,UAAWC,KAAQ,OAAO,KAAKH,CAAK,EAC7BD,EAAM,SAASI,CAAI,IACtBD,EAAaC,CAAI,EAAIH,EAAMG,CAAI,GAInC,UAAWA,KAAQJ,EACbC,EAAM,eAAeG,CAAI,IAC3BD,EAAaC,CAAI,EAAIH,EAAMG,CAAI,GAInC,OAAAD,EAAa,IAAMD,EAEZL,EAAcE,EAAWI,CAA8C,CAChF,CACF",
+  "names": ["createElement", "createComponentWithOrderedProps", "component", "names", "props", "ref", "orderedProps", "name"]
+}

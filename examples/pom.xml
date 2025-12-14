@@ -20,5 +20,6 @@
     <modules>
         <module>hello-world</module>
         <module>research-agent</module>
+        <module>excel-demo</module>
     </modules>
 </project>

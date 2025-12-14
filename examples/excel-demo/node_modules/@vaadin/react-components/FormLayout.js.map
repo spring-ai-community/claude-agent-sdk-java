@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/FormLayout.ts", "src/generated/FormLayout.ts"],
+  "sourcesContent": ["export * from \"@vaadin/form-layout/vaadin-form-layout.js\";\nexport * from './generated/FormLayout.js';\n", "import type {} from \"@lit/react\";\nimport { FormLayout as FormLayoutElement, } from \"@vaadin/form-layout/vaadin-form-layout.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { FormLayoutElement, };\nexport type FormLayoutEventMap = Readonly<{}>;\nconst events = {} as FormLayoutEventMap;\nexport type FormLayoutProps = WebComponentProps<FormLayoutElement, FormLayoutEventMap>;\nexport const FormLayout = createComponent({\n    elementClass: FormLayoutElement, events, react: React, tagName: \"vaadin-form-layout\"\n});\n"],
+  "mappings": "AAAA,WAAc,4CCCd,OAAS,cAAcA,MAA0B,4CACjD,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAaC,EAAgB,CACtC,aAAcC,EAAmB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,oBACpE,CAAC",
+  "names": ["FormLayoutElement", "React", "createComponent", "events", "FormLayout", "createComponent", "FormLayoutElement", "React"]
+}

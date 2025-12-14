@@ -1,0 +1,2 @@
+export*from"@vaadin/list-box/vaadin-list-box.js";import{ListBox as e}from"@vaadin/list-box/vaadin-list-box.js";import*as t from"react";import{createComponent as o}from"./utils/createComponent.js";var n={onSelectedChanged:"selected-changed",onSelectedValuesChanged:"selected-values-changed",onItemsChanged:"items-changed"},p=o({elementClass:e,events:n,react:t,tagName:"vaadin-list-box"});export{p as ListBox,e as ListBoxElement};
+//# sourceMappingURL=ListBox.js.map

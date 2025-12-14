@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/Tabs.ts", "src/generated/Tabs.ts"],
+  "sourcesContent": ["export * from \"@vaadin/tabs/vaadin-tabs.js\";\nexport * from './generated/Tabs.js';\n", "import type { EventName } from \"@lit/react\";\nimport { Tabs as TabsElement, type TabsEventMap as _TabsEventMap, } from \"@vaadin/tabs/vaadin-tabs.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { TabsElement, };\nexport type TabsEventMap = Readonly<{\n    onSelectedChanged: EventName<_TabsEventMap[\"selected-changed\"]>;\n    onItemsChanged: EventName<_TabsEventMap[\"items-changed\"]>;\n}>;\nconst events = { onSelectedChanged: \"selected-changed\", onItemsChanged: \"items-changed\" } as TabsEventMap;\nexport type TabsProps = WebComponentProps<TabsElement, TabsEventMap>;\nexport const Tabs = createComponent({\n    elementClass: TabsElement, events, react: React, tagName: \"vaadin-tabs\"\n});\n"],
+  "mappings": "AAAA,WAAc,8BCCd,OAAS,QAAQA,MAAwD,8BACzE,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAMxD,IAAMC,EAAS,CAAE,kBAAmB,mBAAoB,eAAgB,eAAgB,EAE3EC,EAAOC,EAAgB,CAChC,aAAcC,EAAa,OAAAH,EAAQ,MAAOI,EAAO,QAAS,aAC9D,CAAC",
+  "names": ["TabsElement", "React", "createComponent", "events", "Tabs", "createComponent", "TabsElement", "React"]
+}

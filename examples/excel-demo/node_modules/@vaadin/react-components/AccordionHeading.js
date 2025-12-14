@@ -1,0 +1,2 @@
+export*from"@vaadin/accordion/vaadin-accordion-heading.js";import{AccordionHeading as o}from"@vaadin/accordion/vaadin-accordion-heading.js";import*as e from"react";import{createComponent as n}from"./utils/createComponent.js";var t={},c=n({elementClass:o,events:t,react:e,tagName:"vaadin-accordion-heading"});export{c as AccordionHeading,o as AccordionHeadingElement};
+//# sourceMappingURL=AccordionHeading.js.map

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/ListBox.ts", "src/generated/ListBox.ts"],
+  "sourcesContent": ["export * from \"@vaadin/list-box/vaadin-list-box.js\";\nexport * from './generated/ListBox.js';\n", "import type { EventName } from \"@lit/react\";\nimport { ListBox as ListBoxElement, type ListBoxEventMap as _ListBoxEventMap, } from \"@vaadin/list-box/vaadin-list-box.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { ListBoxElement, };\nexport type ListBoxEventMap = Readonly<{\n    onSelectedChanged: EventName<_ListBoxEventMap[\"selected-changed\"]>;\n    onSelectedValuesChanged: EventName<_ListBoxEventMap[\"selected-values-changed\"]>;\n    onItemsChanged: EventName<_ListBoxEventMap[\"items-changed\"]>;\n}>;\nconst events = { onSelectedChanged: \"selected-changed\", onSelectedValuesChanged: \"selected-values-changed\", onItemsChanged: \"items-changed\" } as ListBoxEventMap;\nexport type ListBoxProps = WebComponentProps<ListBoxElement, ListBoxEventMap>;\nexport const ListBox = createComponent({\n    elementClass: ListBoxElement, events, react: React, tagName: \"vaadin-list-box\"\n});\n"],
+  "mappings": "AAAA,WAAc,sCCCd,OAAS,WAAWA,MAAiE,sCACrF,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAOxD,IAAMC,EAAS,CAAE,kBAAmB,mBAAoB,wBAAyB,0BAA2B,eAAgB,eAAgB,EAE/HC,EAAUC,EAAgB,CACnC,aAAcC,EAAgB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,iBACjE,CAAC",
+  "names": ["ListBoxElement", "React", "createComponent", "events", "ListBox", "createComponent", "ListBoxElement", "React"]
+}

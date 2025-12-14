@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/MessageList.ts", "src/generated/MessageList.ts"],
+  "sourcesContent": ["export * from \"@vaadin/message-list/vaadin-message-list.js\";\nexport * from './generated/MessageList.js';\n", "import type {} from \"@lit/react\";\nimport { MessageList as MessageListElement, } from \"@vaadin/message-list/vaadin-message-list.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { MessageListElement, };\nexport type MessageListEventMap = Readonly<{}>;\nconst events = {} as MessageListEventMap;\nexport type MessageListProps = WebComponentProps<MessageListElement, MessageListEventMap>;\nexport const MessageList = createComponent({\n    elementClass: MessageListElement, events, react: React, tagName: \"vaadin-message-list\"\n});\n"],
+  "mappings": "AAAA,WAAc,8CCCd,OAAS,eAAeA,MAA2B,8CACnD,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAcC,EAAgB,CACvC,aAAcC,EAAoB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,qBACrE,CAAC",
+  "names": ["MessageListElement", "React", "createComponent", "events", "MessageList", "createComponent", "MessageListElement", "React"]
+}

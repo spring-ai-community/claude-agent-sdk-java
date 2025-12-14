@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/renderers/useSimpleRenderer.ts"],
+  "sourcesContent": ["import type { ComponentType, PropsWithChildren } from 'react';\nimport type { Slice } from './renderer.js';\nimport { useRenderer, type RendererConfig, type UseRendererResult } from './useRenderer.js';\n\nexport type ReactSimpleRendererProps<O extends HTMLElement> = Readonly<{\n  original: O;\n}>;\nexport type WebComponentSimpleRenderer<O extends HTMLElement> = (root: HTMLElement, original: O) => void;\n\nfunction convertSimpleRendererArgs<O extends HTMLElement>([original]: Slice<\n  Parameters<WebComponentSimpleRenderer<O>>,\n  1\n>): PropsWithChildren<ReactSimpleRendererProps<O>> {\n  return { original };\n}\n\nexport function useSimpleRenderer<O extends HTMLElement>(\n  reactRenderer?: ComponentType<ReactSimpleRendererProps<O>> | null,\n  config?: RendererConfig<WebComponentSimpleRenderer<O>>,\n): UseRendererResult<WebComponentSimpleRenderer<O>> {\n  return useRenderer(reactRenderer, convertSimpleRendererArgs, config);\n}\n"],
+  "mappings": "AAEA,OAAS,eAAAA,MAAgE,mBAOzE,SAASC,EAAiD,CAACC,CAAQ,EAGhB,CACjD,MAAO,CAAE,SAAAA,CAAS,CACpB,CAEO,SAASC,EACdC,EACAC,EACkD,CAClD,OAAOL,EAAYI,EAAeH,EAA2BI,CAAM,CACrE",
+  "names": ["useRenderer", "convertSimpleRendererArgs", "original", "useSimpleRenderer", "reactRenderer", "config"]
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/RadioButton.ts", "src/generated/RadioButton.ts"],
+  "sourcesContent": ["export * from \"@vaadin/radio-group/vaadin-radio-button.js\";\nexport * from './generated/RadioButton.js';\n", "import type { EventName } from \"@lit/react\";\nimport { RadioButton as RadioButtonElement, type RadioButtonEventMap as _RadioButtonEventMap, } from \"@vaadin/radio-group/vaadin-radio-button.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { RadioButtonElement, };\nexport type RadioButtonEventMap = Readonly<{\n    onCheckedChanged: EventName<_RadioButtonEventMap[\"checked-changed\"]>;\n}>;\nconst events = { onCheckedChanged: \"checked-changed\" } as RadioButtonEventMap;\nexport type RadioButtonProps = WebComponentProps<RadioButtonElement, RadioButtonEventMap>;\nexport const RadioButton = createComponent({\n    elementClass: RadioButtonElement, events, react: React, tagName: \"vaadin-radio-button\"\n});\n"],
+  "mappings": "AAAA,WAAc,6CCCd,OAAS,eAAeA,MAA6E,6CACrG,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAKxD,IAAMC,EAAS,CAAE,iBAAkB,iBAAkB,EAExCC,EAAcC,EAAgB,CACvC,aAAcC,EAAoB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,qBACrE,CAAC",
+  "names": ["RadioButtonElement", "React", "createComponent", "events", "RadioButton", "createComponent", "RadioButtonElement", "React"]
+}

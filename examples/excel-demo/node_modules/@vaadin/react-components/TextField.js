@@ -1,0 +1,2 @@
+export*from"@vaadin/text-field/vaadin-text-field.js";import{TextField as e}from"@vaadin/text-field/vaadin-text-field.js";import*as t from"react";import{createComponent as n}from"./utils/createComponent.js";var a={onValidated:"validated",onChange:"change",onInput:"input",onInvalidChanged:"invalid-changed",onValueChanged:"value-changed"},p=n({elementClass:e,events:a,react:t,tagName:"vaadin-text-field"});export{p as TextField,e as TextFieldElement};
+//# sourceMappingURL=TextField.js.map

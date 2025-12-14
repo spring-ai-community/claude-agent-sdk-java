@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/Scroller.ts", "src/generated/Scroller.ts"],
+  "sourcesContent": ["export * from \"@vaadin/scroller/vaadin-scroller.js\";\nexport * from './generated/Scroller.js';\n", "import type {} from \"@lit/react\";\nimport { Scroller as ScrollerElement, } from \"@vaadin/scroller/vaadin-scroller.js\";\nimport * as React from \"react\";\nimport { createComponent, type WebComponentProps } from \"../utils/createComponent.js\";\nexport { ScrollerElement, };\nexport type ScrollerEventMap = Readonly<{}>;\nconst events = {} as ScrollerEventMap;\nexport type ScrollerProps = WebComponentProps<ScrollerElement, ScrollerEventMap>;\nexport const Scroller = createComponent({\n    elementClass: ScrollerElement, events, react: React, tagName: \"vaadin-scroller\"\n});\n"],
+  "mappings": "AAAA,WAAc,sCCCd,OAAS,YAAYA,MAAwB,sCAC7C,UAAYC,MAAW,QACvB,OAAS,mBAAAC,MAA+C,6BAGxD,IAAMC,EAAS,CAAC,EAEHC,EAAWC,EAAgB,CACpC,aAAcC,EAAiB,OAAAH,EAAQ,MAAOI,EAAO,QAAS,iBAClE,CAAC",
+  "names": ["ScrollerElement", "React", "createComponent", "events", "Scroller", "createComponent", "ScrollerElement", "React"]
+}

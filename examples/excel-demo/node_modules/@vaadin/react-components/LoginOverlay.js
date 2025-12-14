@@ -1,0 +1,2 @@
+export*from"@vaadin/login/vaadin-login-overlay.js";import{LoginOverlay as o}from"@vaadin/login/vaadin-login-overlay.js";import*as n from"react";import{createComponent as t}from"./utils/createComponent.js";var r={onForgotPassword:"forgot-password",onLogin:"login",onDisabledChanged:"disabled-changed",onErrorChanged:"error-changed",onDescriptionChanged:"description-changed"},e=t({elementClass:o,events:r,react:n,tagName:"vaadin-login-overlay"});var s=e;export{s as LoginOverlay,o as LoginOverlayElement};
+//# sourceMappingURL=LoginOverlay.js.map

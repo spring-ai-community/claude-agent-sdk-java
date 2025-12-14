@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/utils/flushMicrotask.ts"],
+  "sourcesContent": ["import { flushSync } from 'react-dom';\n\nconst callbackQueue: Function[] = [];\n\nexport function flushMicrotask(callback: Function) {\n  callbackQueue.push(callback);\n\n  if (callbackQueue.length === 1) {\n    queueMicrotask(() => {\n      flushSync(() => {\n        callbackQueue.splice(0).forEach((callback) => callback());\n      });\n    });\n  }\n}\n"],
+  "mappings": "AAAA,OAAS,aAAAA,MAAiB,YAE1B,MAAMC,EAA4B,CAAC,EAE5B,SAASC,EAAeC,EAAoB,CACjDF,EAAc,KAAKE,CAAQ,EAEvBF,EAAc,SAAW,GAC3B,eAAe,IAAM,CACnBD,EAAU,IAAM,CACdC,EAAc,OAAO,CAAC,EAAE,QAASE,GAAaA,EAAS,CAAC,CAC1D,CAAC,CACH,CAAC,CAEL",
+  "names": ["flushSync", "callbackQueue", "flushMicrotask", "callback"]
+}

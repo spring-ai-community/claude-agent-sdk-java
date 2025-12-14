@@ -1,0 +1,22 @@
+/* Generated file, do not edit */
+
+
+  html {
+    /* Font family */
+    --material-font-family: 'Roboto', sans-serif;
+
+    /* Font sizes */
+    --material-h1-font-size: 6rem;
+    --material-h2-font-size: 3.75rem;
+    --material-h3-font-size: 3rem;
+    --material-h4-font-size: 2.125rem;
+    --material-h5-font-size: 1.5rem;
+    --material-h6-font-size: 1.25rem;
+    --material-body-font-size: 1rem;
+    --material-small-font-size: 0.875rem;
+    --material-button-font-size: 0.875rem;
+    --material-caption-font-size: 0.75rem;
+
+    /* Icon size */
+    --material-icon-font-size: 20px;
+  }

@@ -1,0 +1,2 @@
+export*from"@vaadin/text-area/vaadin-text-area.js";import{TextArea as e}from"@vaadin/text-area/vaadin-text-area.js";import*as a from"react";import{createComponent as t}from"./utils/createComponent.js";var n={onValidated:"validated",onChange:"change",onInput:"input",onInvalidChanged:"invalid-changed",onValueChanged:"value-changed"},p=t({elementClass:e,events:n,react:a,tagName:"vaadin-text-area"});export{p as TextArea,e as TextAreaElement};
+//# sourceMappingURL=TextArea.js.map
