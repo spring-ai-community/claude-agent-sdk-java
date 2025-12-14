@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springaicommunity.claude.agent.examples.email.model.Email;
 import org.springaicommunity.claude.agent.examples.email.service.ClaudeService;
+import org.springaicommunity.claude.agent.examples.email.service.EmailSeeder;
 import org.springaicommunity.claude.agent.examples.email.service.ImapService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +33,12 @@ public class TestController {
 
 	private final ImapService imapService;
 
-	public TestController(ClaudeService claudeService, ImapService imapService) {
+	private final EmailSeeder emailSeeder;
+
+	public TestController(ClaudeService claudeService, ImapService imapService, EmailSeeder emailSeeder) {
 		this.claudeService = claudeService;
 		this.imapService = imapService;
+		this.emailSeeder = emailSeeder;
 	}
 
 	/**
@@ -85,6 +89,16 @@ public class TestController {
 	@GetMapping("/emails/count")
 	public int getEmailCount() {
 		return imapService.getEmailCount();
+	}
+
+	/**
+	 * Seed test emails to the mail server.
+	 */
+	@PostMapping("/seed")
+	public String seedEmails() {
+		log.info("Seeding test emails...");
+		int count = emailSeeder.seedTestEmails();
+		return "Seeded " + count + " test emails";
 	}
 
 	/**

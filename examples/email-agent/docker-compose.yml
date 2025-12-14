@@ -11,7 +11,7 @@ services:
       - "3465:3465"   # SMTPS
       - "3993:3993"   # IMAPS
     environment:
-      - GREENMAIL_OPTS=-Dgreenmail.setup.test.all -Dgreenmail.users=user:password@test.local
+      - GREENMAIL_OPTS=-Dgreenmail.setup.test.all -Dgreenmail.hostname=0.0.0.0 -Dgreenmail.users=user:password@test.local
     healthcheck:
       test: ["CMD", "nc", "-z", "localhost", "3143"]
       interval: 10s
