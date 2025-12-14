@@ -51,6 +51,8 @@ The application will start at http://localhost:8080
 excel-demo/
 ├── src/main/java/.../excel/
 │   ├── ExcelDemoApplication.java   # Spring Boot entry with @Push
+│   ├── controller/
+│   │   └── TestController.java     # REST endpoint for testing
 │   ├── view/
 │   │   └── ExcelChatView.java      # Main chat UI with streaming
 │   └── service/

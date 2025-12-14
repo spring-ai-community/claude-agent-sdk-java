@@ -63,28 +63,6 @@ Note: The SDK must be installed to your local Maven repository first. After that
 5. Lead agent spawns report-writer after all research is complete
 6. Report-writer reads notes and creates summary in `files/reports/`
 
-## Prerequisites
-
-- Java 17+
-- Maven 3.8+
-- Claude CLI installed and configured
-- `ANTHROPIC_API_KEY` environment variable set
-
-## Running the Example
-
-From the repository root:
-
-```bash
-cd examples/research-agent
-mvn compile exec:java
-```
-
-Or from the parent directory:
-
-```bash
-mvn -pl examples/research-agent exec:java
-```
-
 ## Usage
 
 ```
