@@ -1,0 +1,51 @@
+/* Styles derived from https://github.com/vaadin-component-factory/toggle-button */
+
+vaadin-checkbox.toggle-button::part(checkbox),
+vaadin-checkbox.toggle-button > input {
+    grid-column: 2;
+}
+
+vaadin-checkbox-group.toggle-button > vaadin-checkbox::part(checkbox),
+vaadin-checkbox.toggle-button::part(checkbox) {
+    width: calc(1.5em * 2 - 12px);
+    height: 1.5em;
+    border-radius: 0.75em;
+    background-color: var(--lumo-contrast-40pct);
+    margin: 0;
+    cursor: pointer;
+}
+
+vaadin-checkbox-group.toggle-button > vaadin-checkbox::part(checkbox)::after,
+vaadin-checkbox.toggle-button::part(checkbox)::after {
+    width: calc(1.2em - 4px);
+    height: calc(1.2em - 4px);
+    border-radius: 50%;
+    background-color: var(--lumo-primary-contrast-color);
+    border: none;
+    top: 2px;
+    left: 2px;
+    transform: none;
+    opacity: 1;
+    transition: transform 0.2s ease;
+}
+
+vaadin-checkbox-group.toggle-button > vaadin-checkbox[disabled]::part(checkbox)::after,
+vaadin-checkbox.toggle-button[disabled]::part(checkbox)::after {
+    color: transparent!important;
+}
+
+vaadin-checkbox-group.toggle-button > vaadin-checkbox[checked]::part(checkbox)::after,
+vaadin-checkbox.toggle-button[checked]::part(checkbox)::after {
+    transform: translate(calc(100% - 8px));
+}
+
+vaadin-checkbox-group.toggle-button > vaadin-checkbox[checked]::part(checkbox),
+vaadin-checkbox.toggle-button[checked]::part(checkbox) {
+    background-color: var(--lumo-primary-color);
+}
+
+vaadin-checkbox-group.toggle-button > vaadin-checkbox[checked][disabled]::part(checkbox),
+vaadin-checkbox.toggle-button[checked][disabled]::part(checkbox){
+    background-color: var(--lumo-primary-color);
+    opacity: 0.3;
+}

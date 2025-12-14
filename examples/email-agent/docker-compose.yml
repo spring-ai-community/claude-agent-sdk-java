@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mailserver:
+    image: greenmail/standalone:latest
+    container_name: email-agent-mailserver
+    ports:
+      - "3025:3025"   # SMTP
+      - "3110:3110"   # POP3
+      - "3143:3143"   # IMAP
+      - "3465:3465"   # SMTPS
+      - "3993:3993"   # IMAPS
+    environment:
+      - GREENMAIL_OPTS=-Dgreenmail.setup.test.all -Dgreenmail.users=user:password@test.local
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "3143"]
+      interval: 10s
+      timeout: 5s
+      retries: 3

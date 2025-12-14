@@ -1,0 +1,37 @@
+.viritin-tree {
+    padding: 0;
+}
+
+.viritin-tree td {
+    vertical-align: top;
+}
+
+.viritin-tree .expander vaadin-icon {
+    width: var(--lumo-font-size-m);
+    height: var(--lumo-font-size-m);
+}
+
+.viritin-tree .node-content>span>vaadin-icon {
+    margin-right: calc(var(--lumo-font-size-m)*0.25);
+    width: var(--lumo-font-size-m);
+    height: var(--lumo-font-size-m);
+    
+}
+
+.viritin-tree .node-content {
+    position: relative;
+    cursor: default;
+    font-size : var(--lumo-font-size-m);
+}
+
+.viritin-tree .selected:before {
+    content: "";
+    background: var(--lumo-primary-color-10pct);
+    position: absolute;
+    top: -0.15em;
+    right: -0.15em;
+    bottom: -0.15em;
+    left: -0.15em;
+    /* z-index: -1; */
+}
+

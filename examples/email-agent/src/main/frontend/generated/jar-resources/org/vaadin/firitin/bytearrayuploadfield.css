@@ -1,0 +1,9 @@
+.viritin-uploadfield vaadin-upload {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 1em;
+}
+
+.viritin-uploadfield>div {
+    display:inline-block;
+}
