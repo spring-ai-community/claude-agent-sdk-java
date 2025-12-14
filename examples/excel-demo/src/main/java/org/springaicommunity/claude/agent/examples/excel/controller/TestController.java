@@ -6,7 +6,7 @@ import org.springaicommunity.claude.agent.examples.excel.service.ClaudeService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * REST controller for programmatic testing of Claude queries.
@@ -29,24 +29,23 @@ public class TestController {
 	}
 
 	/**
-	 * Submit a query and stream the response.
+	 * Submit a query and get complete response (non-streaming).
 	 *
 	 * @param prompt the question to ask Claude
-	 * @return streaming text response
+	 * @return complete text response
 	 */
-	@PostMapping(value = "/query", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<String> query(@RequestBody String prompt) {
+	@PostMapping(value = "/query", produces = MediaType.TEXT_PLAIN_VALUE)
+	public Mono<String> query(@RequestBody String prompt) {
 		log.info("=== TEST QUERY RECEIVED ===");
 		log.info("Prompt: {}", prompt);
 
 		return claudeService.streamText(prompt)
 			.doOnSubscribe(s -> log.info(">>> Stream subscribed"))
-			.doOnNext(chunk -> log.info(">>> Chunk received: {} chars - preview: {}",
-				chunk.length(),
-				chunk.substring(0, Math.min(50, chunk.length())).replace("\n", "\\n")))
-			.doOnComplete(() -> log.info(">>> Stream completed"))
-			.doOnError(e -> log.error(">>> Stream error: {}", e.getMessage(), e))
-			.doFinally(signal -> log.info(">>> Stream finished with signal: {}", signal));
+			.doOnNext(chunk -> log.info(">>> Chunk received: {} chars", chunk.length()))
+			.reduce(new StringBuilder(), (sb, chunk) -> sb.append(chunk))
+			.map(StringBuilder::toString)
+			.doOnSuccess(result -> log.info(">>> Query completed: {} chars total", result.length()))
+			.doOnError(e -> log.error(">>> Stream error: {}", e.getMessage(), e));
 	}
 
 	/**
