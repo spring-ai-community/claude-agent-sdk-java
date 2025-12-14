@@ -49,3 +49,4 @@ examples/research-agent/*.md
 ### Root-level output directories (stray from test runs) ###
 /files/
 /logs/
+*.xlsx
