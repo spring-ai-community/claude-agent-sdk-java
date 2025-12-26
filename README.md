@@ -229,7 +229,7 @@ claude-agent-sdk-java/
 │   └── src/
 │       ├── main/java/org/springaicommunity/claude/agent/sdk/
 │       │   ├── session/      # ClaudeSession, DefaultClaudeSession
-│       │   ├── transport/    # BidirectionalTransport, ReactiveTransport
+│       │   ├── transport/    # StreamingTransport, ReactiveTransport
 │       │   ├── streaming/    # MessageReceiver, MessageStreamIterator
 │       │   ├── hooks/        # HookRegistry, HookCallback
 │       │   ├── permission/   # ToolPermissionCallback

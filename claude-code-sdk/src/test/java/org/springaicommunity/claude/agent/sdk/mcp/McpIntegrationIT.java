@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
 import org.springaicommunity.claude.agent.sdk.test.ClaudeCliTestBase;
-import org.springaicommunity.claude.agent.sdk.transport.BidirectionalTransport;
+import org.springaicommunity.claude.agent.sdk.transport.StreamingTransport;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
@@ -72,7 +72,7 @@ class McpIntegrationIT extends ClaudeCliTestBase {
 		AtomicReference<String> resultText = new AtomicReference<>();
 
 		// When - Start a session with MCP config (simple query, no MCP tool usage)
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			transport.startSession("What is 2+2? Answer with just the number.", options, message -> {

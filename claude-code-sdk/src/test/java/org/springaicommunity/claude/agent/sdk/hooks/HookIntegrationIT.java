@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.test.ClaudeCliTestBase;
-import org.springaicommunity.claude.agent.sdk.transport.BidirectionalTransport;
+import org.springaicommunity.claude.agent.sdk.transport.StreamingTransport;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
 import org.springaicommunity.claude.agent.sdk.types.control.ControlRequest;
@@ -69,7 +69,7 @@ class HookIntegrationIT extends ClaudeCliTestBase {
 	 * Tests that PreToolUse hooks are called when registered.
 	 */
 	@Test
-	@DisplayName("PreToolUse hook is invoked via BidirectionalTransport")
+	@DisplayName("PreToolUse hook is invoked via StreamingTransport")
 	void preToolUseHookInvoked() throws Exception {
 		// Given - track hook invocations
 		List<String> hookInvocations = new CopyOnWriteArrayList<>();
@@ -86,7 +86,7 @@ class HookIntegrationIT extends ClaudeCliTestBase {
 			return HookOutput.allow();
 		});
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			// Start session with hook handling via control request handler
@@ -152,7 +152,7 @@ class HookIntegrationIT extends ClaudeCliTestBase {
 			return HookOutput.allow();
 		});
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			transport.startSession(null, options, message -> {
@@ -207,7 +207,7 @@ class HookIntegrationIT extends ClaudeCliTestBase {
 			return HookOutput.block("Bash commands are blocked by policy");
 		});
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			transport.startSession(null, options, message -> {
@@ -285,7 +285,7 @@ class HookIntegrationIT extends ClaudeCliTestBase {
 			.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
 			.build();
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			transport.startSession("Say hello in exactly 3 words", options, message -> {

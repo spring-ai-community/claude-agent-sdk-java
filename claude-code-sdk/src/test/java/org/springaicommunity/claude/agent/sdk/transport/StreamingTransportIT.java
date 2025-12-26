@@ -39,14 +39,14 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Integration tests for BidirectionalTransport with real Claude CLI.
+ * Integration tests for StreamingTransport with real Claude CLI.
  *
  * <p>
  * These tests verify the bidirectional communication protocol works correctly with the
  * actual Claude CLI executable.
  * </p>
  */
-class BidirectionalTransportIT extends ClaudeCliTestBase {
+class StreamingTransportIT extends ClaudeCliTestBase {
 
 	@Test
 	@DisplayName("Should start session and receive messages")
@@ -61,7 +61,7 @@ class BidirectionalTransportIT extends ClaudeCliTestBase {
 		CountDownLatch resultLatch = new CountDownLatch(1);
 		AtomicReference<Throwable> error = new AtomicReference<>();
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			// When
@@ -113,7 +113,7 @@ class BidirectionalTransportIT extends ClaudeCliTestBase {
 		List<ControlRequest> controlRequests = new ArrayList<>();
 		CountDownLatch resultLatch = new CountDownLatch(1);
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			// When
@@ -149,7 +149,7 @@ class BidirectionalTransportIT extends ClaudeCliTestBase {
 		CountDownLatch startedLatch = new CountDownLatch(1);
 		CountDownLatch resultLatch = new CountDownLatch(1);
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			// Initially not running
@@ -189,7 +189,7 @@ class BidirectionalTransportIT extends ClaudeCliTestBase {
 
 		AtomicBoolean messageReceived = new AtomicBoolean(false);
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			// When - start a long-running task
@@ -218,7 +218,7 @@ class BidirectionalTransportIT extends ClaudeCliTestBase {
 			.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
 			.build();
 
-		BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath());
 
 		// When - start and immediately close

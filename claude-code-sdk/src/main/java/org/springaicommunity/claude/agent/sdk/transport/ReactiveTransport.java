@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Reactive wrapper providing true non-blocking streaming for one-shot queries.
  *
  * <p>
- * This transport uses {@link BidirectionalTransport} internally for robust message
+ * This transport uses {@link StreamingTransport} internally for robust message
  * handling, while exposing a simple reactive API for single queries. For multi-turn
  * conversations, use
  * {@link org.springaicommunity.claude.agent.sdk.session.ClaudeSession} directly.
@@ -51,7 +51,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <li>True non-blocking with backpressure support</li>
  * <li>Resilience via retry and circuit breaker patterns</li>
  * <li>Automatic session lifecycle management</li>
- * <li>Uses robust BidirectionalTransport internally</li>
+ * <li>Uses robust StreamingTransport internally</li>
  * </ul>
  */
 public class ReactiveTransport implements AutoCloseable {
@@ -88,7 +88,7 @@ public class ReactiveTransport implements AutoCloseable {
 	 * non-blocking implementation with backpressure support and resilience.
 	 *
 	 * <p>
-	 * This method creates an ephemeral session using BidirectionalTransport, streams
+	 * This method creates an ephemeral session using StreamingTransport, streams
 	 * messages until completion, and cleans up automatically.
 	 * </p>
 	 * @param prompt the prompt to send
@@ -101,7 +101,7 @@ public class ReactiveTransport implements AutoCloseable {
 	}
 
 	/**
-	 * Internal implementation using BidirectionalTransport for robust streaming.
+	 * Internal implementation using StreamingTransport for robust streaming.
 	 * <p>
 	 * Uses Flux.create() to ensure subscription happens BEFORE startSession begins
 	 * emitting messages, avoiding the unicast sink race condition.
@@ -113,10 +113,10 @@ public class ReactiveTransport implements AutoCloseable {
 		}
 
 		return Flux.<Message>create(sink -> {
-			logger.info("Starting reactive query with BidirectionalTransport");
+			logger.info("Starting reactive query with StreamingTransport");
 
 			// Create ephemeral transport for this query
-			BidirectionalTransport transport = new BidirectionalTransport(workingDirectory,
+			StreamingTransport transport = new StreamingTransport(workingDirectory,
 					options.getTimeout() != null ? options.getTimeout() : defaultTimeout, claudePath);
 
 			AtomicBoolean completed = new AtomicBoolean(false);
@@ -186,7 +186,7 @@ public class ReactiveTransport implements AutoCloseable {
 	public Mono<Boolean> isAvailableAsync() {
 		return resilienceManager.executeResilientMono("availability-check", () -> Mono.fromCallable(() -> {
 			try {
-				BidirectionalTransport transport = new BidirectionalTransport(workingDirectory, Duration.ofSeconds(10),
+				StreamingTransport transport = new StreamingTransport(workingDirectory, Duration.ofSeconds(10),
 						claudePath);
 				transport.close();
 				return true;

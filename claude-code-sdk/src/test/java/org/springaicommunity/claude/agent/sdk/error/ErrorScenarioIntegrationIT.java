@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Timeout;
 import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.exceptions.TransportException;
 import org.springaicommunity.claude.agent.sdk.test.ClaudeCliTestBase;
-import org.springaicommunity.claude.agent.sdk.transport.BidirectionalTransport;
+import org.springaicommunity.claude.agent.sdk.transport.StreamingTransport;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
 import org.springaicommunity.claude.agent.sdk.types.control.ControlResponse;
@@ -63,7 +63,7 @@ class ErrorScenarioIntegrationIT extends ClaudeCliTestBase {
 
 		// When/Then - should throw meaningful exception
 		assertThatThrownBy(() -> {
-			try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(),
+			try (StreamingTransport transport = new StreamingTransport(workingDirectory(),
 					Duration.ofMinutes(1), invalidPath.toString())) {
 
 				CLIOptions options = CLIOptions.builder()
@@ -92,7 +92,7 @@ class ErrorScenarioIntegrationIT extends ClaudeCliTestBase {
 		AtomicBoolean sessionStarted = new AtomicBoolean(false);
 		AtomicReference<Throwable> capturedError = new AtomicReference<>();
 
-		BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(1),
+		StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(1),
 				getClaudeCliPath());
 
 		try {
@@ -133,7 +133,7 @@ class ErrorScenarioIntegrationIT extends ClaudeCliTestBase {
 		CountDownLatch resultLatch = new CountDownLatch(1);
 		AtomicBoolean errorOccurred = new AtomicBoolean(false);
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			transport.startSession("What is 1 + 1?", options, message -> {
@@ -163,7 +163,7 @@ class ErrorScenarioIntegrationIT extends ClaudeCliTestBase {
 		CountDownLatch resultLatch = new CountDownLatch(1);
 		AtomicBoolean firstCall = new AtomicBoolean(true);
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			transport.startSession("Say hello", options, message -> {
@@ -196,7 +196,7 @@ class ErrorScenarioIntegrationIT extends ClaudeCliTestBase {
 			.build();
 
 		// Transport with short timeout
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), shortTimeout,
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), shortTimeout,
 				getClaudeCliPath())) {
 
 			CountDownLatch latch = new CountDownLatch(1);
@@ -220,7 +220,7 @@ class ErrorScenarioIntegrationIT extends ClaudeCliTestBase {
 	@DisplayName("Should clean up resources on exception - MCP SDK cleanup pattern")
 	void shouldCleanUpResourcesOnException() throws Exception {
 		// Given
-		BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(1),
+		StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(1),
 				getClaudeCliPath());
 
 		CLIOptions options = CLIOptions.builder()
@@ -251,7 +251,7 @@ class ErrorScenarioIntegrationIT extends ClaudeCliTestBase {
 	@DisplayName("Should handle multiple close calls gracefully - MCP SDK idempotent close")
 	void shouldHandleMultipleCloseCallsGracefully() throws Exception {
 		// Given
-		BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(1),
+		StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(1),
 				getClaudeCliPath());
 
 		CLIOptions options = CLIOptions.builder()

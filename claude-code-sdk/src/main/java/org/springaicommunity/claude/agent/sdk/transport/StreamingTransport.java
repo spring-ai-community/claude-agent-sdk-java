@@ -54,8 +54,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 /**
- * Bidirectional transport for Claude CLI control protocol communication. This transport
- * enables hook callbacks and permission handling through stdin/stdout communication.
+ * Streaming transport for Claude CLI communication. Manages the subprocess lifecycle
+ * and handles JSON message streaming via stdin/stdout.
  *
  * <p>
  * Key features:
@@ -63,7 +63,7 @@ import java.util.function.Consumer;
  * <ul>
  * <li>Uses --input-format stream-json for sending messages to CLI</li>
  * <li>Uses --output-format stream-json for receiving messages</li>
- * <li>Uses --permission-prompt-tool stdio for bidirectional control</li>
+ * <li>Uses --permission-prompt-tool stdio for hook/permission callbacks</li>
  * <li>Handles both regular messages and control requests</li>
  * <li>Thread-safe response writing with scheduler separation</li>
  * <li>Explicit state machine for lifecycle management</li>
@@ -75,9 +75,9 @@ import java.util.function.Consumer;
  * @see ControlRequest
  * @see ControlResponse
  */
-public class BidirectionalTransport implements AutoCloseable {
+public class StreamingTransport implements AutoCloseable {
 
-	private static final Logger logger = LoggerFactory.getLogger(BidirectionalTransport.class);
+	private static final Logger logger = LoggerFactory.getLogger(StreamingTransport.class);
 
 	// ============================================================
 	// State Machine Constants
@@ -177,22 +177,22 @@ public class BidirectionalTransport implements AutoCloseable {
 	// Constructors
 	// ============================================================
 
-	public BidirectionalTransport(Path workingDirectory) {
+	public StreamingTransport(Path workingDirectory) {
 		this(workingDirectory, Duration.ofMinutes(10), null);
 	}
 
-	public BidirectionalTransport(Path workingDirectory, Duration defaultTimeout) {
+	public StreamingTransport(Path workingDirectory, Duration defaultTimeout) {
 		this(workingDirectory, defaultTimeout, null);
 	}
 
 	/**
-	 * Creates a BidirectionalTransport for Claude CLI communication.
+	 * Creates a StreamingTransport for Claude CLI communication.
 	 * @param workingDirectory the working directory for the CLI
 	 * @param defaultTimeout default timeout for operations
 	 * @param claudePath optional path to Claude CLI executable (auto-discovers if null)
 	 * @throws IllegalArgumentException if workingDirectory or defaultTimeout is null
 	 */
-	public BidirectionalTransport(Path workingDirectory, Duration defaultTimeout, String claudePath) {
+	public StreamingTransport(Path workingDirectory, Duration defaultTimeout, String claudePath) {
 		// MCP SDK pattern: strict validation for required arguments
 		if (workingDirectory == null) {
 			throw new IllegalArgumentException("workingDirectory must not be null");
@@ -328,7 +328,7 @@ public class BidirectionalTransport implements AutoCloseable {
 			this.currentToolPermissionCallback = options.getToolPermissionCallback();
 
 			// Build command with bidirectional flags (no prompt - sent via stdin)
-			List<String> command = buildBidirectionalCommand(options);
+			List<String> command = buildStreamingCommand(options);
 
 			// Wrap command with sudo if user is specified (Unix only)
 			command = wrapCommandForUser(command, options.getUser());
@@ -392,7 +392,7 @@ public class BidirectionalTransport implements AutoCloseable {
 	 * Builds the command for bidirectional mode. In bidirectional mode, the prompt is
 	 * sent via stdin as JSON, not as a command-line argument.
 	 */
-	List<String> buildBidirectionalCommand(CLIOptions options) {
+	List<String> buildStreamingCommand(CLIOptions options) {
 		List<String> command = new ArrayList<>();
 		command.add(claudeCommand);
 
@@ -932,7 +932,7 @@ public class BidirectionalTransport implements AutoCloseable {
 	 * </p>
 	 *
 	 * <pre>{@code
-	 * try (BidirectionalTransport transport = new BidirectionalTransport(...)) {
+	 * try (StreamingTransport transport = new StreamingTransport(...)) {
 	 *     transport.startSession(...);
 	 *     for (ParsedMessage message : transport.messageIterable()) {
 	 *         handleMessage(message);
@@ -1070,7 +1070,7 @@ public class BidirectionalTransport implements AutoCloseable {
 			errorScheduler.dispose();
 
 			state.set(STATE_CLOSED);
-			logger.debug("BidirectionalTransport closed gracefully");
+			logger.debug("StreamingTransport closed gracefully");
 		})).subscribeOn(Schedulers.boundedElastic());
 	}
 
@@ -1116,7 +1116,7 @@ public class BidirectionalTransport implements AutoCloseable {
 		errorScheduler.dispose();
 
 		state.set(STATE_CLOSED);
-		logger.debug("BidirectionalTransport closed");
+		logger.debug("StreamingTransport closed");
 	}
 
 	private void closeStreams() {

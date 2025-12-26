@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Timeout;
 import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
 import org.springaicommunity.claude.agent.sdk.test.ClaudeCliTestBase;
-import org.springaicommunity.claude.agent.sdk.transport.BidirectionalTransport;
+import org.springaicommunity.claude.agent.sdk.transport.StreamingTransport;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
@@ -76,7 +76,7 @@ class SessionControlIT extends ClaudeCliTestBase {
 		AtomicReference<String> resultText = new AtomicReference<>();
 		CountDownLatch resultLatch = new CountDownLatch(1);
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			transport.startSession("Say hello in exactly three words", options, message -> {
@@ -115,7 +115,7 @@ class SessionControlIT extends ClaudeCliTestBase {
 		AtomicReference<String> resultText = new AtomicReference<>();
 		CountDownLatch resultLatch = new CountDownLatch(1);
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			transport.startSession("Say 'hi'", options, message -> {
@@ -149,7 +149,7 @@ class SessionControlIT extends ClaudeCliTestBase {
 		CountDownLatch firstLatch = new CountDownLatch(1);
 		CountDownLatch secondLatch = new CountDownLatch(2);
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			transport.startSession("My name is TestUser. Remember this.", options, message -> {
@@ -240,7 +240,7 @@ class SessionControlIT extends ClaudeCliTestBase {
 
 		List<ParsedMessage> messages = new ArrayList<>();
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			transport.startSession("Count from 1 to 1000", options, messages::add,

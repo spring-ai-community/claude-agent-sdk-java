@@ -30,7 +30,7 @@ import org.springaicommunity.claude.agent.sdk.streaming.BlockingMessageReceiver;
 import org.springaicommunity.claude.agent.sdk.streaming.MessageReceiver;
 import org.springaicommunity.claude.agent.sdk.streaming.MessageStreamIterator;
 import org.springaicommunity.claude.agent.sdk.streaming.ResponseBoundedReceiver;
-import org.springaicommunity.claude.agent.sdk.transport.BidirectionalTransport;
+import org.springaicommunity.claude.agent.sdk.transport.StreamingTransport;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
@@ -68,7 +68,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * </p>
  *
  * @see ClaudeSession
- * @see BidirectionalTransport
+ * @see StreamingTransport
  */
 public class DefaultClaudeSession implements ClaudeSession {
 
@@ -109,7 +109,7 @@ public class DefaultClaudeSession implements ClaudeSession {
 	private volatile ToolPermissionCallback toolPermissionCallback;
 
 	// Transport and streaming
-	private volatile BidirectionalTransport transport;
+	private volatile StreamingTransport transport;
 
 	private volatile MessageStreamIterator messageIterator;
 
@@ -211,7 +211,7 @@ public class DefaultClaudeSession implements ClaudeSession {
 
 		try {
 			// Create transport
-			transport = new BidirectionalTransport(workingDirectory, timeout, claudePath);
+			transport = new StreamingTransport(workingDirectory, timeout, claudePath);
 
 			// Create message receivers (both iterator and POC pattern)
 			messageIterator = new MessageStreamIterator();

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
 import org.springaicommunity.claude.agent.sdk.test.ClaudeCliTestBase;
-import org.springaicommunity.claude.agent.sdk.transport.BidirectionalTransport;
+import org.springaicommunity.claude.agent.sdk.transport.StreamingTransport;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
 import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
 import org.springaicommunity.claude.agent.sdk.types.Message;
@@ -56,7 +56,7 @@ class SessionIntegrationIT extends ClaudeCliTestBase {
 
 		List<String> responses = new ArrayList<>();
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			// First query - establish context
@@ -105,7 +105,7 @@ class SessionIntegrationIT extends ClaudeCliTestBase {
 		List<ParsedMessage> allMessages = new ArrayList<>();
 		CountDownLatch resultLatch = new CountDownLatch(1);
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			// When - start a session
@@ -139,7 +139,7 @@ class SessionIntegrationIT extends ClaudeCliTestBase {
 			.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
 			.build();
 
-		BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath());
 
 		try {
@@ -179,7 +179,7 @@ class SessionIntegrationIT extends ClaudeCliTestBase {
 		List<AssistantMessage> assistantMessages = new ArrayList<>();
 		CountDownLatch resultLatch = new CountDownLatch(1);
 
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath())) {
 
 			// When

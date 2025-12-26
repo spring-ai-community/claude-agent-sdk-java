@@ -44,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 /**
- * Integration tests for BidirectionalTransport following MCP SDK StdioClientTransport
+ * Integration tests for StreamingTransport following MCP SDK StdioClientTransport
  * patterns. These tests verify the transport layer behavior independently from
  * higher-level session management.
  *
@@ -64,8 +64,8 @@ class StdioTransportIntegrationIT extends ClaudeCliTestBase {
 	/**
 	 * Helper pattern from MCP SDK AbstractMcpSyncClientTests.withClient().
 	 */
-	void withTransport(Consumer<BidirectionalTransport> consumer) throws Exception {
-		BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(2),
+	void withTransport(Consumer<StreamingTransport> consumer) throws Exception {
+		StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(2),
 				getClaudeCliPath());
 		try {
 			consumer.accept(transport);
@@ -82,7 +82,7 @@ class StdioTransportIntegrationIT extends ClaudeCliTestBase {
 	@DisplayName("Transport should transition through state machine - MCP SDK pattern")
 	void transportShouldTransitionThroughStateMachine() throws Exception {
 		// Given - track state transitions
-		BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(1),
+		StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(1),
 				getClaudeCliPath());
 
 		// Initially disconnected
@@ -226,7 +226,7 @@ class StdioTransportIntegrationIT extends ClaudeCliTestBase {
 	@DisplayName("Graceful shutdown should complete sinks and dispose schedulers - MCP SDK pattern")
 	void gracefulShutdownShouldCompleteAndDispose() throws Exception {
 		// Given
-		BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(1),
+		StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(1),
 				getClaudeCliPath());
 
 		CLIOptions options = CLIOptions.builder()
@@ -324,17 +324,17 @@ class StdioTransportIntegrationIT extends ClaudeCliTestBase {
 	@DisplayName("Transport construction should validate arguments - MCP SDK Assert pattern")
 	void transportConstructionShouldValidateArguments() {
 		// MCP SDK pattern: Assert.notNull() in constructor for required arguments
-		assertThatCode(() -> new BidirectionalTransport(null, Duration.ofMinutes(1), getClaudeCliPath()))
+		assertThatCode(() -> new StreamingTransport(null, Duration.ofMinutes(1), getClaudeCliPath()))
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessageContaining("workingDirectory");
 
-		assertThatCode(() -> new BidirectionalTransport(workingDirectory(), null, getClaudeCliPath()))
+		assertThatCode(() -> new StreamingTransport(workingDirectory(), null, getClaudeCliPath()))
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessageContaining("defaultTimeout");
 
 		// null claudePath is allowed - auto-discovers via ClaudeCliDiscovery
 		assertThatCode(() -> {
-			try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(),
+			try (StreamingTransport transport = new StreamingTransport(workingDirectory(),
 					Duration.ofMinutes(1), null)) {
 				assertThat(transport).isNotNull();
 			}

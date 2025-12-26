@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.test.ClaudeCliTestBase;
-import org.springaicommunity.claude.agent.sdk.transport.BidirectionalTransport;
+import org.springaicommunity.claude.agent.sdk.transport.StreamingTransport;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
@@ -70,7 +70,7 @@ class PermissionIntegrationIT extends ClaudeCliTestBase {
 	 * Helper for running tests with transport.
 	 */
 	private void withTransport(CLIOptions options, TransportConsumer consumer) throws Exception {
-		try (BidirectionalTransport transport = new BidirectionalTransport(workingDirectory(), Duration.ofMinutes(3),
+		try (StreamingTransport transport = new StreamingTransport(workingDirectory(), Duration.ofMinutes(3),
 				getClaudeCliPath())) {
 			consumer.accept(transport, options);
 		}
@@ -79,7 +79,7 @@ class PermissionIntegrationIT extends ClaudeCliTestBase {
 	@FunctionalInterface
 	interface TransportConsumer {
 
-		void accept(BidirectionalTransport transport, CLIOptions options) throws Exception;
+		void accept(StreamingTransport transport, CLIOptions options) throws Exception;
 
 	}
 

@@ -32,7 +32,7 @@ import org.springaicommunity.claude.agent.sdk.config.PluginConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for BidirectionalTransport command building and configuration. Note: Full
+ * Tests for StreamingTransport command building and configuration. Note: Full
  * integration tests with actual CLI are in the integration test suite.
  *
  * <p>
@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * matches the CLI behavior where --input-format stream-json mode expects input via stdin.
  * </p>
  */
-class BidirectionalTransportTest {
+class StreamingTransportTest {
 
 	@TempDir
 	Path tempDir;
@@ -54,7 +54,7 @@ class BidirectionalTransportTest {
 		@DisplayName("Should build command with required bidirectional flags")
 		void buildCommandWithBidirectionalFlags() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder()
 				.model("claude-sonnet-4-20250514")
@@ -62,7 +62,7 @@ class BidirectionalTransportTest {
 				.build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then - verify bidirectional flags
 			assertThat(command).contains("--input-format", "stream-json");
@@ -77,12 +77,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include model when specified")
 		void buildCommandWithModel() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().model("claude-3-opus-20240229").build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int modelIndex = command.indexOf("--model");
@@ -94,12 +94,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include system prompt when specified")
 		void buildCommandWithSystemPrompt() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().systemPrompt("You are a helpful assistant").build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int promptIndex = command.indexOf("--system-prompt");
@@ -111,12 +111,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include allowed tools when specified")
 		void buildCommandWithAllowedTools() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().allowedTools(List.of("Bash", "Read", "Write")).build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int toolsIndex = command.indexOf("--allowedTools");
@@ -128,12 +128,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include disallowed tools when specified")
 		void buildCommandWithDisallowedTools() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().disallowedTools(List.of("WebFetch")).build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int toolsIndex = command.indexOf("--disallowedTools");
@@ -145,12 +145,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include permission mode")
 		void buildCommandWithPermissionMode() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().permissionMode(PermissionMode.BYPASS_PERMISSIONS).build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int modeIndex = command.indexOf("--permission-mode");
@@ -162,12 +162,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should NOT include prompt as command-line argument in bidirectional mode")
 		void shouldNotIncludePromptAsArgument() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then - in bidirectional mode, prompt is sent via stdin, not command line
 			// Should not have the -- separator used for positional arguments
@@ -181,12 +181,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should handle empty options gracefully")
 		void buildCommandWithEmptyOptions() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then - should still have bidirectional flags
 			assertThat(command).contains("--input-format");
@@ -200,7 +200,7 @@ class BidirectionalTransportTest {
 		@DisplayName("Should build complete command with all options")
 		void buildCompleteCommand() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder()
 				.model("claude-sonnet-4-20250514")
@@ -211,7 +211,7 @@ class BidirectionalTransportTest {
 				.build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then - verify all parts
 			assertThat(command.get(0)).isEqualTo("/usr/bin/claude");
@@ -235,7 +235,7 @@ class BidirectionalTransportTest {
 		@Test
 		@DisplayName("Should report not running initially")
 		void notRunningInitially() {
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir);
+			StreamingTransport transport = new StreamingTransport(tempDir);
 
 			assertThat(transport.isRunning()).isFalse();
 
@@ -245,7 +245,7 @@ class BidirectionalTransportTest {
 		@Test
 		@DisplayName("Should close cleanly when not started")
 		void closeWhenNotStarted() {
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir);
+			StreamingTransport transport = new StreamingTransport(tempDir);
 
 			// Should not throw
 			transport.close();
@@ -257,7 +257,7 @@ class BidirectionalTransportTest {
 		@DisplayName("Should support custom timeout")
 		void customTimeout() {
 			Duration customTimeout = Duration.ofMinutes(30);
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, customTimeout);
+			StreamingTransport transport = new StreamingTransport(tempDir, customTimeout);
 
 			// Just verify construction succeeded
 			assertThat(transport).isNotNull();
@@ -268,10 +268,10 @@ class BidirectionalTransportTest {
 		@Test
 		@DisplayName("Should support custom claude path")
 		void customClaudePath() {
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/custom/path/claude");
 
-			List<String> command = transport.buildBidirectionalCommand(CLIOptions.builder().build());
+			List<String> command = transport.buildStreamingCommand(CLIOptions.builder().build());
 
 			assertThat(command.get(0)).isEqualTo("/custom/path/claude");
 
@@ -288,12 +288,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include max-turns when specified")
 		void buildCommandWithMaxTurns() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().maxTurns(10).build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int turnsIndex = command.indexOf("--max-turns");
@@ -305,12 +305,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include max-budget-usd when specified")
 		void buildCommandWithMaxBudgetUsd() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().maxBudgetUsd(0.50).build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int budgetIndex = command.indexOf("--max-budget-usd");
@@ -322,12 +322,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include fallback-model when specified")
 		void buildCommandWithFallbackModel() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().fallbackModel("claude-haiku-3-5-20241022").build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int fallbackIndex = command.indexOf("--fallback-model");
@@ -339,12 +339,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include append-system-prompt when specified via builder")
 		void buildCommandWithAppendSystemPrompt() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().appendSystemPrompt("Be concise and focused.").build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int appendIndex = command.indexOf("--append-system-prompt");
@@ -356,7 +356,7 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include all budget control options together")
 		void buildCommandWithAllBudgetOptions() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder()
 				.model("claude-sonnet-4-5")
@@ -367,7 +367,7 @@ class BidirectionalTransportTest {
 				.build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			assertThat(command).contains("--max-turns", "5");
@@ -386,12 +386,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Command should enable full bidirectional communication")
 		void commandEnablesBidirectionalMode() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.defaultOptions();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then - these flags together enable bidirectional control protocol:
 			// 1. --input-format stream-json: allows writing JSON messages to stdin
@@ -410,10 +410,10 @@ class BidirectionalTransportTest {
 			// In bidirectional mode (--input-format stream-json), the CLI waits for
 			// input via stdin. Using --print with a command-line prompt would conflict
 			// with this mode. Instead, the prompt is sent as a JSON user message.
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 
-			List<String> command = transport.buildBidirectionalCommand(CLIOptions.builder().build());
+			List<String> command = transport.buildStreamingCommand(CLIOptions.builder().build());
 
 			// --print is NOT used in bidirectional mode
 			assertThat(command).doesNotContain("--print");
@@ -424,10 +424,10 @@ class BidirectionalTransportTest {
 		@Test
 		@DisplayName("Should always include --verbose for control protocol")
 		void alwaysIncludesVerbose() {
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 
-			List<String> command = transport.buildBidirectionalCommand(CLIOptions.builder().build());
+			List<String> command = transport.buildStreamingCommand(CLIOptions.builder().build());
 
 			// --verbose is required with stream-json to get all message types
 			assertThat(command).contains("--verbose");
@@ -445,13 +445,13 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include agents JSON for multi-agent coordination")
 		void buildCommandWithAgents() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			String agentsJson = "{\"researcher\":{\"description\":\"Research agent\",\"tools\":[\"WebSearch\"],\"prompt\":\"You are a researcher\",\"model\":\"haiku\"}}";
 			CLIOptions options = CLIOptions.builder().agents(agentsJson).build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int agentsIndex = command.indexOf("--agents");
@@ -465,12 +465,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should NOT include agents flag when agents is null or empty")
 		void buildCommandWithoutAgentsWhenEmpty() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().agents("").build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then - empty agents should not produce --agents flag
 			assertThat(command).doesNotContain("--agents");
@@ -482,14 +482,14 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include add-dir flags for each directory")
 		void buildCommandWithAddDirs() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder()
 				.addDirs(List.of(Path.of("/workspace/libs"), Path.of("/workspace/docs")))
 				.build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then - each directory gets its own --add-dir flag
 			int firstIndex = command.indexOf("--add-dir");
@@ -509,12 +509,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include settings flag when specified")
 		void buildCommandWithSettings() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().settings("/etc/claude/settings.json").build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int settingsIndex = command.indexOf("--settings");
@@ -528,12 +528,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include permission-prompt-tool-name when specified")
 		void buildCommandWithPermissionPromptToolName() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().permissionPromptToolName("custom-tool").build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then - custom permission prompt tool replaces default "stdio"
 			int toolIndex = command.indexOf("--permission-prompt-tool");
@@ -547,14 +547,14 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include plugin-dir flags for each plugin")
 		void buildCommandWithPlugins() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder()
 				.plugins(List.of(PluginConfig.local("/opt/plugins/custom"), PluginConfig.local("/home/user/plugins")))
 				.build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int pluginIndex = command.indexOf("--plugin-dir");
@@ -568,12 +568,12 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include extra args with values")
 		void buildCommandWithExtraArgsWithValue() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder().extraArgs(Map.of("custom-flag", "custom-value")).build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then
 			int flagIndex = command.indexOf("--custom-flag");
@@ -587,7 +587,7 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include extra args as boolean flags when value is null")
 		void buildCommandWithExtraArgsBooleanFlag() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			// Use HashMap to allow null values
 			Map<String, String> extraArgs = new java.util.HashMap<>();
@@ -595,7 +595,7 @@ class BidirectionalTransportTest {
 			CLIOptions options = CLIOptions.builder().extraArgs(extraArgs).build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then - boolean flag should be present without a value
 			assertThat(command).contains("--debug-to-stderr");
@@ -613,8 +613,8 @@ class BidirectionalTransportTest {
 		@DisplayName("Should store user option in CLIOptions")
 		void buildCommandWithUser() {
 			// Given - user wrapping is done at startSession time, not in
-			// buildBidirectionalCommand
-			// The buildBidirectionalCommand only generates CLI flags, the
+			// buildStreamingCommand
+			// The buildStreamingCommand only generates CLI flags, the
 			// wrapCommandForUser
 			// is called separately in startSession(). This test verifies the option is
 			// stored.
@@ -628,7 +628,7 @@ class BidirectionalTransportTest {
 		@DisplayName("Should include all advanced options together")
 		void buildCommandWithAllAdvancedOptions() {
 			// Given
-			BidirectionalTransport transport = new BidirectionalTransport(tempDir, Duration.ofMinutes(5),
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
 					"/usr/bin/claude");
 			CLIOptions options = CLIOptions.builder()
 				.model("claude-sonnet-4-5")
@@ -639,7 +639,7 @@ class BidirectionalTransportTest {
 				.build();
 
 			// When
-			List<String> command = transport.buildBidirectionalCommand(options);
+			List<String> command = transport.buildStreamingCommand(options);
 
 			// Then - all options should be present
 			assertThat(command).contains("--add-dir", "/workspace");
