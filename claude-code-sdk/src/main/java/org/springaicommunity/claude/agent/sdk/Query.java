@@ -17,14 +17,16 @@
 package org.springaicommunity.claude.agent.sdk;
 
 import org.springaicommunity.claude.agent.sdk.exceptions.ClaudeSDKException;
+import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
-import org.springaicommunity.claude.agent.sdk.transport.CLITransport;
 import org.springaicommunity.claude.agent.sdk.types.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -214,20 +216,34 @@ public class Query {
 
 	/**
 	 * Executes a synchronous query with specified options and working directory.
+	 *
+	 * <p>
+	 * This method uses {@link ClaudeSyncClient} internally, providing unified transport
+	 * layer handling across all SDK APIs.
+	 * </p>
 	 */
 	public static QueryResult execute(String prompt, CLIOptions options, Path workingDirectory)
 			throws ClaudeSDKException {
 
 		logger.info("Executing query with prompt length: {}", prompt.length());
 
-		try (CLITransport transport = new CLITransport(workingDirectory, options.getTimeout())) {
-			// Validate CLI availability
-			if (!transport.isAvailable()) {
-				throw new ClaudeSDKException("Claude CLI is not available");
-			}
+		try (ClaudeSyncClient client = ClaudeClient.sync(options)
+			.workingDirectory(workingDirectory)
+			.timeout(options.getTimeout())
+			.build()) {
 
-			// Execute the query
-			List<Message> messages = transport.executeQuery(prompt, options);
+			// Connect with prompt
+			client.connect(prompt);
+
+			// Collect all messages from response
+			List<Message> messages = new ArrayList<>();
+			Iterator<ParsedMessage> response = client.receiveResponse();
+			while (response.hasNext()) {
+				ParsedMessage parsed = response.next();
+				if (parsed.isRegularMessage()) {
+					messages.add(parsed.asMessage());
+				}
+			}
 
 			// Process messages to build domain-rich result
 			return buildQueryResult(messages, options);
