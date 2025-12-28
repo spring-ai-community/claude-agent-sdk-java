@@ -72,11 +72,18 @@ System.out.println("Duration: " + result.metadata().getDuration().toMillis() + "
 Stream responses in real-time using Project Reactor:
 
 ```java
-ReactiveQuery.query("Explain recursion.")
+ClaudeAsyncClient asyncClient = ClaudeClient.async()
+    .workingDirectory(Path.of("."))
+    .model(CLIOptions.MODEL_HAIKU)
+    .permissionMode(PermissionMode.BYPASS_PERMISSIONS)
+    .build();
+
+asyncClient.queryAndReceive("Explain recursion.")
     .filter(msg -> msg instanceof AssistantMessage)
     .flatMap(msg -> ((AssistantMessage) msg).getTextContent()
         .map(Mono::just).orElse(Mono.empty()))
     .doOnNext(System.out::print)
+    .doFinally(s -> asyncClient.close().subscribe())
     .subscribe();
 ```
 
@@ -97,24 +104,19 @@ hookRegistry.registerPreToolUse("Bash", input -> {
     return HookOutput.allow();
 });
 
-CLIOptions options = CLIOptions.builder()
-    .model(CLIOptions.MODEL_HAIKU)
-    .permissionMode(PermissionMode.DEFAULT)  // Required for hooks
-    .build();
-
-try (DefaultClaudeSession session = DefaultClaudeSession.builder()
+try (ClaudeSyncClient session = ClaudeClient.sync()
         .workingDirectory(Path.of("."))
-        .options(options)
+        .model(CLIOptions.MODEL_HAIKU)
+        .permissionMode(PermissionMode.DEFAULT)  // Required for hooks
         .hookRegistry(hookRegistry)
         .build()) {
 
     session.connect("Run: echo 'Hello!'");
 
-    try (MessageReceiver receiver = session.responseReceiver()) {
-        ParsedMessage msg;
-        while ((msg = receiver.next()) != null) {
-            // Process messages
-        }
+    Iterator<ParsedMessage> response = session.receiveResponse();
+    while (response.hasNext()) {
+        ParsedMessage msg = response.next();
+        // Process messages
     }
 }
 ```
@@ -126,8 +128,8 @@ try (DefaultClaudeSession session = DefaultClaudeSession.builder()
 | One-shot | `Query.text()` | Simple questions |
 | With options | `Query.text(prompt, options)` | Custom model/prompts |
 | Full result | `Query.execute()` | Need metadata |
-| Streaming | `ReactiveQuery.query()` | Real-time output |
-| Multi-turn | `ClaudeSession` | Conversations |
+| Streaming | `ClaudeAsyncClient` | Real-time output |
+| Multi-turn | `ClaudeSyncClient` | Conversations |
 | Tool interception | `HookRegistry` | Security/validation |
 
 ## Expected Output

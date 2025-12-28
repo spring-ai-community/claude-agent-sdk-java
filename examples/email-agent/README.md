@@ -111,8 +111,8 @@ email-agent/
 
 ## SDK Features Demonstrated
 
-- `ReactiveQuery.query()` - Streaming message responses
-- `QueryOptions.builder()` - Custom system prompts, timeouts
+- `ClaudeAsyncClient` - Streaming message responses
+- `ClaudeClient.async()` - Custom system prompts, timeouts
 - `Flux<String>` + Vaadin `@Push` - Real-time streaming updates
 - Tool use feedback - Shows `*Using tool: ...*` during execution
 

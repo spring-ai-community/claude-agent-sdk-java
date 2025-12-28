@@ -30,7 +30,7 @@ import java.util.List;
  *
  * <p>
  * For advanced features like hooks, MCP servers, or multi-turn sessions, use
- * {@link org.springaicommunity.claude.agent.sdk.session.ClaudeSession} instead.
+ * {@link ClaudeSyncClient} or {@link ClaudeAsyncClient} instead.
  *
  * <p>
  * Example usage:

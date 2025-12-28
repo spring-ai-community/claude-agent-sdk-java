@@ -160,7 +160,7 @@ class HelloWorldTest {
 			});
 
 			assertThat(registry.hasHooks()).isTrue();
-			// Actual execution happens in DefaultClaudeSession
+			// Actual execution happens in ClaudeSyncClient
 		}
 
 		@Test

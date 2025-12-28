@@ -16,11 +16,11 @@
 
 package org.springaicommunity.claude.agent.examples.research;
 
+import org.springaicommunity.claude.agent.sdk.ClaudeClient;
+import org.springaicommunity.claude.agent.sdk.ClaudeSyncClient;
 import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.hooks.HookRegistry;
 import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
-import org.springaicommunity.claude.agent.sdk.session.DefaultClaudeSession;
-import org.springaicommunity.claude.agent.sdk.streaming.MessageReceiver;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
 import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
 import org.springaicommunity.claude.agent.sdk.types.TextBlock;
@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -131,9 +132,8 @@ public class ResearchAgent {
 					.build();
 
 				// Create session with hooks
-				try (DefaultClaudeSession session = DefaultClaudeSession.builder()
+				try (ClaudeSyncClient session = ClaudeClient.sync(cliOptions)
 					.workingDirectory(Path.of(System.getProperty("user.dir")))
-					.options(cliOptions)
 					.hookRegistry(hookRegistry)
 					.build()) {
 
@@ -159,15 +159,14 @@ public class ResearchAgent {
 
 						// Process response
 						System.out.print("\nAgent: ");
-						try (MessageReceiver receiver = session.responseReceiver()) {
-							ParsedMessage msg;
-							while ((msg = receiver.next()) != null) {
-								if (msg.isRegularMessage() && msg.asMessage() instanceof AssistantMessage assistant) {
-									// Print text content
-									for (var block : assistant.content()) {
-										if (block instanceof TextBlock textBlock) {
-											System.out.print(textBlock.text());
-										}
+						Iterator<ParsedMessage> response = session.receiveResponse();
+						while (response.hasNext()) {
+							ParsedMessage msg = response.next();
+							if (msg.isRegularMessage() && msg.asMessage() instanceof AssistantMessage assistant) {
+								// Print text content
+								for (var block : assistant.content()) {
+									if (block instanceof TextBlock textBlock) {
+										System.out.print(textBlock.text());
 									}
 								}
 							}

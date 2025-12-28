@@ -8,12 +8,11 @@ import java.time.Duration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springaicommunity.claude.agent.sdk.ReactiveQuery;
-import org.springaicommunity.claude.agent.sdk.QueryOptions;
+import org.springaicommunity.claude.agent.sdk.ClaudeAsyncClient;
+import org.springaicommunity.claude.agent.sdk.ClaudeClient;
+import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
 import org.springaicommunity.claude.agent.sdk.types.Message;
-import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
-import org.springaicommunity.claude.agent.sdk.types.SystemMessage;
 import org.springaicommunity.claude.agent.sdk.types.ToolUseBlock;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ import reactor.core.publisher.Mono;
 /**
  * Service for interacting with Claude via the Claude Agent SDK.
  *
- * <p>Wraps ReactiveQuery to provide streaming text responses suitable for
+ * <p>Uses ClaudeAsyncClient to provide streaming text responses suitable for
  * Vaadin UI integration with proper thread-safety patterns.
  */
 @Service
@@ -54,24 +53,22 @@ public class ClaudeService {
 	 * @return Flux of text chunks
 	 */
 	public Flux<String> streamText(String prompt, Path workingDirectory) {
-		QueryOptions.Builder optionsBuilder = QueryOptions.builder()
-			.systemPrompt(SYSTEM_PROMPT)
-			.timeout(Duration.ofMinutes(10)); // Longer timeout for complex queries
-
-		if (workingDirectory != null) {
-			optionsBuilder.workingDirectory(workingDirectory);
-		}
-
-		QueryOptions options = optionsBuilder.build();
-
 		log.info("========================================");
 		log.info("STARTING CLAUDE QUERY");
 		log.info("Prompt: {}", truncate(prompt, 200));
 		log.info("Timeout: 10 minutes");
 		log.info("========================================");
 
-		return ReactiveQuery.query(prompt, options)
-			.doOnSubscribe(s -> log.info("[STREAM] Subscribed to ReactiveQuery"))
+		Path effectiveWorkDir = workingDirectory != null ? workingDirectory : Path.of(System.getProperty("user.dir"));
+		ClaudeAsyncClient client = ClaudeClient.async()
+			.workingDirectory(effectiveWorkDir)
+			.systemPrompt(SYSTEM_PROMPT)
+			.timeout(Duration.ofMinutes(10))
+			.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
+			.build();
+
+		return client.queryAndReceive(prompt)
+			.doOnSubscribe(s -> log.info("[STREAM] Subscribed to ClaudeAsyncClient"))
 			.doOnNext(msg -> log.info("[STREAM] Message received: type={}", msg.getClass().getSimpleName()))
 			.filter(msg -> msg instanceof AssistantMessage)
 			.doOnNext(msg -> log.info("[STREAM] AssistantMessage passed filter"))
@@ -107,7 +104,10 @@ public class ClaudeService {
 			.doOnNext(text -> log.info("[OUTPUT] Emitting chunk: {} chars", text.length()))
 			.doOnComplete(() -> log.info("[STREAM] Query COMPLETED successfully"))
 			.doOnError(error -> log.error("[STREAM] Query ERROR: {}", error.getMessage(), error))
-			.doFinally(signal -> log.info("[STREAM] Final signal: {}", signal));
+			.doFinally(signal -> {
+				log.info("[STREAM] Final signal: {}", signal);
+				client.close().subscribe();
+			});
 	}
 
 	/**
@@ -117,12 +117,9 @@ public class ClaudeService {
 	 * @return Mono containing the complete response text
 	 */
 	public Mono<String> getText(String prompt) {
-		QueryOptions options = QueryOptions.builder()
-			.systemPrompt(SYSTEM_PROMPT)
-			.timeout(Duration.ofMinutes(10))
-			.build();
-
-		return ReactiveQuery.text(prompt, options);
+		return streamText(prompt)
+			.reduce(new StringBuilder(), StringBuilder::append)
+			.map(StringBuilder::toString);
 	}
 
 	/**
@@ -135,12 +132,15 @@ public class ClaudeService {
 	 * @return Flux of all messages
 	 */
 	public Flux<Message> streamMessages(String prompt) {
-		QueryOptions options = QueryOptions.builder()
+		ClaudeAsyncClient client = ClaudeClient.async()
+			.workingDirectory(Path.of(System.getProperty("user.dir")))
 			.systemPrompt(SYSTEM_PROMPT)
 			.timeout(Duration.ofMinutes(10))
+			.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
 			.build();
 
-		return ReactiveQuery.query(prompt, options);
+		return client.queryAndReceive(prompt)
+			.doFinally(signal -> client.close().subscribe());
 	}
 
 	/**

@@ -81,22 +81,24 @@ currentStream = claudeService.streamText(prompt)
 ```java
 // Stream text responses
 public Flux<String> streamText(String prompt) {
-    QueryOptions options = QueryOptions.builder()
+    ClaudeAsyncClient client = ClaudeClient.async()
+        .workingDirectory(Path.of("."))
         .systemPrompt(SYSTEM_PROMPT)
+        .permissionMode(PermissionMode.BYPASS_PERMISSIONS)
         .build();
 
-    // Pass prompt as first argument to ReactiveQuery
-    return ReactiveQuery.query(prompt, options)
+    return client.queryAndReceive(prompt)
         .filter(msg -> msg instanceof AssistantMessage)
         .flatMap(msg -> ((AssistantMessage) msg).getTextContent()
-            .map(Mono::just).orElse(Mono.empty()));
+            .map(Mono::just).orElse(Mono.empty()))
+        .doFinally(s -> client.close().subscribe());
 }
 ```
 
 ## SDK Features Demonstrated
 
-- `ReactiveQuery.query()` - Streaming message responses
-- `QueryOptions.builder()` - Custom system prompts
+- `ClaudeAsyncClient` - Streaming message responses
+- `ClaudeClient.async()` - Custom system prompts
 - `Flux<String>` + Vaadin `@Push` - Real-time streaming updates
 
 ## Technology Stack

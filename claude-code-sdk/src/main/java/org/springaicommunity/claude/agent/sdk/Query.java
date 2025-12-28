@@ -38,7 +38,7 @@ import java.util.stream.Stream;
  * <p>
  * This class corresponds to the {@code query()} function in the Python SDK. For
  * multi-turn conversations, hooks, or MCP integration, use
- * {@link org.springaicommunity.claude.agent.sdk.session.ClaudeSession} instead.
+ * {@link ClaudeSyncClient} or {@link ClaudeAsyncClient} instead.
  *
  * <h2>Quick Start</h2>
  *
@@ -71,7 +71,8 @@ import java.util.stream.Stream;
  *
  * @see QueryOptions
  * @see QueryResult
- * @see org.springaicommunity.claude.agent.sdk.session.ClaudeSession
+ * @see ClaudeSyncClient
+ * @see ClaudeAsyncClient
  */
 public class Query {
 

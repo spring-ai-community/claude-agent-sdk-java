@@ -3,12 +3,14 @@ package org.springaicommunity.claude.agent.examples.email.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.time.Duration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springaicommunity.claude.agent.sdk.ReactiveQuery;
-import org.springaicommunity.claude.agent.sdk.QueryOptions;
+import org.springaicommunity.claude.agent.sdk.ClaudeAsyncClient;
+import org.springaicommunity.claude.agent.sdk.ClaudeClient;
+import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
 import org.springaicommunity.claude.agent.sdk.types.ToolUseBlock;
 import org.springframework.stereotype.Service;
@@ -30,18 +32,20 @@ public class ClaudeService {
 	 * Streams text responses from Claude for the given prompt.
 	 */
 	public Flux<String> streamText(String prompt) {
-		QueryOptions options = QueryOptions.builder()
-			.systemPrompt(SYSTEM_PROMPT)
-			.timeout(Duration.ofMinutes(10))
-			.build();
-
 		log.info("========================================");
 		log.info("STARTING CLAUDE QUERY");
 		log.info("Prompt: {}", truncate(prompt, 200));
 		log.info("========================================");
 
-		return ReactiveQuery.query(prompt, options)
-			.doOnSubscribe(s -> log.info("[STREAM] Subscribed to ReactiveQuery"))
+		ClaudeAsyncClient client = ClaudeClient.async()
+			.workingDirectory(Path.of(System.getProperty("user.dir")))
+			.systemPrompt(SYSTEM_PROMPT)
+			.timeout(Duration.ofMinutes(10))
+			.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
+			.build();
+
+		return client.queryAndReceive(prompt)
+			.doOnSubscribe(s -> log.info("[STREAM] Subscribed to ClaudeAsyncClient"))
 			.doOnNext(msg -> log.debug("[STREAM] Message: {}", msg.getClass().getSimpleName()))
 			.filter(msg -> msg instanceof AssistantMessage)
 			.flatMap(msg -> {
@@ -63,7 +67,8 @@ public class ClaudeService {
 					.orElse(Mono.empty());
 			})
 			.doOnComplete(() -> log.info("[STREAM] Query COMPLETED"))
-			.doOnError(error -> log.error("[STREAM] Query ERROR: {}", error.getMessage(), error));
+			.doOnError(error -> log.error("[STREAM] Query ERROR: {}", error.getMessage(), error))
+			.doFinally(signal -> client.close().subscribe());
 	}
 
 	/**

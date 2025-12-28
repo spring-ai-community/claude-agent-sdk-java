@@ -62,7 +62,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * // Register hooks
  * HookRegistry registry = tracker.createHookRegistry();
  *
- * // Use registry with ClaudeSession...
+ * // Use registry with ClaudeSyncClient...
  *
  * // When done
  * tracker.close();

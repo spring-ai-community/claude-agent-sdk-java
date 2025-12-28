@@ -16,22 +16,24 @@
 
 package org.springaicommunity.claude.agent.examples;
 
+import org.springaicommunity.claude.agent.sdk.ClaudeAsyncClient;
+import org.springaicommunity.claude.agent.sdk.ClaudeClient;
+import org.springaicommunity.claude.agent.sdk.ClaudeSyncClient;
 import org.springaicommunity.claude.agent.sdk.Query;
 import org.springaicommunity.claude.agent.sdk.QueryOptions;
-import org.springaicommunity.claude.agent.sdk.ReactiveQuery;
 import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.hooks.HookRegistry;
-import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
-import org.springaicommunity.claude.agent.sdk.session.DefaultClaudeSession;
-import org.springaicommunity.claude.agent.sdk.streaming.MessageReceiver;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
+import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
 import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
+import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.QueryResult;
 import org.springaicommunity.claude.agent.sdk.types.control.HookInput;
 import org.springaicommunity.claude.agent.sdk.types.control.HookOutput;
 
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -96,7 +98,7 @@ public class HelloWorld {
 			System.out.println();
 
 			// ============================================================
-			// 4. REACTIVE STREAMING
+			// 4. REACTIVE STREAMING (using ClaudeAsyncClient)
 			// ============================================================
 			System.out.println("4. Reactive Streaming:");
 			System.out.println("-".repeat(50));
@@ -105,7 +107,15 @@ public class HelloWorld {
 			CountDownLatch streamLatch = new CountDownLatch(1);
 			AtomicInteger charCount = new AtomicInteger(0);
 
-			ReactiveQuery.query("Explain recursion in 2 sentences.")
+			ClaudeAsyncClient asyncClient = ClaudeClient.async()
+				.workingDirectory(Path.of(System.getProperty("user.dir")))
+				.model(CLIOptions.MODEL_HAIKU)
+				.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
+				.timeout(Duration.ofMinutes(2))
+				.build();
+
+			asyncClient.connect("Explain recursion in 2 sentences.")
+				.thenMany(asyncClient.receiveResponse())
 				.filter(msg -> msg instanceof AssistantMessage)
 				.flatMap(msg -> ((AssistantMessage) msg).getTextContent().map(reactor.core.publisher.Mono::just)
 					.orElse(reactor.core.publisher.Mono.empty()))
@@ -122,6 +132,7 @@ public class HelloWorld {
 					System.err.println("Stream error: " + e.getMessage());
 					streamLatch.countDown();
 				})
+				.doFinally(s -> asyncClient.close().subscribe())
 				.subscribe();
 
 			// Wait for streaming to complete
@@ -129,7 +140,7 @@ public class HelloWorld {
 			System.out.println();
 
 			// ============================================================
-			// 5. SESSION WITH PRE-TOOL-USE HOOK
+			// 5. SESSION WITH PRE-TOOL-USE HOOK (using ClaudeSyncClient)
 			// ============================================================
 			System.out.println("5. Session with PreToolUse Hook:");
 			System.out.println("-".repeat(50));
@@ -160,29 +171,26 @@ public class HelloWorld {
 				return HookOutput.allow();
 			});
 
-			// Build CLI options with DEFAULT permission mode (required for hooks)
-			CLIOptions cliOptions = CLIOptions.builder()
-				.model(CLIOptions.MODEL_HAIKU)
-				.permissionMode(PermissionMode.DEFAULT)
-				.build();
-
-			// Create and use a session with hooks
-			try (DefaultClaudeSession session = DefaultClaudeSession.builder()
+			// Create and use a sync client with hooks
+			try (ClaudeSyncClient syncClient = ClaudeClient.sync()
 				.workingDirectory(Path.of(System.getProperty("user.dir")))
-				.options(cliOptions)
+				.model(CLIOptions.MODEL_HAIKU)
+				.permissionMode(PermissionMode.DEFAULT)  // Required for hooks
 				.hookRegistry(hookRegistry)
 				.timeout(Duration.ofMinutes(2))
 				.build()) {
 
 				// Connect with a prompt that triggers tool use
-				session.connect("Run this bash command: echo 'Hello from hooks!'");
+				syncClient.connect("Run this bash command: echo 'Hello from hooks!'");
 
 				// Process messages from the response
 				System.out.println("\nSession response:");
-				try (MessageReceiver receiver = session.responseReceiver()) {
-					ParsedMessage msg;
-					while ((msg = receiver.next()) != null) {
-						if (msg.isRegularMessage() && msg.asMessage() instanceof AssistantMessage assistant) {
+				Iterator<ParsedMessage> response = syncClient.receiveResponse();
+				while (response.hasNext()) {
+					ParsedMessage parsed = response.next();
+					if (parsed.isRegularMessage()) {
+						Message msg = parsed.asMessage();
+						if (msg instanceof AssistantMessage assistant) {
 							assistant.getTextContent().ifPresent(text -> System.out.println("Claude: " + text));
 						}
 					}

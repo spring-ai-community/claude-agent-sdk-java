@@ -129,7 +129,7 @@ SubagentTracker tracker = new SubagentTracker(sessionDir);
 HookRegistry registry = tracker.createHookRegistry();
 
 // Use with session
-DefaultClaudeSession session = DefaultClaudeSession.builder()
+ClaudeSyncClient session = ClaudeClient.sync(cliOptions)
     .hookRegistry(registry)
     .build();
 ```
@@ -147,8 +147,8 @@ The tracker registers PreToolUse and PostToolUse hooks:
 |---------|----------------|---------|
 | AgentDefinition | `AgentDefinition.java` | Define subagent capabilities |
 | Hook Registration | `SubagentTracker.createHookRegistry()` | Track all tool calls |
-| Session with Hooks | `DefaultClaudeSession.builder().hookRegistry()` | Enable hook callbacks |
-| Multi-turn | `session.query()` + `session.responseReceiver()` | Interactive conversation |
+| Session with Hooks | `ClaudeClient.sync().hookRegistry()` | Enable hook callbacks |
+| Multi-turn | `session.query()` + `session.receiveResponse()` | Interactive conversation |
 
 ## Prompts
 
