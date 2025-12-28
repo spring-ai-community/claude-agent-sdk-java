@@ -551,4 +551,304 @@ public interface ClaudeClient {
 
 	}
 
+	// ========================================================================
+	// Async Client Factory Methods
+	// ========================================================================
+
+	/**
+	 * Start building an asynchronous Claude client with fluent configuration.
+	 *
+	 * <p>
+	 * Use this method when you want to configure CLI options (model, system prompt,
+	 * tools, etc.) via the fluent builder API. For pre-built CLIOptions, use
+	 * {@link #async(CLIOptions)} instead.
+	 * </p>
+	 *
+	 * <p>
+	 * The asynchronous client returns reactive types ({@link reactor.core.publisher.Mono}
+	 * and {@link reactor.core.publisher.Flux}) for non-blocking operations.
+	 * </p>
+	 * @return A new builder instance for configuring the asynchronous client
+	 * @see #async(CLIOptions)
+	 * @see ClaudeAsyncClient
+	 */
+	static AsyncSpec async() {
+		return new AsyncSpec();
+	}
+
+	/**
+	 * Start building an asynchronous Claude client with pre-configured CLI options.
+	 *
+	 * <p>
+	 * Use this method when you have a pre-built {@link CLIOptions} object. The returned
+	 * builder only exposes session-level configuration (working directory, timeout,
+	 * hooks) since CLI options are already provided.
+	 * </p>
+	 * @param options the pre-configured CLI options
+	 * @return A new builder instance for session-level configuration only
+	 * @see #async()
+	 * @see ClaudeAsyncClient
+	 */
+	static AsyncSpecWithOptions async(CLIOptions options) {
+		return new AsyncSpecWithOptions(options);
+	}
+
+	/**
+	 * Fluent builder for creating a {@link ClaudeAsyncClient} with full configuration control.
+	 *
+	 * <p>
+	 * Use this builder when you want to configure all options inline using method chaining.
+	 * This is the recommended approach for most use cases.
+	 * </p>
+	 *
+	 * <p>
+	 * The configuration options are identical to {@link SyncSpec} - see that class for
+	 * detailed documentation of each option.
+	 * </p>
+	 *
+	 * <h2>Example</h2>
+	 * <pre>{@code
+	 * ClaudeAsyncClient client = ClaudeClient.async()
+	 *     .workingDirectory(Path.of("."))
+	 *     .model("claude-sonnet-4-20250514")
+	 *     .systemPrompt("You are a helpful assistant")
+	 *     .timeout(Duration.ofMinutes(5))
+	 *     .build();
+	 *
+	 * client.connect("Hello!")
+	 *     .thenMany(client.receiveResponse())
+	 *     .subscribe(msg -> System.out.println(msg));
+	 * }</pre>
+	 *
+	 * @see #async()
+	 * @see AsyncSpecWithOptions
+	 * @see ClaudeAsyncClient
+	 */
+	class AsyncSpec {
+
+		private Path workingDirectory;
+
+		private Duration timeout = Duration.ofMinutes(10);
+
+		private String claudePath;
+
+		private HookRegistry hookRegistry;
+
+		// CLIOptions fields
+		private String model;
+
+		private String systemPrompt;
+
+		private String appendSystemPrompt;
+
+		private Integer maxTokens;
+
+		private Integer maxThinkingTokens;
+
+		private List<String> tools;
+
+		private List<String> allowedTools = new ArrayList<>();
+
+		private List<String> disallowedTools = new ArrayList<>();
+
+		private PermissionMode permissionMode = PermissionMode.DEFAULT;
+
+		private Integer maxTurns;
+
+		private Double maxBudgetUsd;
+
+		private Map<String, McpServerConfig> mcpServers = new HashMap<>();
+
+		AsyncSpec() {
+		}
+
+		public AsyncSpec workingDirectory(Path workingDirectory) {
+			this.workingDirectory = workingDirectory;
+			return this;
+		}
+
+		public AsyncSpec timeout(Duration timeout) {
+			this.timeout = timeout;
+			return this;
+		}
+
+		public AsyncSpec claudePath(String claudePath) {
+			this.claudePath = claudePath;
+			return this;
+		}
+
+		public AsyncSpec hookRegistry(HookRegistry hookRegistry) {
+			this.hookRegistry = hookRegistry;
+			return this;
+		}
+
+		public AsyncSpec model(String model) {
+			this.model = model;
+			return this;
+		}
+
+		public AsyncSpec systemPrompt(String systemPrompt) {
+			this.systemPrompt = systemPrompt;
+			return this;
+		}
+
+		public AsyncSpec appendSystemPrompt(String appendSystemPrompt) {
+			this.appendSystemPrompt = appendSystemPrompt;
+			return this;
+		}
+
+		public AsyncSpec maxTokens(Integer maxTokens) {
+			this.maxTokens = maxTokens;
+			return this;
+		}
+
+		public AsyncSpec maxThinkingTokens(Integer maxThinkingTokens) {
+			this.maxThinkingTokens = maxThinkingTokens;
+			return this;
+		}
+
+		public AsyncSpec tools(List<String> tools) {
+			this.tools = tools;
+			return this;
+		}
+
+		public AsyncSpec allowedTools(List<String> allowedTools) {
+			this.allowedTools = new ArrayList<>(allowedTools);
+			return this;
+		}
+
+		public AsyncSpec disallowedTools(List<String> disallowedTools) {
+			this.disallowedTools = new ArrayList<>(disallowedTools);
+			return this;
+		}
+
+		public AsyncSpec permissionMode(PermissionMode permissionMode) {
+			this.permissionMode = permissionMode;
+			return this;
+		}
+
+		public AsyncSpec maxTurns(Integer maxTurns) {
+			this.maxTurns = maxTurns;
+			return this;
+		}
+
+		public AsyncSpec maxBudgetUsd(Double maxBudgetUsd) {
+			this.maxBudgetUsd = maxBudgetUsd;
+			return this;
+		}
+
+		public AsyncSpec mcpServer(String name, McpServerConfig config) {
+			this.mcpServers.put(name, config);
+			return this;
+		}
+
+		public AsyncSpec mcpServers(Map<String, McpServerConfig> mcpServers) {
+			this.mcpServers = new HashMap<>(mcpServers);
+			return this;
+		}
+
+		/**
+		 * Builds and returns the configured ClaudeAsyncClient.
+		 * @return a new ClaudeAsyncClient instance
+		 * @throws IllegalArgumentException if workingDirectory is not set
+		 */
+		public ClaudeAsyncClient build() {
+			if (workingDirectory == null) {
+				throw new IllegalArgumentException("workingDirectory is required");
+			}
+
+			CLIOptions options = CLIOptions.builder()
+				.model(model)
+				.systemPrompt(systemPrompt)
+				.appendSystemPrompt(appendSystemPrompt)
+				.maxTokens(maxTokens)
+				.maxThinkingTokens(maxThinkingTokens)
+				.tools(tools)
+				.allowedTools(allowedTools)
+				.disallowedTools(disallowedTools)
+				.permissionMode(permissionMode)
+				.maxTurns(maxTurns)
+				.maxBudgetUsd(maxBudgetUsd)
+				.mcpServers(mcpServers)
+				.build();
+
+			return new DefaultClaudeAsyncClient(workingDirectory, options, timeout, claudePath, hookRegistry);
+		}
+
+	}
+
+	/**
+	 * Builder for creating a {@link ClaudeAsyncClient} with pre-configured CLI options.
+	 *
+	 * <p>
+	 * Use this builder when you have a pre-built {@link CLIOptions} object and only need to
+	 * configure session-level settings.
+	 * </p>
+	 *
+	 * <h2>Example</h2>
+	 * <pre>{@code
+	 * CLIOptions options = CLIOptions.builder()
+	 *     .model("claude-sonnet-4-20250514")
+	 *     .build();
+	 *
+	 * ClaudeAsyncClient client = ClaudeClient.async(options)
+	 *     .workingDirectory(Path.of("."))
+	 *     .timeout(Duration.ofMinutes(5))
+	 *     .build();
+	 * }</pre>
+	 *
+	 * @see #async(CLIOptions)
+	 * @see AsyncSpec
+	 * @see CLIOptions
+	 */
+	class AsyncSpecWithOptions {
+
+		private final CLIOptions options;
+
+		private Path workingDirectory;
+
+		private Duration timeout = Duration.ofMinutes(10);
+
+		private String claudePath;
+
+		private HookRegistry hookRegistry;
+
+		AsyncSpecWithOptions(CLIOptions options) {
+			this.options = options;
+		}
+
+		public AsyncSpecWithOptions workingDirectory(Path workingDirectory) {
+			this.workingDirectory = workingDirectory;
+			return this;
+		}
+
+		public AsyncSpecWithOptions timeout(Duration timeout) {
+			this.timeout = timeout;
+			return this;
+		}
+
+		public AsyncSpecWithOptions claudePath(String claudePath) {
+			this.claudePath = claudePath;
+			return this;
+		}
+
+		public AsyncSpecWithOptions hookRegistry(HookRegistry hookRegistry) {
+			this.hookRegistry = hookRegistry;
+			return this;
+		}
+
+		/**
+		 * Builds and returns the configured ClaudeAsyncClient.
+		 * @return a new ClaudeAsyncClient instance
+		 * @throws IllegalArgumentException if workingDirectory is not set
+		 */
+		public ClaudeAsyncClient build() {
+			if (workingDirectory == null) {
+				throw new IllegalArgumentException("workingDirectory is required");
+			}
+			return new DefaultClaudeAsyncClient(workingDirectory, options, timeout, claudePath, hookRegistry);
+		}
+
+	}
+
 }
