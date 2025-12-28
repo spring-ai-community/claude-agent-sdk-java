@@ -23,6 +23,7 @@ import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.test.ClaudeCliTestBase;
 import org.springaicommunity.claude.agent.sdk.transport.StreamingTransport;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
+import org.springaicommunity.claude.agent.sdk.transport.ToolPermissionCallback;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
 import org.springaicommunity.claude.agent.sdk.types.control.ControlRequest;
@@ -93,7 +94,13 @@ class PermissionIntegrationIT extends ClaudeCliTestBase {
 		List<String> callbackInvocations = new CopyOnWriteArrayList<>();
 		CountDownLatch resultLatch = new CountDownLatch(1);
 
-		CLIOptions options = CLIOptions.builder().model(HAIKU_MODEL).permissionMode(PermissionMode.DEFAULT).build();
+		// NOTE: permissionPromptToolName("stdio") is required to enable can_use_tool requests
+		// This tells the CLI to send permission requests via stdin/stdout control protocol
+		CLIOptions options = CLIOptions.builder()
+			.model(HAIKU_MODEL)
+			.permissionMode(PermissionMode.DEFAULT)
+			.permissionPromptToolName("stdio")
+			.build();
 
 		withTransport(options, (transport, opts) -> {
 			// Tool-forcing prompt to trigger Write tool
@@ -156,7 +163,12 @@ class PermissionIntegrationIT extends ClaudeCliTestBase {
 		CountDownLatch resultLatch = new CountDownLatch(1);
 
 		// Use Sonnet for more reliable tool use behavior
-		CLIOptions options = CLIOptions.builder().model(SONNET_MODEL).permissionMode(PermissionMode.DEFAULT).build();
+		// NOTE: permissionPromptToolName("stdio") enables can_use_tool control protocol
+		CLIOptions options = CLIOptions.builder()
+			.model(SONNET_MODEL)
+			.permissionMode(PermissionMode.DEFAULT)
+			.permissionPromptToolName("stdio")
+			.build();
 
 		withTransport(options, (transport, opts) -> {
 			// Use explicit tool-forcing prompt that reliably triggers Write tool
@@ -216,7 +228,12 @@ class PermissionIntegrationIT extends ClaudeCliTestBase {
 		AtomicReference<String> capturedToolName = new AtomicReference<>();
 		CountDownLatch resultLatch = new CountDownLatch(1);
 
-		CLIOptions options = CLIOptions.builder().model(HAIKU_MODEL).permissionMode(PermissionMode.DEFAULT).build();
+		// NOTE: permissionPromptToolName("stdio") enables can_use_tool control protocol
+		CLIOptions options = CLIOptions.builder()
+			.model(HAIKU_MODEL)
+			.permissionMode(PermissionMode.DEFAULT)
+			.permissionPromptToolName("stdio")
+			.build();
 
 		withTransport(options, (transport, opts) -> {
 			transport.startSession("Read the file /etc/hostname", opts, message -> {
@@ -305,7 +322,12 @@ class PermissionIntegrationIT extends ClaudeCliTestBase {
 
 		// Note: Do NOT include Bash in allowedTools - we want permission callback to be
 		// triggered
-		CLIOptions options = CLIOptions.builder().model(HAIKU_MODEL).permissionMode(PermissionMode.DEFAULT).build();
+		// NOTE: permissionPromptToolName("stdio") enables can_use_tool control protocol
+		CLIOptions options = CLIOptions.builder()
+			.model(HAIKU_MODEL)
+			.permissionMode(PermissionMode.DEFAULT)
+			.permissionPromptToolName("stdio")
+			.build();
 
 		withTransport(options, (transport, opts) -> {
 			// Use a prompt that reliably triggers tool use (file operations work well)
@@ -340,6 +362,64 @@ class PermissionIntegrationIT extends ClaudeCliTestBase {
 			// Verify tool permission callback was invoked (could be Bash or Write)
 			System.out.println("Callback invocations: " + callbackInvocations);
 			assertThat(callbackInvocations).as("Permission callback should have been invoked for file operation")
+				.isNotEmpty();
+		});
+	}
+
+	/**
+	 * Tests that toolPermissionCallback auto-enables --permission-prompt-tool stdio.
+	 * This matches Python SDK behavior where can_use_tool callback automatically
+	 * sets permission_prompt_tool_name="stdio".
+	 */
+	@Test
+	@DisplayName("ToolPermissionCallback auto-enables permission prompt tool")
+	void toolPermissionCallbackAutoEnablesPermissionPrompt() throws Exception {
+		// Given - track callback invocations via ToolPermissionCallback
+		List<String> callbackInvocations = new CopyOnWriteArrayList<>();
+		CountDownLatch resultLatch = new CountDownLatch(1);
+
+		// NOTE: Do NOT set permissionPromptToolName - auto-detection should enable it
+		CLIOptions options = CLIOptions.builder()
+			.model(HAIKU_MODEL)
+			.permissionMode(PermissionMode.DEFAULT)
+			.toolPermissionCallback((toolName, input, context) -> {
+				System.out.println("ToolPermissionCallback invoked for: " + toolName);
+				callbackInvocations.add(toolName);
+				return java.util.concurrent.CompletableFuture.completedFuture(
+					ToolPermissionCallback.ToolPermissionResult.allow());
+			})
+			.build();
+
+		withTransport(options, (transport, opts) -> {
+			transport.startSession("Write 'auto-detect test' to /tmp/autodetect.txt", opts, message -> {
+				System.out.println("Got message: " + message);
+				if (message.isRegularMessage() && message.asMessage() instanceof ResultMessage) {
+					resultLatch.countDown();
+				}
+			}, request -> {
+				// Handle control requests - the transport should invoke toolPermissionCallback
+				// for can_use_tool requests automatically
+				if (request.request() instanceof ControlRequest.CanUseToolRequest canUseTool) {
+					// Let the transport's handleCanUseTool method handle this
+					return transport.handleCanUseTool(request.requestId(), canUseTool);
+				}
+
+				if (request.request() instanceof ControlRequest.HookCallbackRequest) {
+					return ControlResponse.success(request.requestId(),
+							Map.of("hookSpecificOutput", Map.of("permissionDecision", "allow")));
+				}
+
+				return ControlResponse.success(request.requestId(), Map.of("behavior", "allow"));
+			});
+
+			// Wait for completion
+			boolean completed = resultLatch.await(120, TimeUnit.SECONDS);
+			assertThat(completed).as("Should complete within timeout").isTrue();
+
+			// Verify: toolPermissionCallback was invoked (proving auto-detection worked)
+			System.out.println("ToolPermissionCallback invocations: " + callbackInvocations);
+			assertThat(callbackInvocations)
+				.as("ToolPermissionCallback should have been invoked (auto-detection of --permission-prompt-tool stdio)")
 				.isNotEmpty();
 		});
 	}

@@ -546,12 +546,18 @@ public class StreamingTransport implements AutoCloseable {
 			command.add(String.join(",", options.getSettingSources()));
 		}
 
-		// Permission prompt tool - only add if explicitly configured (matches Python SDK)
-		// NOTE: Python SDK does NOT add --permission-prompt-tool unless explicitly set
-		// Adding it unconditionally may affect how --allowedTools restrictions are enforced
-		if (options.getPermissionPromptToolName() != null && !options.getPermissionPromptToolName().isBlank()) {
+		// Permission prompt tool - matches Python SDK auto-detection pattern
+		// Python SDK (client.py lines 68-69): Automatically sets permission_prompt_tool_name="stdio"
+		// when a can_use_tool callback is configured
+		String permissionPromptTool = options.getPermissionPromptToolName();
+		if (permissionPromptTool == null && options.getToolPermissionCallback() != null) {
+			// Auto-detect: toolPermissionCallback requires --permission-prompt-tool stdio
+			permissionPromptTool = "stdio";
+			logger.debug("Auto-enabling --permission-prompt-tool stdio for toolPermissionCallback");
+		}
+		if (permissionPromptTool != null && !permissionPromptTool.isBlank()) {
 			command.add("--permission-prompt-tool");
-			command.add(options.getPermissionPromptToolName());
+			command.add(permissionPromptTool);
 		}
 
 		// Plugins (repeated flag)
