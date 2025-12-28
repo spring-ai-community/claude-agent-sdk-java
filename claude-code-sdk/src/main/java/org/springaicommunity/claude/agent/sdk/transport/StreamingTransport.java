@@ -215,7 +215,9 @@ public class StreamingTransport implements AutoCloseable {
 			.fromExecutorService(Executors.newSingleThreadExecutor(r -> new Thread(r, "claude-error")), "error");
 
 		// Initialize sinks with backpressure
-		this.inboundSink = Sinks.many().unicast().onBackpressureBuffer();
+		// Use replay() to buffer messages for late subscribers in multi-turn conversations
+		// This ensures messages aren't lost between turns when there's no active subscriber
+		this.inboundSink = Sinks.many().replay().all();
 		this.outboundSink = Sinks.many().unicast().onBackpressureBuffer();
 		this.serverInfoSink = Sinks.one();
 	}
@@ -693,6 +695,7 @@ public class StreamingTransport implements AutoCloseable {
 		try {
 			String line;
 			// Use isClosing flag for clean shutdown (MCP pattern)
+			logger.debug("Starting message processing loop, isClosing={}", isClosing);
 			while (!isClosing && (line = stdoutReader.readLine()) != null) {
 				line = line.trim();
 				if (line.isEmpty()) {
@@ -703,9 +706,10 @@ public class StreamingTransport implements AutoCloseable {
 					ParsedMessage parsed = parser.parse(line);
 
 					// Emit to sink for reactive consumers
-					if (!inboundSink.tryEmitNext(parsed).isSuccess()) {
+					Sinks.EmitResult emitResult = inboundSink.tryEmitNext(parsed);
+					if (!emitResult.isSuccess()) {
 						if (!isClosing) {
-							logger.error("Failed to emit inbound message");
+							logger.error("Failed to emit inbound message: result={}", emitResult);
 						}
 						break;
 					}
@@ -748,7 +752,14 @@ public class StreamingTransport implements AutoCloseable {
 				}
 			}
 
-			logger.debug("Message processing loop ended");
+			// Log why loop ended
+			if (isClosing) {
+				logger.debug("Message processing loop ended: isClosing=true");
+			} else if (process != null && !process.isAlive()) {
+				logger.debug("Message processing loop ended: process exited with code {}", process.exitValue());
+			} else {
+				logger.debug("Message processing loop ended: stdout closed");
+			}
 		}
 		catch (IOException e) {
 			if (!isClosing) {
@@ -757,6 +768,7 @@ public class StreamingTransport implements AutoCloseable {
 			}
 		}
 		finally {
+			logger.debug("processInboundMessages finally block, setting isClosing=true");
 			isClosing = true;
 			inboundSink.tryEmitComplete();
 		}
@@ -1033,6 +1045,7 @@ public class StreamingTransport implements AutoCloseable {
 		return Mono.fromRunnable(() -> {
 			// Set isClosing first for immediate visibility to read loops (MCP pattern)
 			isClosing = true;
+			logger.debug("closeGracefully called, setting isClosing=true");
 
 			// State transition to CLOSING
 			int currentState = state.get();
@@ -1084,6 +1097,7 @@ public class StreamingTransport implements AutoCloseable {
 
 		// Set isClosing first for immediate visibility to read loops (MCP pattern)
 		isClosing = true;
+		logger.debug("close() called, setting isClosing=true, currentState={}", getStateName(currentState));
 		state.set(STATE_CLOSING);
 
 		// Complete sinks

@@ -19,6 +19,7 @@ package org.springaicommunity.claude.agent.sdk;
 import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
 import org.springaicommunity.claude.agent.sdk.permission.ToolPermissionCallback;
 import org.springaicommunity.claude.agent.sdk.types.Message;
+import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -153,6 +154,23 @@ public interface ClaudeAsyncClient {
 	 */
 	Flux<Message> receiveResponse();
 
+	/**
+	 * Convenience method combining query and receive into a single turn-scoped operation.
+	 *
+	 * <p>
+	 * This reduces lifecycle complexity for simple use cases. Equivalent to:
+	 * <pre>{@code
+	 * client.query(prompt).thenMany(client.receiveResponse())
+	 * }</pre>
+	 * </p>
+	 *
+	 * @param prompt the query to send
+	 * @return Flux of messages for this turn, completing at ResultMessage
+	 */
+	default Flux<Message> queryAndReceive(String prompt) {
+		return query(prompt).thenMany(receiveResponse());
+	}
+
 	// ========================================================================
 	// Session Control
 	// ========================================================================
@@ -202,6 +220,41 @@ public interface ClaudeAsyncClient {
 	 * @return the current callback, or null if none set
 	 */
 	ToolPermissionCallback getToolPermissionCallback();
+
+	// ========================================================================
+	// Cross-Turn Handlers
+	// ========================================================================
+
+	/**
+	 * Registers a handler that receives all messages across all turns.
+	 *
+	 * <p>
+	 * Use handlers for cross-turn concerns like logging, metrics, or tracing.
+	 * For per-turn processing, use the Flux from {@link #receiveResponse()} instead.
+	 * </p>
+	 *
+	 * <p>
+	 * Handlers are called synchronously before messages are emitted to the turn sink.
+	 * Keep handler logic fast to avoid blocking message processing.
+	 * </p>
+	 *
+	 * @param handler the handler to receive messages
+	 * @return this client for fluent chaining
+	 */
+	ClaudeAsyncClient onMessage(java.util.function.Consumer<Message> handler);
+
+	/**
+	 * Registers a handler that receives result messages across all turns.
+	 *
+	 * <p>
+	 * Result messages indicate the end of a turn and contain usage/cost metadata.
+	 * Use this for tracking conversation statistics or triggering end-of-turn actions.
+	 * </p>
+	 *
+	 * @param handler the handler to receive result messages
+	 * @return this client for fluent chaining
+	 */
+	ClaudeAsyncClient onResult(java.util.function.Consumer<ResultMessage> handler);
 
 	// ========================================================================
 	// Lifecycle

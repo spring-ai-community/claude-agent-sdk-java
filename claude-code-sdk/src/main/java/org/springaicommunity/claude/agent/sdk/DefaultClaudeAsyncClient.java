@@ -49,9 +49,11 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
  * Default implementation of {@link ClaudeAsyncClient} providing reactive multi-turn
@@ -146,6 +148,10 @@ public class DefaultClaudeAsyncClient implements ClaudeAsyncClient {
 	private final String sessionPrefix = UUID.randomUUID().toString().substring(0, 8);
 
 	private final ConcurrentHashMap<String, MonoSink<Map<String, Object>>> pendingResponses = new ConcurrentHashMap<>();
+
+	// Cross-turn message handlers (thread-safe for concurrent registration)
+	private final List<Consumer<Message>> messageHandlers = new CopyOnWriteArrayList<>();
+	private final List<Consumer<ResultMessage>> resultHandlers = new CopyOnWriteArrayList<>();
 
 	/**
 	 * Creates a new DefaultClaudeAsyncClient with the specified configuration.
@@ -462,6 +468,22 @@ public class DefaultClaudeAsyncClient implements ClaudeAsyncClient {
 		}).subscribeOn(Schedulers.boundedElastic());
 	}
 
+	@Override
+	public ClaudeAsyncClient onMessage(Consumer<Message> handler) {
+		if (handler != null) {
+			messageHandlers.add(handler);
+		}
+		return this;
+	}
+
+	@Override
+	public ClaudeAsyncClient onResult(Consumer<ResultMessage> handler) {
+		if (handler != null) {
+			resultHandlers.add(handler);
+		}
+		return this;
+	}
+
 	/**
 	 * Registers a hook callback for a specific event and tool pattern.
 	 * @param event the hook event type
@@ -503,14 +525,15 @@ public class DefaultClaudeAsyncClient implements ClaudeAsyncClient {
 	// ========================================================================
 
 	/**
-	 * Routes incoming messages to the appropriate sinks.
+	 * Routes incoming messages to handlers and sinks.
 	 *
-	 * <p><b>Message Routing:</b></p>
-	 * <ul>
+	 * <p><b>Message Routing Order:</b></p>
+	 * <ol>
 	 *   <li>All messages go to {@link #rawMessageSink} for low-level subscribers</li>
+	 *   <li>Cross-turn handlers are notified (session-scoped concerns)</li>
 	 *   <li>Regular messages go to {@link #currentTurnSink} for turn-scoped subscribers</li>
 	 *   <li>{@link ResultMessage} triggers natural sink completion (no takeUntil needed)</li>
-	 * </ul>
+	 * </ol>
 	 *
 	 * <p><b>Why ResultMessage completes the sink:</b> In the per-turn unicast pattern,
 	 * we complete the sink directly when ResultMessage arrives rather than using
@@ -524,11 +547,32 @@ public class DefaultClaudeAsyncClient implements ClaudeAsyncClient {
 			rawMessageSink.tryEmitNext(message);
 		}
 
-		// Route regular messages to current turn sink
+		// Route regular messages to handlers and turn sink
 		if (message.isRegularMessage()) {
 			Message msg = message.asMessage();
-			Sinks.Many<Message> sink = currentTurnSink.get();
 
+			// Notify cross-turn handlers (session-scoped) before turn sink
+			for (Consumer<Message> handler : messageHandlers) {
+				try {
+					handler.accept(msg);
+				} catch (Exception e) {
+					logger.warn("Message handler threw exception", e);
+				}
+			}
+
+			// Notify result handlers specifically for ResultMessage
+			if (msg instanceof ResultMessage resultMsg) {
+				for (Consumer<ResultMessage> handler : resultHandlers) {
+					try {
+						handler.accept(resultMsg);
+					} catch (Exception e) {
+						logger.warn("Result handler threw exception", e);
+					}
+				}
+			}
+
+			// Emit to turn sink (per-turn)
+			Sinks.Many<Message> sink = currentTurnSink.get();
 			if (sink != null) {
 				Sinks.EmitResult result = sink.tryEmitNext(msg);
 				if (result.isSuccess()) {
