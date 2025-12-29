@@ -50,6 +50,12 @@ public record ResultMessage(@JsonProperty("subtype") String subtype,
 		return "result";
 	}
 
+	@Override
+	public String toString() {
+		String cost = totalCostUsd != null ? String.format("$%.6f", totalCostUsd) : "n/a";
+		return String.format("[Result: cost=%s, turns=%d, session=%s]", cost, numTurns, sessionId);
+	}
+
 	/**
 	 * Converts this result message to a rich Metadata object. Extracts usage and cost
 	 * information to create domain objects.

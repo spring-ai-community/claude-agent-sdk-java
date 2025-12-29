@@ -32,6 +32,14 @@ public record UserMessage(@JsonProperty("content") Object content // Can be Stri
 		return "user";
 	}
 
+	@Override
+	public String toString() {
+		if (content instanceof String s) {
+			return s;
+		}
+		return content != null ? content.toString() : "";
+	}
+
 	/**
 	 * Returns content as a string if it's a string, null otherwise.
 	 * @return the content as a string or null

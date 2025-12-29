@@ -32,6 +32,11 @@ public record SystemMessage(@JsonProperty("subtype") String subtype,
 		return "system";
 	}
 
+	@Override
+	public String toString() {
+		return String.format("[System: %s]", subtype != null ? subtype : "unknown");
+	}
+
 	public static SystemMessage of(String subtype, Map<String, Object> data) {
 		return new SystemMessage(subtype, data);
 	}

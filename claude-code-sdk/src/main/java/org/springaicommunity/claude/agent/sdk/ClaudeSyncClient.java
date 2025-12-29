@@ -20,6 +20,7 @@ import org.springaicommunity.claude.agent.sdk.exceptions.ClaudeSDKException;
 import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
 import org.springaicommunity.claude.agent.sdk.permission.ToolPermissionCallback;
 import org.springaicommunity.claude.agent.sdk.streaming.MessageReceiver;
+import org.springaicommunity.claude.agent.sdk.types.Message;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -106,6 +107,100 @@ public interface ClaudeSyncClient extends AutoCloseable {
 	 * @return iterator over parsed messages, stops after ResultMessage
 	 */
 	Iterator<ParsedMessage> receiveResponse();
+
+	// ========== Convenience Methods for Elegant Multi-Turn ==========
+
+	/**
+	 * Returns an iterable of messages from the current response. This is a convenience
+	 * wrapper around {@link #receiveResponse()} that filters to regular messages and
+	 * unwraps them, enabling for-each loop usage.
+	 *
+	 * <p>
+	 * Example:
+	 * </p>
+	 * <pre>{@code
+	 * client.connect("Hello");
+	 * for (Message msg : client.messages()) {
+	 *     System.out.println(msg);
+	 * }
+	 * }</pre>
+	 * @return iterable of messages, stops after ResultMessage
+	 */
+	Iterable<Message> messages();
+
+	/**
+	 * Connects with initial prompt and returns an iterable of response messages. This
+	 * combines {@link #connect(String)} and {@link #messages()} for concise multi-turn
+	 * conversations.
+	 *
+	 * <p>
+	 * Example:
+	 * </p>
+	 * <pre>{@code
+	 * for (Message msg : client.connectAndReceive("My name is Alice")) {
+	 *     System.out.println(msg);
+	 * }
+	 * }</pre>
+	 * @param prompt the initial prompt to send
+	 * @return iterable of response messages
+	 */
+	Iterable<Message> connectAndReceive(String prompt);
+
+	/**
+	 * Sends a query and returns an iterable of response messages. This combines
+	 * {@link #query(String)} and {@link #messages()} for concise multi-turn
+	 * conversations.
+	 *
+	 * <p>
+	 * Example:
+	 * </p>
+	 * <pre>{@code
+	 * client.connect("My name is Alice");
+	 * for (Message msg : client.messages()) { ... }
+	 *
+	 * for (Message msg : client.queryAndReceive("What's my name?")) {
+	 *     System.out.println(msg);  // Claude remembers: "Alice"
+	 * }
+	 * }</pre>
+	 * @param prompt the follow-up prompt
+	 * @return iterable of response messages
+	 */
+	Iterable<Message> queryAndReceive(String prompt);
+
+	// ========== Text-Only Convenience Methods (80% Use Case) ==========
+
+	/**
+	 * Connects with initial prompt and returns just the text response. This is the
+	 * simplest way to get Claude's answer as a string.
+	 *
+	 * <p>
+	 * Example:
+	 * </p>
+	 * <pre>{@code
+	 * String answer = client.connectText("What is 2+2?");
+	 * System.out.println(answer);  // "4"
+	 * }</pre>
+	 * @param prompt the initial prompt
+	 * @return concatenated text from all AssistantMessages
+	 */
+	String connectText(String prompt);
+
+	/**
+	 * Sends a query and returns just the text response. Use this for follow-up
+	 * questions when you only need the text content.
+	 *
+	 * <p>
+	 * Example:
+	 * </p>
+	 * <pre>{@code
+	 * client.connectText("My name is Alice");
+	 * String answer = client.queryText("What's my name?");
+	 * System.out.println(answer);  // "Alice"
+	 * }</pre>
+	 * @param prompt the follow-up prompt
+	 * @return concatenated text from all AssistantMessages
+	 */
+	String queryText(String prompt);
 
 	/**
 	 * Returns a message receiver for all messages from the CLI. The receiver yields

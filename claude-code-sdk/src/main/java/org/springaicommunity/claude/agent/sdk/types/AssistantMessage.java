@@ -44,6 +44,33 @@ public record AssistantMessage(@JsonProperty("content") List<ContentBlock> conte
 	}
 
 	/**
+	 * Returns all text content from this message concatenated, or empty string if none.
+	 * This is a convenience method for common use cases where you want the text directly.
+	 *
+	 * <p>Example:</p>
+	 * <pre>{@code
+	 * for (Message msg : client.messages()) {
+	 *     if (msg instanceof AssistantMessage am) {
+	 *         System.out.println(am.text());
+	 *     }
+	 * }
+	 * }</pre>
+	 * @return concatenated text content, or empty string
+	 */
+	public String text() {
+		return content.stream()
+			.filter(block -> block instanceof TextBlock)
+			.map(block -> ((TextBlock) block).text())
+			.reduce((a, b) -> a + b)
+			.orElse("");
+	}
+
+	@Override
+	public String toString() {
+		return text();
+	}
+
+	/**
 	 * Returns all tool use blocks in this message.
 	 * @return list of tool use blocks
 	 */

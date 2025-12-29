@@ -18,6 +18,7 @@ package org.springaicommunity.claude.agent.sdk;
 
 import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
 import org.springaicommunity.claude.agent.sdk.permission.ToolPermissionCallback;
+import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
 import reactor.core.publisher.Flux;
@@ -169,6 +170,44 @@ public interface ClaudeAsyncClient {
 	 */
 	default Flux<Message> queryAndReceive(String prompt) {
 		return query(prompt).thenMany(receiveResponse());
+	}
+
+	// ========================================================================
+	// Text-Only Convenience Methods (80% Use Case)
+	// ========================================================================
+
+	/**
+	 * Streams just the text content from Claude's response. This is the simplest way
+	 * to get Claude's answer in reactive applications.
+	 *
+	 * <p>
+	 * Example - SSE endpoint:
+	 * </p>
+	 * <pre>{@code
+	 * @GetMapping(value = "/chat", produces = TEXT_EVENT_STREAM_VALUE)
+	 * public Flux<String> chat(@RequestParam String message) {
+	 *     return client.queryText(message)
+	 *         .doFinally(s -> client.close().subscribe());
+	 * }
+	 * }</pre>
+	 *
+	 * <p>
+	 * Example - get full response:
+	 * </p>
+	 * <pre>{@code
+	 * String answer = client.queryText("What is 2+2?")
+	 *     .reduce(String::concat)
+	 *     .block();
+	 * }</pre>
+	 *
+	 * @param prompt the query to send
+	 * @return Flux of text chunks from AssistantMessages
+	 */
+	default Flux<String> queryText(String prompt) {
+		return queryAndReceive(prompt)
+			.ofType(AssistantMessage.class)
+			.map(AssistantMessage::text)
+			.filter(text -> !text.isEmpty());
 	}
 
 	// ========================================================================

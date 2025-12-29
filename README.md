@@ -74,11 +74,13 @@ cd claude-agent-sdk-java
 
 ## Three API Styles
 
-| API | Class | Style | Best For |
-|-----|-------|-------|----------|
+| API | Class | Programming Style | Best For |
+|-----|-------|-------------------|----------|
 | **One-shot** | `Query` | Static methods | Simple scripts, CLI tools |
-| **Blocking** | `ClaudeSyncClient` | Iterator-based | Multi-turn, hooks, MCP |
-| **Reactive** | `ClaudeAsyncClient` | Flux/Mono | Spring WebFlux, SSE |
+| **Blocking** | `ClaudeSyncClient` | Iterator-based | Traditional applications, synchronous workflows |
+| **Reactive** | `ClaudeAsyncClient` | Flux/Mono | Non-blocking applications, high concurrency |
+
+Both `ClaudeSyncClient` and `ClaudeAsyncClient` support the full feature set: multi-turn conversations, hooks, MCP integration, and permission callbacks. They differ only in programming paradigm (blocking vs non-blocking).
 
 **Factory Pattern**: Use `ClaudeClient.sync()` or `ClaudeClient.async()` to create clients.
 
@@ -198,21 +200,28 @@ try (ClaudeSyncClient client = ClaudeClient.sync()
         .model("claude-sonnet-4-20250514")
         .build()) {
 
-    // First turn
-    client.connect("My name is Alice.");
-    Iterator<ParsedMessage> response = client.receiveResponse();
-    while (response.hasNext()) {
-        ParsedMessage msg = response.next();
-        if (msg.isRegularMessage() && msg.asMessage() instanceof AssistantMessage am) {
-            am.getTextContent().ifPresent(System.out::println);
-        }
-    }
+    // Simplest: just get the text (80% use case)
+    String answer = client.connectText("What is 2+2?");
+    System.out.println(answer);  // "4"
 
-    // Second turn - context is preserved
-    client.query("What's my name?");
-    response = client.receiveResponse();
-    while (response.hasNext()) {
-        // Claude remembers: "Alice"
+    // Follow-up with context preserved
+    String followUp = client.queryText("Multiply that by 10");
+    System.out.println(followUp);  // "40"
+}
+```
+
+### Full Message Access (20% use case)
+
+When you need message metadata, tool use details, or cost information:
+
+```java
+try (ClaudeSyncClient client = ClaudeClient.sync()
+        .workingDirectory(Path.of("."))
+        .build()) {
+
+    // For-each with good toString() on all message types
+    for (Message msg : client.connectAndReceive("List files in current directory")) {
+        System.out.println(msg);  // AssistantMessage, ResultMessage, etc.
     }
 }
 ```
@@ -258,11 +267,8 @@ ClaudeAsyncClient client = ClaudeClient.async()
     .permissionMode(PermissionMode.BYPASS_PERMISSIONS)
     .build();
 
-// Simple usage with queryAndReceive()
-client.queryAndReceive("Explain recursion")
-    .filter(msg -> msg instanceof AssistantMessage)
-    .flatMap(msg -> ((AssistantMessage) msg).getTextContent()
-        .map(Mono::just).orElse(Mono.empty()))
+// Simplest: stream just the text (80% use case)
+client.queryText("Explain recursion")
     .doOnNext(System.out::print)
     .doFinally(s -> client.close().subscribe())
     .subscribe();
@@ -278,12 +284,19 @@ public Flux<String> chat(@RequestParam String message) {
         .permissionMode(PermissionMode.BYPASS_PERMISSIONS)
         .build();
 
-    return client.queryAndReceive(message)
-        .filter(msg -> msg instanceof AssistantMessage)
-        .flatMap(msg -> ((AssistantMessage) msg).getTextContent()
-            .map(Mono::just).orElse(Mono.empty()))
+    return client.queryText(message)
         .doFinally(s -> client.close().subscribe());
 }
+```
+
+### Full Message Access (20% use case)
+
+When you need all message types (tool use, metadata, etc.):
+
+```java
+client.queryAndReceive("List files")
+    .doOnNext(System.out::println)  // Good toString() on all types
+    .subscribe();
 ```
 
 ### Multi-Turn with Reactive
@@ -294,7 +307,8 @@ client.connect("My favorite color is blue.")
     .then()
     .then(client.query("What is my favorite color?"))
     .thenMany(client.receiveResponse())
-    .subscribe(msg -> System.out.println(msg));  // Claude remembers
+    .doOnNext(System.out::println)  // Good toString() - Claude remembers
+    .subscribe();
 ```
 
 ---

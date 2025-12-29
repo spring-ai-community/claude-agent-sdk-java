@@ -32,6 +32,7 @@ import org.springaicommunity.claude.agent.sdk.streaming.MessageStreamIterator;
 import org.springaicommunity.claude.agent.sdk.streaming.ResponseBoundedReceiver;
 import org.springaicommunity.claude.agent.sdk.transport.StreamingTransport;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
+import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
 import org.springaicommunity.claude.agent.sdk.types.control.ControlRequest;
@@ -284,6 +285,50 @@ public class DefaultClaudeSyncClient implements ClaudeSyncClient {
 	public Iterator<ParsedMessage> receiveResponse() {
 		ensureConnected();
 		return new ResponseBoundedIterator(messageIterator);
+	}
+
+	// ========== Convenience Methods for Elegant Multi-Turn ==========
+
+	@Override
+	public Iterable<Message> messages() {
+		ensureConnected();
+		return new MessageIterable(receiveResponse());
+	}
+
+	@Override
+	public Iterable<Message> connectAndReceive(String prompt) {
+		connect(prompt);
+		return messages();
+	}
+
+	@Override
+	public Iterable<Message> queryAndReceive(String prompt) {
+		query(prompt);
+		return messages();
+	}
+
+	// ========== Text-Only Convenience Methods (80% Use Case) ==========
+
+	@Override
+	public String connectText(String prompt) {
+		StringBuilder text = new StringBuilder();
+		for (Message msg : connectAndReceive(prompt)) {
+			if (msg instanceof AssistantMessage am) {
+				text.append(am.text());
+			}
+		}
+		return text.toString();
+	}
+
+	@Override
+	public String queryText(String prompt) {
+		StringBuilder text = new StringBuilder();
+		for (Message msg : queryAndReceive(prompt)) {
+			if (msg instanceof AssistantMessage am) {
+				text.append(am.text());
+			}
+		}
+		return text.toString();
 	}
 
 	@Override
@@ -694,6 +739,62 @@ public class DefaultClaudeSyncClient implements ClaudeSyncClient {
 			ParsedMessage result = next;
 			next = null;
 			return result;
+		}
+
+	}
+
+	/**
+	 * Iterable wrapper that filters ParsedMessages to regular Messages for elegant
+	 * for-each usage.
+	 */
+	private static class MessageIterable implements Iterable<Message> {
+
+		private final Iterator<ParsedMessage> delegate;
+
+		MessageIterable(Iterator<ParsedMessage> delegate) {
+			this.delegate = delegate;
+		}
+
+		@Override
+		public Iterator<Message> iterator() {
+			return new MessageIterator(delegate);
+		}
+
+		private static class MessageIterator implements Iterator<Message> {
+
+			private final Iterator<ParsedMessage> delegate;
+
+			private Message next;
+
+			MessageIterator(Iterator<ParsedMessage> delegate) {
+				this.delegate = delegate;
+			}
+
+			@Override
+			public boolean hasNext() {
+				if (next != null) {
+					return true;
+				}
+				while (delegate.hasNext()) {
+					ParsedMessage parsed = delegate.next();
+					if (parsed.isRegularMessage()) {
+						next = parsed.asMessage();
+						return true;
+					}
+				}
+				return false;
+			}
+
+			@Override
+			public Message next() {
+				if (next == null && !hasNext()) {
+					throw new NoSuchElementException();
+				}
+				Message result = next;
+				next = null;
+				return result;
+			}
+
 		}
 
 	}
