@@ -33,60 +33,52 @@ import java.util.Optional;
  * <p>
  * This interface provides non-blocking, backpressure-aware operations for multi-turn
  * conversations with Claude. It is the reactive equivalent of {@link ClaudeSyncClient}
- * and is designed for Spring WebFlux and other reactive applications.
+ * and is designed for reactive applications.
  * </p>
  *
  * <h2>Key Features</h2>
  * <ul>
  * <li>Non-blocking operations with {@link Mono} and {@link Flux}</li>
  * <li>Backpressure support for message streaming</li>
- * <li>Multi-turn conversation support</li>
+ * <li>Multi-turn conversation support with elegant flatMap chaining</li>
  * <li>Hook support for intercepting tool calls</li>
  * <li>MCP server integration</li>
  * <li>Permission callbacks for tool authorization</li>
  * </ul>
  *
- * <h2>Basic Usage</h2>
+ * <h2>Basic Usage - Stream Text</h2>
  * <pre>{@code
  * ClaudeAsyncClient client = ClaudeClient.async()
  *     .workingDirectory(Path.of("."))
  *     .model("claude-sonnet-4-20250514")
  *     .build();
  *
- * client.connect("Hello!")
- *     .thenMany(client.receiveResponse())
- *     .filter(msg -> msg instanceof AssistantMessage)
- *     .subscribe(msg -> System.out.println(msg));
+ * client.connect("Explain recursion").textStream()
+ *     .doOnNext(System.out::print)
+ *     .subscribe();
  * }</pre>
  *
- * <h2>Multi-turn Conversation</h2>
+ * <h2>Multi-turn Conversation with flatMap Chaining</h2>
  * <pre>{@code
- * client.connect("My favorite color is blue.")
- *     .thenMany(client.receiveResponse())
- *     .then()
- *     .then(client.query("What is my favorite color?"))
- *     .thenMany(client.receiveResponse())
- *     .subscribe(msg -> System.out.println(msg));  // Claude remembers: "blue"
+ * client.connect("My favorite color is blue.").text()
+ *     .doOnSuccess(System.out::println)
+ *     .flatMap(r1 -> client.query("What is my favorite color?").text())
+ *     .doOnSuccess(System.out::println)  // Claude remembers: "blue"
+ *     .flatMap(r2 -> client.query("Spell it backwards").text())
+ *     .doOnSuccess(System.out::println)
+ *     .subscribe();
  * }</pre>
  *
- * <h2>Spring WebFlux SSE Endpoint</h2>
+ * <h2>Full Message Access (20% Use Case)</h2>
  * <pre>{@code
- * @GetMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
- * public Flux<String> chat(@RequestParam String message) {
- *     return client.query(message)
- *         .thenMany(client.receiveResponse())
- *         .filter(msg -> msg instanceof AssistantMessage)
- *         .flatMap(msg -> ((AssistantMessage) msg).getTextContent()
- *             .map(Mono::just).orElse(Mono.empty()));
- * }
- * }</pre>
- *
- * <h2>Lifecycle</h2>
- * <p>
- * The client should be closed when no longer needed to release resources:
- * </p>
- * <pre>{@code
- * client.close()
+ * client.query("List files").messages()
+ *     .doOnNext(msg -> {
+ *         if (msg instanceof AssistantMessage am) {
+ *             System.out.println("Text: " + am.text());
+ *         } else if (msg instanceof ResultMessage rm) {
+ *             System.out.printf("Cost: $%.6f%n", rm.totalCostUsd());
+ *         }
+ *     })
  *     .subscribe();
  * }</pre>
  *
@@ -94,6 +86,86 @@ import java.util.Optional;
  * @see ClaudeClient#async()
  */
 public interface ClaudeAsyncClient {
+
+	// ========================================================================
+	// TurnSpec - Response handling for a single turn
+	// ========================================================================
+
+	/**
+	 * Specification for handling responses from a single conversation turn.
+	 *
+	 * <p>
+	 * Inspired by Spring WebClient's ResponseSpec pattern, TurnSpec provides
+	 * terminal operations for different use cases:
+	 * </p>
+	 * <ul>
+	 * <li>{@link #text()} - Collected text as Mono (for flatMap chaining)</li>
+	 * <li>{@link #textStream()} - Streaming text as Flux (for SSE/CLI)</li>
+	 * <li>{@link #messages()} - All message types as Flux (for full access)</li>
+	 * </ul>
+	 *
+	 * <p>
+	 * All operations are lazy - the actual query/connect is triggered on subscription.
+	 * </p>
+	 */
+	interface TurnSpec {
+
+		/**
+		 * Returns the collected text response as a single Mono.
+		 *
+		 * <p>
+		 * This is the primary method for multi-turn conversations with flatMap chaining:
+		 * </p>
+		 * <pre>{@code
+		 * client.connect("Hello").text()
+		 *     .flatMap(r -> client.query("Follow up").text())
+		 *     .block();
+		 * }</pre>
+		 *
+		 * @return Mono containing all text from AssistantMessages concatenated
+		 */
+		Mono<String> text();
+
+		/**
+		 * Returns the text response as a streaming Flux.
+		 *
+		 * <p>
+		 * Use this for SSE endpoints or CLI output where you want to stream
+		 * text as it arrives:
+		 * </p>
+		 * <pre>{@code
+		 * @GetMapping(value = "/chat", produces = TEXT_EVENT_STREAM_VALUE)
+		 * public Flux<String> chat(@RequestParam String message) {
+		 *     return client.query(message).textStream();
+		 * }
+		 * }</pre>
+		 *
+		 * @return Flux of text chunks from AssistantMessages
+		 */
+		Flux<String> textStream();
+
+		/**
+		 * Returns all messages for this turn as a Flux.
+		 *
+		 * <p>
+		 * Use this when you need access to all message types (AssistantMessage,
+		 * ResultMessage, etc.) for tool use details, cost information, or debugging:
+		 * </p>
+		 * <pre>{@code
+		 * client.query("List files").messages()
+		 *     .doOnNext(msg -> {
+		 *         if (msg instanceof ResultMessage rm) {
+		 *             System.out.println("Cost: $" + rm.totalCostUsd());
+		 *         }
+		 *     })
+		 *     .subscribe();
+		 * }</pre>
+		 *
+		 * @return Flux of all Message types for this turn
+		 */
+		Flux<Message> messages();
+
+	}
 
 	// ========================================================================
 	// Connection Management
@@ -109,12 +181,30 @@ public interface ClaudeAsyncClient {
 	 * Connects to Claude CLI and starts a new session with an initial prompt.
 	 *
 	 * <p>
-	 * This is equivalent to calling {@link #connect()} followed by {@link #query(String)}.
+	 * Returns a {@link TurnSpec} for handling the response. All operations are lazy -
+	 * the connection and query are triggered on subscription.
 	 * </p>
+	 *
+	 * <p>Example:</p>
+	 * <pre>{@code
+	 * // Get text response
+	 * String answer = client.connect("What is 2+2?").text().block();
+	 *
+	 * // Stream text for SSE
+	 * client.connect("Explain recursion").textStream()
+	 *     .doOnNext(System.out::print)
+	 *     .subscribe();
+	 *
+	 * // Multi-turn with flatMap
+	 * client.connect("My favorite color is blue").text()
+	 *     .flatMap(r -> client.query("What is it?").text())
+	 *     .block();
+	 * }</pre>
+	 *
 	 * @param initialPrompt the initial prompt to send
-	 * @return Mono that completes when the prompt has been sent
+	 * @return TurnSpec for handling the response
 	 */
-	Mono<Void> connect(String initialPrompt);
+	TurnSpec connect(String initialPrompt);
 
 	/**
 	 * Returns whether the client is currently connected to Claude CLI.
@@ -127,11 +217,33 @@ public interface ClaudeAsyncClient {
 	// ========================================================================
 
 	/**
-	 * Sends a query to Claude. Must be connected first.
+	 * Sends a query to Claude and returns a spec for handling the response.
+	 *
+	 * <p>
+	 * Returns a {@link TurnSpec} for handling the response. All operations are lazy -
+	 * the query is triggered on subscription. Must be connected first.
+	 * </p>
+	 *
+	 * <p>Example:</p>
+	 * <pre>{@code
+	 * // Get text response
+	 * String answer = client.query("What is 2+2?").text().block();
+	 *
+	 * // Stream text for SSE
+	 * client.query("Explain recursion").textStream()
+	 *     .doOnNext(System.out::print)
+	 *     .subscribe();
+	 *
+	 * // Multi-turn with flatMap
+	 * client.connect("My favorite color is blue").text()
+	 *     .flatMap(r -> client.query("What is it?").text())
+	 *     .block();
+	 * }</pre>
+	 *
 	 * @param prompt the prompt to send
-	 * @return Mono that completes when the prompt has been sent
+	 * @return TurnSpec for handling the response
 	 */
-	Mono<Void> query(String prompt);
+	TurnSpec query(String prompt);
 
 	/**
 	 * Receives response messages from Claude as a reactive stream.
@@ -159,87 +271,64 @@ public interface ClaudeAsyncClient {
 	 * Convenience method combining query and receive into a single turn-scoped operation.
 	 *
 	 * <p>
-	 * This reduces lifecycle complexity for simple use cases. Equivalent to:
-	 * <pre>{@code
-	 * client.query(prompt).thenMany(client.receiveResponse())
-	 * }</pre>
+	 * Equivalent to {@code client.query(prompt).messages()}.
 	 * </p>
 	 *
 	 * @param prompt the query to send
 	 * @return Flux of messages for this turn, completing at ResultMessage
+	 * @deprecated Use {@code query(prompt).messages()} instead for clearer intent
 	 */
+	@Deprecated(since = "1.0.0", forRemoval = true)
 	default Flux<Message> queryAndReceive(String prompt) {
-		return query(prompt).thenMany(receiveResponse());
+		return query(prompt).messages();
 	}
 
 	/**
 	 * Connects with initial prompt and returns response messages as a reactive stream.
 	 *
+	 * <p>
+	 * Equivalent to {@code client.connect(prompt).messages()}.
+	 * </p>
+	 *
 	 * @param prompt the initial prompt
 	 * @return Flux of messages for this turn
+	 * @deprecated Use {@code connect(prompt).messages()} instead for clearer intent
 	 */
+	@Deprecated(since = "1.0.0", forRemoval = true)
 	default Flux<Message> connectAndReceive(String prompt) {
-		return connect(prompt).thenMany(receiveResponse());
+		return connect(prompt).messages();
 	}
-
-	// ========================================================================
-	// Text-Only Convenience Methods (80% Use Case)
-	// ========================================================================
 
 	/**
 	 * Connects with initial prompt and streams just the text response.
 	 *
 	 * <p>
-	 * Example:
+	 * Equivalent to {@code client.connect(prompt).textStream()}.
 	 * </p>
-	 * <pre>{@code
-	 * client.connectText("What is 2+2?")
-	 *     .doOnNext(System.out::print)
-	 *     .blockLast();
-	 * }</pre>
 	 *
 	 * @param prompt the initial prompt
 	 * @return Flux of text chunks from AssistantMessages
+	 * @deprecated Use {@code connect(prompt).textStream()} instead for clearer intent
 	 */
+	@Deprecated(since = "1.0.0", forRemoval = true)
 	default Flux<String> connectText(String prompt) {
-		return connectAndReceive(prompt)
-			.ofType(AssistantMessage.class)
-			.map(AssistantMessage::text)
-			.filter(text -> !text.isEmpty());
+		return connect(prompt).textStream();
 	}
 
 	/**
-	 * Streams just the text content from Claude's response. This is the simplest way
-	 * to get Claude's answer in reactive applications.
+	 * Streams just the text content from Claude's response.
 	 *
 	 * <p>
-	 * Example - SSE endpoint:
+	 * Equivalent to {@code client.query(prompt).textStream()}.
 	 * </p>
-	 * <pre>{@code
-	 * @GetMapping(value = "/chat", produces = TEXT_EVENT_STREAM_VALUE)
-	 * public Flux<String> chat(@RequestParam String message) {
-	 *     return client.queryText(message)
-	 *         .doFinally(s -> client.close().subscribe());
-	 * }
-	 * }</pre>
-	 *
-	 * <p>
-	 * Example - get full response:
-	 * </p>
-	 * <pre>{@code
-	 * String answer = client.queryText("What is 2+2?")
-	 *     .reduce(String::concat)
-	 *     .block();
-	 * }</pre>
 	 *
 	 * @param prompt the query to send
 	 * @return Flux of text chunks from AssistantMessages
+	 * @deprecated Use {@code query(prompt).textStream()} instead for clearer intent
 	 */
+	@Deprecated(since = "1.0.0", forRemoval = true)
 	default Flux<String> queryText(String prompt) {
-		return queryAndReceive(prompt)
-			.ofType(AssistantMessage.class)
-			.map(AssistantMessage::text)
-			.filter(text -> !text.isEmpty());
+		return query(prompt).textStream();
 	}
 
 	// ========================================================================

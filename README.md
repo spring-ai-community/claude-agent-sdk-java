@@ -255,38 +255,31 @@ try (ClaudeSyncClient client = ClaudeClient.sync()
 
 ## API 3: ClaudeAsyncClient (Reactive)
 
-For Spring WebFlux and reactive applications:
+For reactive applications using Project Reactor:
 
 ```java
-import org.springaicommunity.claude.agent.sdk.ClaudeClient;
-import org.springaicommunity.claude.agent.sdk.ClaudeAsyncClient;
-
 ClaudeAsyncClient client = ClaudeClient.async()
     .workingDirectory(Path.of("."))
     .model("claude-sonnet-4-20250514")
     .permissionMode(PermissionMode.BYPASS_PERMISSIONS)
     .build();
 
-// Simplest: stream just the text (80% use case)
-client.queryText("Explain recursion")
+// Stream text as it arrives
+client.connect("Explain recursion").textStream()
     .doOnNext(System.out::print)
-    .doFinally(s -> client.close().subscribe())
     .subscribe();
 ```
 
-### Spring WebFlux SSE Endpoint
+### Multi-Turn with flatMap Chaining
 
 ```java
-@GetMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-public Flux<String> chat(@RequestParam String message) {
-    ClaudeAsyncClient client = ClaudeClient.async()
-        .workingDirectory(Path.of("."))
-        .permissionMode(PermissionMode.BYPASS_PERMISSIONS)
-        .build();
-
-    return client.queryText(message)
-        .doFinally(s -> client.close().subscribe());
-}
+client.connect("My favorite color is blue.").text()
+    .doOnSuccess(System.out::println)
+    .flatMap(r1 -> client.query("What is my favorite color?").text())
+    .doOnSuccess(System.out::println)  // Claude remembers: "blue"
+    .flatMap(r2 -> client.query("Spell it backwards").text())
+    .doOnSuccess(System.out::println)  // "eulb"
+    .subscribe();
 ```
 
 ### Full Message Access (20% use case)
@@ -294,20 +287,8 @@ public Flux<String> chat(@RequestParam String message) {
 When you need all message types (tool use, metadata, etc.):
 
 ```java
-client.queryAndReceive("List files")
+client.query("List files").messages()
     .doOnNext(System.out::println)  // Good toString() on all types
-    .subscribe();
-```
-
-### Multi-Turn with Reactive
-
-```java
-client.connect("My favorite color is blue.")
-    .thenMany(client.receiveResponse())
-    .then()
-    .then(client.query("What is my favorite color?"))
-    .thenMany(client.receiveResponse())
-    .doOnNext(System.out::println)  // Good toString() - Claude remembers
     .subscribe();
 ```
 

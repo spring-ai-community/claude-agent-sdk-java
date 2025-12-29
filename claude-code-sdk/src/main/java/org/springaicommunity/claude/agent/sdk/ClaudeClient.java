@@ -159,8 +159,8 @@ public interface ClaudeClient {
 	 * <h3>Tool Configuration</h3>
 	 * <ul>
 	 * <li>{@link #tools(List)} - Base set of tools to enable</li>
-	 * <li>{@link #allowedTools(List)} - Whitelist of allowed tools</li>
-	 * <li>{@link #disallowedTools(List)} - Blacklist of disallowed tools</li>
+	 * <li>{@link #allowedTools(List)} - Explicitly allow specific tools (only these are available)</li>
+	 * <li>{@link #disallowedTools(List)} - Block specific tools (all others remain available)</li>
 	 * <li>{@link #permissionMode(PermissionMode)} - Tool permission mode</li>
 	 * </ul>
 	 *

@@ -204,7 +204,8 @@ class ClaudeAsyncClientTest {
 		void shouldErrorWhenQueryingWithoutConnection() {
 			ClaudeAsyncClient client = ClaudeClient.async().workingDirectory(workingDirectory).build();
 
-			StepVerifier.create(client.query("test"))
+			// TurnSpec is lazy - error happens when we subscribe to a terminal method
+			StepVerifier.create(client.query("test").text())
 				.expectErrorMatches(e -> e instanceof IllegalStateException && e.getMessage().contains("not connected"))
 				.verify();
 

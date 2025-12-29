@@ -28,6 +28,7 @@ import org.springaicommunity.claude.agent.sdk.mcp.McpServerConfig;
 import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
 import org.springaicommunity.claude.agent.sdk.transport.StreamingTransport;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
+import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
 import org.springaicommunity.claude.agent.sdk.types.control.ControlRequest;
@@ -204,11 +205,18 @@ public class DefaultClaudeAsyncClient implements ClaudeAsyncClient {
 
 	@Override
 	public Mono<Void> connect() {
-		return connect(null);
+		return doConnect(null);
 	}
 
 	@Override
-	public Mono<Void> connect(String initialPrompt) {
+	public TurnSpec connect(String initialPrompt) {
+		return new DefaultTurnSpec(() -> doConnect(initialPrompt));
+	}
+
+	/**
+	 * Internal connect implementation that returns Mono<Void>.
+	 */
+	private Mono<Void> doConnect(String initialPrompt) {
 		return Mono.<Void>create(sink -> {
 			if (closed.get()) {
 				sink.error(new TransportException("Client has been closed"));
@@ -276,7 +284,14 @@ public class DefaultClaudeAsyncClient implements ClaudeAsyncClient {
 	}
 
 	@Override
-	public Mono<Void> query(String prompt) {
+	public TurnSpec query(String prompt) {
+		return new DefaultTurnSpec(() -> doQuery(prompt));
+	}
+
+	/**
+	 * Internal query implementation that returns Mono<Void>.
+	 */
+	private Mono<Void> doQuery(String prompt) {
 		return Mono.<Void>create(sink -> {
 			if (!connected.get() || closed.get()) {
 				sink.error(new IllegalStateException("Client is not connected"));
@@ -796,6 +811,62 @@ public class DefaultClaudeAsyncClient implements ClaudeAsyncClient {
 		}
 
 		pendingResponses.clear();
+	}
+
+	// ========================================================================
+	// DefaultTurnSpec - WebClient-inspired response handling
+	// ========================================================================
+
+	/**
+	 * Default implementation of {@link TurnSpec} providing lazy response handling.
+	 *
+	 * <p>
+	 * Inspired by Spring WebClient's ResponseSpec pattern. All operations are lazy -
+	 * the actual send (connect/query) is triggered when you subscribe to a terminal
+	 * operation ({@link #text()}, {@link #textStream()}, or {@link #messages()}).
+	 * </p>
+	 */
+	private class DefaultTurnSpec implements TurnSpec {
+
+		private final java.util.function.Supplier<Mono<Void>> sendAction;
+
+		/**
+		 * Creates a TurnSpec with the given send action.
+		 * @param sendAction supplier that returns the Mono<Void> to execute the send
+		 */
+		DefaultTurnSpec(java.util.function.Supplier<Mono<Void>> sendAction) {
+			this.sendAction = sendAction;
+		}
+
+		@Override
+		public Mono<String> text() {
+			// Lazy: send action triggers on subscribe, then collect all text
+			return sendAction.get()
+				.thenMany(receiveResponse())
+				.ofType(AssistantMessage.class)
+				.map(AssistantMessage::text)
+				.filter(text -> !text.isEmpty())
+				.reduce(String::concat)
+				.defaultIfEmpty("");
+		}
+
+		@Override
+		public Flux<String> textStream() {
+			// Lazy: send action triggers on subscribe, then stream text chunks
+			return sendAction.get()
+				.thenMany(receiveResponse())
+				.ofType(AssistantMessage.class)
+				.map(AssistantMessage::text)
+				.filter(text -> !text.isEmpty());
+		}
+
+		@Override
+		public Flux<Message> messages() {
+			// Lazy: send action triggers on subscribe, then stream all messages
+			return sendAction.get()
+				.thenMany(receiveResponse());
+		}
+
 	}
 
 }
