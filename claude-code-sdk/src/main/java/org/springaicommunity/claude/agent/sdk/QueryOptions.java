@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Simplified configuration options for one-shot queries. This class provides a minimal
@@ -53,7 +54,8 @@ import java.util.List;
  */
 public record QueryOptions(String model, String systemPrompt, String appendSystemPrompt, Duration timeout,
 		List<String> allowedTools, List<String> disallowedTools, Integer maxTurns, Double maxBudgetUsd,
-		Path workingDirectory) {
+		Path workingDirectory, Integer maxTokens, Integer maxThinkingTokens, String fallbackModel,
+		Map<String, Object> jsonSchema) {
 
 	/** Default timeout for queries. */
 	public static final Duration DEFAULT_TIMEOUT = Duration.ofMinutes(2);
@@ -81,7 +83,7 @@ public record QueryOptions(String model, String systemPrompt, String appendSyste
 	 */
 	public static QueryOptions defaults() {
 		return new QueryOptions(null, null, null, DEFAULT_TIMEOUT, List.of(), List.of(), null, null,
-				DEFAULT_WORKING_DIRECTORY);
+				DEFAULT_WORKING_DIRECTORY, null, null, null, null);
 	}
 
 	/**
@@ -118,6 +120,22 @@ public record QueryOptions(String model, String systemPrompt, String appendSyste
 			builder.maxBudgetUsd(maxBudgetUsd);
 		}
 
+		if (maxTokens != null) {
+			builder.maxTokens(maxTokens);
+		}
+
+		if (maxThinkingTokens != null) {
+			builder.maxThinkingTokens(maxThinkingTokens);
+		}
+
+		if (fallbackModel != null) {
+			builder.fallbackModel(fallbackModel);
+		}
+
+		if (jsonSchema != null) {
+			builder.jsonSchema(jsonSchema);
+		}
+
 		return builder.build();
 	}
 
@@ -140,6 +158,14 @@ public record QueryOptions(String model, String systemPrompt, String appendSyste
 		private Double maxBudgetUsd;
 
 		private Path workingDirectory = DEFAULT_WORKING_DIRECTORY;
+
+		private Integer maxTokens;
+
+		private Integer maxThinkingTokens;
+
+		private String fallbackModel;
+
+		private Map<String, Object> jsonSchema;
 
 		/**
 		 * Sets the model to use. Common options: "claude-sonnet-4-5-20250929",
@@ -214,9 +240,41 @@ public record QueryOptions(String model, String systemPrompt, String appendSyste
 			return this;
 		}
 
+		/**
+		 * Sets the maximum number of output tokens.
+		 */
+		public Builder maxTokens(Integer maxTokens) {
+			this.maxTokens = maxTokens;
+			return this;
+		}
+
+		/**
+		 * Sets the maximum number of thinking tokens for extended thinking.
+		 */
+		public Builder maxThinkingTokens(Integer maxThinkingTokens) {
+			this.maxThinkingTokens = maxThinkingTokens;
+			return this;
+		}
+
+		/**
+		 * Sets the fallback model to use if the primary model is unavailable.
+		 */
+		public Builder fallbackModel(String fallbackModel) {
+			this.fallbackModel = fallbackModel;
+			return this;
+		}
+
+		/**
+		 * Sets the JSON schema for structured output.
+		 */
+		public Builder jsonSchema(Map<String, Object> jsonSchema) {
+			this.jsonSchema = jsonSchema;
+			return this;
+		}
+
 		public QueryOptions build() {
 			return new QueryOptions(model, systemPrompt, appendSystemPrompt, timeout, allowedTools, disallowedTools,
-					maxTurns, maxBudgetUsd, workingDirectory);
+					maxTurns, maxBudgetUsd, workingDirectory, maxTokens, maxThinkingTokens, fallbackModel, jsonSchema);
 		}
 
 	}

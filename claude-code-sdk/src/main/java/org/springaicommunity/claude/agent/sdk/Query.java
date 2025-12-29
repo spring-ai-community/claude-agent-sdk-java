@@ -322,4 +322,30 @@ public class Query {
 		return hasAssistantMessage ? ResultStatus.SUCCESS : ResultStatus.PARTIAL;
 	}
 
+	// ========================================================================
+	// Utility Methods
+	// ========================================================================
+
+	/**
+	 * Checks if the Claude CLI is installed and accessible.
+	 *
+	 * <pre>{@code
+	 * if (!Query.isCliInstalled()) {
+	 *     System.err.println("Claude CLI not found. Install with: npm install -g @anthropic-ai/claude-code");
+	 *     return;
+	 * }
+	 * }</pre>
+	 * @return true if 'claude' command is found in PATH
+	 */
+	public static boolean isCliInstalled() {
+		try {
+			ProcessBuilder pb = new ProcessBuilder("which", "claude");
+			Process p = pb.start();
+			return p.waitFor() == 0;
+		}
+		catch (Exception e) {
+			return false;
+		}
+	}
+
 }
