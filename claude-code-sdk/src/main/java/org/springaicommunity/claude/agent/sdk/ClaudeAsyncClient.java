@@ -172,9 +172,41 @@ public interface ClaudeAsyncClient {
 		return query(prompt).thenMany(receiveResponse());
 	}
 
+	/**
+	 * Connects with initial prompt and returns response messages as a reactive stream.
+	 *
+	 * @param prompt the initial prompt
+	 * @return Flux of messages for this turn
+	 */
+	default Flux<Message> connectAndReceive(String prompt) {
+		return connect(prompt).thenMany(receiveResponse());
+	}
+
 	// ========================================================================
 	// Text-Only Convenience Methods (80% Use Case)
 	// ========================================================================
+
+	/**
+	 * Connects with initial prompt and streams just the text response.
+	 *
+	 * <p>
+	 * Example:
+	 * </p>
+	 * <pre>{@code
+	 * client.connectText("What is 2+2?")
+	 *     .doOnNext(System.out::print)
+	 *     .blockLast();
+	 * }</pre>
+	 *
+	 * @param prompt the initial prompt
+	 * @return Flux of text chunks from AssistantMessages
+	 */
+	default Flux<String> connectText(String prompt) {
+		return connectAndReceive(prompt)
+			.ofType(AssistantMessage.class)
+			.map(AssistantMessage::text)
+			.filter(text -> !text.isEmpty());
+	}
 
 	/**
 	 * Streams just the text content from Claude's response. This is the simplest way
