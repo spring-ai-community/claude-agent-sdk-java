@@ -338,4 +338,40 @@ class ClaudeSyncClientTest {
 
 	}
 
+	@Nested
+	@DisplayName("Convenience Method Tests")
+	class ConvenienceMethodTests {
+
+		@Test
+		@DisplayName("messages should throw when not connected")
+		void messagesShouldThrowWhenNotConnected() {
+			ClaudeSyncClient client = ClaudeClient.sync().workingDirectory(workingDirectory).build();
+
+			assertThatThrownBy(() -> client.messages()).isInstanceOf(IllegalStateException.class)
+				.hasMessageContaining("not connected");
+			client.close();
+		}
+
+		@Test
+		@DisplayName("queryAndReceive should throw when not connected")
+		void queryAndReceiveShouldThrowWhenNotConnected() {
+			ClaudeSyncClient client = ClaudeClient.sync().workingDirectory(workingDirectory).build();
+
+			assertThatThrownBy(() -> client.queryAndReceive("test")).isInstanceOf(IllegalStateException.class)
+				.hasMessageContaining("not connected");
+			client.close();
+		}
+
+		@Test
+		@DisplayName("queryText should throw when not connected")
+		void queryTextShouldThrowWhenNotConnected() {
+			ClaudeSyncClient client = ClaudeClient.sync().workingDirectory(workingDirectory).build();
+
+			assertThatThrownBy(() -> client.queryText("test")).isInstanceOf(IllegalStateException.class)
+				.hasMessageContaining("not connected");
+			client.close();
+		}
+
+	}
+
 }

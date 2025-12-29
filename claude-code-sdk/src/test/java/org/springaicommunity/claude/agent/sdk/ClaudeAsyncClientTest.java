@@ -381,6 +381,57 @@ class ClaudeAsyncClientTest {
 	}
 
 	@Nested
+	@DisplayName("Convenience Method Tests")
+	class ConvenienceMethodTests {
+
+		@Test
+		@DisplayName("connectAndReceive should defer connected check")
+		void connectAndReceiveShouldDeferConnectedCheck() {
+			ClaudeAsyncClient client = ClaudeClient.async().workingDirectory(workingDirectory).build();
+
+			// Building the Flux should not error (deferred)
+			var flux = client.connectAndReceive("test");
+			assertThat(flux).isNotNull();
+
+			StepVerifier.create(client.close()).verifyComplete();
+		}
+
+		@Test
+		@DisplayName("queryAndReceive should defer connected check")
+		void queryAndReceiveShouldDeferConnectedCheck() {
+			ClaudeAsyncClient client = ClaudeClient.async().workingDirectory(workingDirectory).build();
+
+			var flux = client.queryAndReceive("test");
+			assertThat(flux).isNotNull();
+
+			StepVerifier.create(client.close()).verifyComplete();
+		}
+
+		@Test
+		@DisplayName("connectText should defer connected check")
+		void connectTextShouldDeferConnectedCheck() {
+			ClaudeAsyncClient client = ClaudeClient.async().workingDirectory(workingDirectory).build();
+
+			var flux = client.connectText("test");
+			assertThat(flux).isNotNull();
+
+			StepVerifier.create(client.close()).verifyComplete();
+		}
+
+		@Test
+		@DisplayName("queryText should defer connected check")
+		void queryTextShouldDeferConnectedCheck() {
+			ClaudeAsyncClient client = ClaudeClient.async().workingDirectory(workingDirectory).build();
+
+			var flux = client.queryText("test");
+			assertThat(flux).isNotNull();
+
+			StepVerifier.create(client.close()).verifyComplete();
+		}
+
+	}
+
+	@Nested
 	@DisplayName("Tool Permission Callback Tests")
 	class ToolPermissionCallbackTests {
 
