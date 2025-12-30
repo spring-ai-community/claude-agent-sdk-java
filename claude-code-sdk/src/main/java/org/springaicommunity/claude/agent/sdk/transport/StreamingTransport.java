@@ -459,6 +459,16 @@ public class StreamingTransport implements AutoCloseable {
 			}
 		}
 
+		// Session resume options
+		if (options.isContinueConversation()) {
+			command.add("--continue");
+		}
+
+		if (options.getResume() != null && !options.getResume().trim().isEmpty()) {
+			command.add("--resume");
+			command.add(options.getResume());
+		}
+
 		// Add agents JSON for multi-agent coordination (Task tool with subagents)
 		if (options.getAgents() != null && !options.getAgents().trim().isEmpty()) {
 			command.add("--agents");

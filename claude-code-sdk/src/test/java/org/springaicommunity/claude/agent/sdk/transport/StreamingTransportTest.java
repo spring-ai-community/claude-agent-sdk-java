@@ -438,6 +438,130 @@ class StreamingTransportTest {
 	}
 
 	@Nested
+	@DisplayName("Session Resume Options Tests")
+	class SessionResumeOptionsTests {
+
+		@Test
+		@DisplayName("Should include --continue flag when continueConversation is true")
+		void buildCommandWithContinueConversation() {
+			// Given
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
+					"/usr/bin/claude");
+			CLIOptions options = CLIOptions.builder().continueConversation(true).build();
+
+			// When
+			List<String> command = transport.buildStreamingCommand(options);
+
+			// Then
+			assertThat(command).contains("--continue");
+
+			transport.close();
+		}
+
+		@Test
+		@DisplayName("Should NOT include --continue flag when continueConversation is false")
+		void buildCommandWithoutContinueWhenFalse() {
+			// Given
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
+					"/usr/bin/claude");
+			CLIOptions options = CLIOptions.builder().continueConversation(false).build();
+
+			// When
+			List<String> command = transport.buildStreamingCommand(options);
+
+			// Then
+			assertThat(command).doesNotContain("--continue");
+
+			transport.close();
+		}
+
+		@Test
+		@DisplayName("Should include --resume flag with session ID")
+		void buildCommandWithResume() {
+			// Given
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
+					"/usr/bin/claude");
+			CLIOptions options = CLIOptions.builder().resume("session-abc123").build();
+
+			// When
+			List<String> command = transport.buildStreamingCommand(options);
+
+			// Then
+			int resumeIndex = command.indexOf("--resume");
+			assertThat(resumeIndex).isGreaterThan(-1);
+			assertThat(command.get(resumeIndex + 1)).isEqualTo("session-abc123");
+
+			transport.close();
+		}
+
+		@Test
+		@DisplayName("Should NOT include --resume flag when resume is null")
+		void buildCommandWithoutResumeWhenNull() {
+			// Given
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
+					"/usr/bin/claude");
+			CLIOptions options = CLIOptions.builder().resume(null).build();
+
+			// When
+			List<String> command = transport.buildStreamingCommand(options);
+
+			// Then
+			assertThat(command).doesNotContain("--resume");
+
+			transport.close();
+		}
+
+		@Test
+		@DisplayName("Should NOT include --resume flag when resume is empty string")
+		void buildCommandWithoutResumeWhenEmpty() {
+			// Given
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
+					"/usr/bin/claude");
+			CLIOptions options = CLIOptions.builder().resume("").build();
+
+			// When
+			List<String> command = transport.buildStreamingCommand(options);
+
+			// Then
+			assertThat(command).doesNotContain("--resume");
+
+			transport.close();
+		}
+
+		@Test
+		@DisplayName("Should NOT include --resume flag when resume is blank")
+		void buildCommandWithoutResumeWhenBlank() {
+			// Given
+			StreamingTransport transport = new StreamingTransport(tempDir, Duration.ofMinutes(5),
+					"/usr/bin/claude");
+			CLIOptions options = CLIOptions.builder().resume("   ").build();
+
+			// When
+			List<String> command = transport.buildStreamingCommand(options);
+
+			// Then
+			assertThat(command).doesNotContain("--resume");
+
+			transport.close();
+		}
+
+		@Test
+		@DisplayName("Should store session resume options in CLIOptions")
+		void cliOptionsStoresResumeOptions() {
+			// Given
+			CLIOptions options = CLIOptions.builder()
+				.continueConversation(true)
+				.resume("session-xyz")
+				.build();
+
+			// Then
+			assertThat(options.isContinueConversation()).isTrue();
+			assertThat(options.getResume()).isEqualTo("session-xyz");
+		}
+
+	}
+
+	@Nested
 	@DisplayName("Advanced Python SDK Parity Options Tests")
 	class AdvancedOptionsTests {
 

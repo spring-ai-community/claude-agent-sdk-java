@@ -38,6 +38,8 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 		String agents, boolean forkSession, boolean includePartialMessages, Map<String, Object> jsonSchema,
 		Map<String, McpServerConfig> mcpServers, Integer maxTurns, Double maxBudgetUsd, String fallbackModel,
 		String appendSystemPrompt,
+		// Session resume options
+		boolean continueConversation, String resume,
 		// Advanced options for full Python SDK parity
 		List<Path> addDirs, String settings, String permissionPromptToolName, Map<String, String> extraArgs,
 		List<PluginConfig> plugins, Map<String, String> env, Integer maxBufferSize, String user,
@@ -105,8 +107,8 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 	public static CLIOptions defaultOptions() {
 		return new CLIOptions(null, null, null, null, Duration.ofMinutes(2), null, List.of(), List.of(),
 				PermissionMode.DANGEROUSLY_SKIP_PERMISSIONS, false, OutputFormat.JSON, List.of(), null, false, false,
-				null, Map.of(), null, null, null, null, List.of(), null, null, Map.of(), List.of(), Map.of(), null,
-				null, null, null);
+				null, Map.of(), null, null, null, null, false, null, List.of(), null, null, Map.of(), List.of(),
+				Map.of(), null, null, null, null);
 	}
 
 	// Convenience getters
@@ -192,6 +194,14 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 
 	public String getAppendSystemPrompt() {
 		return appendSystemPrompt;
+	}
+
+	public boolean isContinueConversation() {
+		return continueConversation;
+	}
+
+	public String getResume() {
+		return resume;
 	}
 
 	// Advanced options getters
@@ -282,6 +292,10 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 		private String fallbackModel;
 
 		private String appendSystemPrompt;
+
+		private boolean continueConversation = false;
+
+		private String resume;
 
 		// Advanced options for full Python SDK parity
 		private List<Path> addDirs = List.of();
@@ -454,6 +468,26 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 		 */
 		public Builder appendSystemPrompt(String appendSystemPrompt) {
 			this.appendSystemPrompt = appendSystemPrompt;
+			return this;
+		}
+
+		/**
+		 * Sets whether to continue the most recent conversation (--continue flag).
+		 * @param continueConversation true to continue most recent session
+		 * @return this builder
+		 */
+		public Builder continueConversation(boolean continueConversation) {
+			this.continueConversation = continueConversation;
+			return this;
+		}
+
+		/**
+		 * Sets a session ID to resume (--resume flag).
+		 * @param resume the session ID to resume
+		 * @return this builder
+		 */
+		public Builder resume(String resume) {
+			this.resume = resume;
 			return this;
 		}
 
@@ -633,8 +667,8 @@ public record CLIOptions(String model, String systemPrompt, Integer maxTokens, I
 			return new CLIOptions(model, systemPrompt, maxTokens, maxThinkingTokens, timeout, tools, allowedTools,
 					disallowedTools, permissionMode, interactive, outputFormat, settingSources, agents, forkSession,
 					includePartialMessages, jsonSchema, mcpServers, maxTurns, maxBudgetUsd, fallbackModel,
-					appendSystemPrompt, addDirs, settings, permissionPromptToolName, extraArgs, plugins, env,
-					maxBufferSize, user, stderrHandler, toolPermissionCallback);
+					appendSystemPrompt, continueConversation, resume, addDirs, settings, permissionPromptToolName,
+					extraArgs, plugins, env, maxBufferSize, user, stderrHandler, toolPermissionCallback);
 		}
 
 	}
