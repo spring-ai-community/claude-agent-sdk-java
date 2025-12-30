@@ -469,6 +469,16 @@ public class StreamingTransport implements AutoCloseable {
 			command.add(options.getResume());
 		}
 
+		// Session forking (creates new session ID when resuming)
+		if (options.isForkSession()) {
+			command.add("--fork-session");
+		}
+
+		// Partial message streaming support
+		if (options.isIncludePartialMessages()) {
+			command.add("--include-partial-messages");
+		}
+
 		// Add agents JSON for multi-agent coordination (Task tool with subagents)
 		if (options.getAgents() != null && !options.getAgents().trim().isEmpty()) {
 			command.add("--agents");
