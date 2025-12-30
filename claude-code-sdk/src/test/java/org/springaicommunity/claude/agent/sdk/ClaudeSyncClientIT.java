@@ -23,6 +23,7 @@ import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
 import org.springaicommunity.claude.agent.sdk.test.ClaudeCliTestBase;
 import org.springaicommunity.claude.agent.sdk.transport.CLIOptions;
 import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
+import org.springaicommunity.claude.agent.sdk.types.JsonSchema;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
 
@@ -30,6 +31,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -218,6 +220,68 @@ class ClaudeSyncClientIT extends ClaudeCliTestBase {
 		// Multiple closes should be safe
 		client.close();
 		client.close();
+	}
+
+	@Test
+	@DisplayName("Should return structured output when using jsonSchema")
+	void shouldReturnStructuredOutputWithJsonSchema() {
+		// Given - define a schema for structured response
+		JsonSchema schema = JsonSchema.ofObject(
+			Map.of(
+				"answer", Map.of("type", "number"),
+				"explanation", Map.of("type", "string")
+			),
+			List.of("answer", "explanation")
+		);
+
+		CLIOptions options = CLIOptions.builder()
+			.model(HAIKU_MODEL)
+			.jsonSchema(schema.toMap())
+			.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
+			.build();
+
+		try (ClaudeSyncClient client = ClaudeClient.sync(options)
+			.workingDirectory(workingDirectory())
+			.claudePath(getClaudeCliPath())
+			.timeout(Duration.ofMinutes(2))
+			.build()) {
+
+			// When
+			client.connect("What is 2+2? Provide the answer and a brief explanation.");
+
+			// Then - find the ResultMessage with structured output
+			ResultMessage resultMessage = null;
+			Iterator<ParsedMessage> response = client.receiveResponse();
+			while (response.hasNext()) {
+				ParsedMessage parsed = response.next();
+				if (parsed.isRegularMessage()) {
+					Message msg = parsed.asMessage();
+					if (msg instanceof ResultMessage rm) {
+						resultMessage = rm;
+					}
+				}
+			}
+
+			// Verify structured output is present and correct
+			assertThat(resultMessage).isNotNull();
+			assertThat(resultMessage.hasStructuredOutput())
+				.as("ResultMessage should have structured output")
+				.isTrue();
+
+			Map<String, Object> output = resultMessage.getStructuredOutputAsMap();
+			assertThat(output).isNotNull();
+			assertThat(output).containsKey("answer");
+			assertThat(output).containsKey("explanation");
+
+			// The answer should be 4 (or close to it)
+			Object answer = output.get("answer");
+			assertThat(answer).isInstanceOf(Number.class);
+			assertThat(((Number) answer).intValue()).isEqualTo(4);
+
+			// Explanation should be non-empty
+			assertThat(output.get("explanation")).isNotNull();
+			assertThat(output.get("explanation").toString()).isNotBlank();
+		}
 	}
 
 }

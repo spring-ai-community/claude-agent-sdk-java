@@ -139,7 +139,16 @@ public class MessageParser {
 			.totalCostUsd(getDoubleField(node, "total_cost_usd"))
 			.usage(parseUsageMap(node.get("usage")))
 			.result(getStringField(node, "result"))
+			.structuredOutput(parseStructuredOutput(node.get("structured_output")))
 			.build();
+	}
+
+	private Object parseStructuredOutput(JsonNode node) {
+		if (node == null || node.isNull()) {
+			return null;
+		}
+		// Convert JsonNode to native Java types (Map, List, primitives)
+		return objectMapper.convertValue(node, Object.class);
 	}
 
 	private List<ContentBlock> parseContentBlocks(JsonNode arrayNode) throws MessageParseException {

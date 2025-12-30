@@ -112,6 +112,9 @@ public class JsonResultParser {
 		// Parse usage information
 		Map<String, Object> usage = parseUsageMap(node.get("usage"));
 
+		// Parse structured output (for --json-schema responses)
+		Object structuredOutput = parseStructuredOutput(node.get("structured_output"));
+
 		// Build and return ResultMessage
 		return ResultMessage.builder()
 			.subtype(subtype)
@@ -123,7 +126,19 @@ public class JsonResultParser {
 			.totalCostUsd(totalCostUsd)
 			.usage(usage)
 			.result(result)
+			.structuredOutput(structuredOutput)
 			.build();
+	}
+
+	/**
+	 * Parses the structured_output node into a native Java object.
+	 */
+	private Object parseStructuredOutput(JsonNode node) {
+		if (node == null || node.isNull()) {
+			return null;
+		}
+		// Convert JsonNode to native Java types (Map, List, primitives)
+		return objectMapper.convertValue(node, Object.class);
 	}
 
 	/**
