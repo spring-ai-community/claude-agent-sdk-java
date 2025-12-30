@@ -20,8 +20,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
+import org.springaicommunity.claude.agent.sdk.types.ContentBlock;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
+import org.springaicommunity.claude.agent.sdk.types.UserMessage;
 
 import java.util.List;
 import java.util.Map;
@@ -47,6 +50,54 @@ class MessageParserTest {
 	@Nested
 	@DisplayName("Result Message Parsing")
 	class ResultMessageParsing {
+
+		/**
+		 * FIELD PARITY TEST: Verifies ALL fields in ResultMessage record are parsed.
+		 * If you add a field to ResultMessage, you MUST add an assertion here.
+		 *
+		 * ResultMessage fields: subtype, durationMs, durationApiMs, isError, numTurns,
+		 *                       sessionId, totalCostUsd, usage, result, structuredOutput
+		 */
+		@Test
+		@DisplayName("should parse ALL fields in ResultMessage (field parity test)")
+		void shouldParseAllResultMessageFields() throws Exception {
+			String json = """
+				{
+					"type": "result",
+					"subtype": "success",
+					"is_error": true,
+					"duration_ms": 1234,
+					"duration_api_ms": 5678,
+					"num_turns": 3,
+					"session_id": "sess-abc123",
+					"total_cost_usd": 0.0456,
+					"usage": {
+						"input_tokens": 100,
+						"output_tokens": 200
+					},
+					"result": "final result text",
+					"structured_output": {"key": "value"}
+				}
+				""";
+
+			Message message = parser.parseMessage(json);
+			assertThat(message).isInstanceOf(ResultMessage.class);
+			ResultMessage result = (ResultMessage) message;
+
+			// Verify EVERY field - add new assertions when fields are added
+			assertThat(result.subtype()).isEqualTo("success");
+			assertThat(result.isError()).isTrue();
+			assertThat(result.durationMs()).isEqualTo(1234);
+			assertThat(result.durationApiMs()).isEqualTo(5678);
+			assertThat(result.numTurns()).isEqualTo(3);
+			assertThat(result.sessionId()).isEqualTo("sess-abc123");
+			assertThat(result.totalCostUsd()).isEqualTo(0.0456);
+			assertThat(((Number) result.usage().get("input_tokens")).intValue()).isEqualTo(100);
+			assertThat(((Number) result.usage().get("output_tokens")).intValue()).isEqualTo(200);
+			assertThat(result.result()).isEqualTo("final result text");
+			assertThat(result.structuredOutput()).isNotNull();
+			assertThat(result.getStructuredOutputAsMap()).containsEntry("key", "value");
+		}
 
 		@Test
 		@DisplayName("should parse result message with structured_output")
@@ -160,6 +211,91 @@ class MessageParserTest {
 
 			assertThat(result.hasStructuredOutput()).isFalse();
 			assertThat(result.getStructuredOutputAsMap()).isNull();
+		}
+	}
+
+	@Nested
+	@DisplayName("Assistant Message Parsing")
+	class AssistantMessageParsing {
+
+		@Test
+		@DisplayName("should parse assistant message with text content block")
+		void shouldParseAssistantWithTextContent() throws Exception {
+			String json = """
+				{
+					"type": "assistant",
+					"message": {
+						"content": [
+							{"type": "text", "text": "Hello, world!"}
+						]
+					}
+				}
+				""";
+
+			Message message = parser.parseMessage(json);
+			assertThat(message).isInstanceOf(AssistantMessage.class);
+			AssistantMessage assistant = (AssistantMessage) message;
+
+			assertThat(assistant.content()).hasSize(1);
+			assertThat(assistant.getTextContent()).isPresent();
+			assertThat(assistant.getTextContent().get()).isEqualTo("Hello, world!");
+		}
+
+		@Test
+		@DisplayName("should parse assistant message with tool_use content block")
+		void shouldParseAssistantWithToolUse() throws Exception {
+			String json = """
+				{
+					"type": "assistant",
+					"message": {
+						"content": [
+							{
+								"type": "tool_use",
+								"id": "tool_123",
+								"name": "Read",
+								"input": {"file_path": "/tmp/test.txt"}
+							}
+						]
+					}
+				}
+				""";
+
+			Message message = parser.parseMessage(json);
+			AssistantMessage assistant = (AssistantMessage) message;
+
+			assertThat(assistant.content()).hasSize(1);
+			ContentBlock block = assistant.content().get(0);
+			assertThat(block.getType()).isEqualTo("tool_use");
+		}
+	}
+
+	@Nested
+	@DisplayName("User Message Parsing")
+	class UserMessageParsing {
+
+		@Test
+		@DisplayName("should parse user message with tool_result content")
+		void shouldParseUserWithToolResult() throws Exception {
+			String json = """
+				{
+					"type": "user",
+					"message": {
+						"content": [
+							{
+								"type": "tool_result",
+								"tool_use_id": "tool_123",
+								"content": "file contents here"
+							}
+						]
+					}
+				}
+				""";
+
+			Message message = parser.parseMessage(json);
+			assertThat(message).isInstanceOf(UserMessage.class);
+			UserMessage user = (UserMessage) message;
+
+			assertThat(user.content()).isNotNull();
 		}
 	}
 
