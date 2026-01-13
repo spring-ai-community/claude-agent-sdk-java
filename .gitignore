@@ -54,3 +54,4 @@ examples/research-agent/*.md
 /logs/
 *.xlsx
 CLAUDE.md
+excel-demo.log

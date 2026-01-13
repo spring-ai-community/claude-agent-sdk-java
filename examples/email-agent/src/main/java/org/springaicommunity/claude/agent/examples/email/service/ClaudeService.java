@@ -44,7 +44,7 @@ public class ClaudeService {
 			.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
 			.build();
 
-		return client.queryAndReceive(prompt)
+		return client.connect(prompt).messages()
 			.doOnSubscribe(s -> log.info("[STREAM] Subscribed to ClaudeAsyncClient"))
 			.doOnNext(msg -> log.debug("[STREAM] Message: {}", msg.getClass().getSimpleName()))
 			.filter(msg -> msg instanceof AssistantMessage)
