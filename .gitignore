@@ -38,6 +38,9 @@ build/
 .flattened-pom.xml
 it-output.log
 
+### Vaadin Generated Frontend Files **/
+src/main/frontend/generated/
+
 ### Research Agent Outputs ###
 examples/research-agent/files/research_notes/
 examples/research-agent/files/reports/
