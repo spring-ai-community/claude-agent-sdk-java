@@ -87,7 +87,7 @@ public Flux<String> streamText(String prompt) {
         .permissionMode(PermissionMode.BYPASS_PERMISSIONS)
         .build();
 
-    return client.queryAndReceive(prompt)
+    return client.connect(prompt).messages()
         .filter(msg -> msg instanceof AssistantMessage)
         .flatMap(msg -> ((AssistantMessage) msg).getTextContent()
             .map(Mono::just).orElse(Mono.empty()))
