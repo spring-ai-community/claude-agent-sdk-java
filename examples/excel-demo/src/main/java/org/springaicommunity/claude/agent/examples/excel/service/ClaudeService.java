@@ -67,7 +67,7 @@ public class ClaudeService {
 			.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
 			.build();
 
-		return client.queryAndReceive(prompt)
+		return client.connect(prompt).messages()
 			.doOnSubscribe(s -> log.info("[STREAM] Subscribed to ClaudeAsyncClient"))
 			.doOnNext(msg -> log.info("[STREAM] Message received: type={}", msg.getClass().getSimpleName()))
 			.filter(msg -> msg instanceof AssistantMessage)
@@ -139,7 +139,7 @@ public class ClaudeService {
 			.permissionMode(PermissionMode.BYPASS_PERMISSIONS)
 			.build();
 
-		return client.queryAndReceive(prompt)
+		return client.connect(prompt).messages()
 			.doFinally(signal -> client.close().subscribe());
 	}
 
