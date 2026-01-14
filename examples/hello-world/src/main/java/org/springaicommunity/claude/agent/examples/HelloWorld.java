@@ -115,6 +115,7 @@ public class HelloWorld {
 				.build();
 
 			asyncClient.connect("Explain recursion in 2 sentences.")
+				.messages()
 				.thenMany(asyncClient.receiveResponse())
 				.filter(msg -> msg instanceof AssistantMessage)
 				.flatMap(msg -> ((AssistantMessage) msg).getTextContent().map(reactor.core.publisher.Mono::just)
