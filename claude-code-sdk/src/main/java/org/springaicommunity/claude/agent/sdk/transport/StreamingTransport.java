@@ -83,6 +83,12 @@ public class StreamingTransport implements AutoCloseable {
 	// State Machine Constants
 	// ============================================================
 
+	// 缓存平台判断结果
+	private static boolean isWindows;
+	static {
+		isWindows = System.getProperty("os.name").toLowerCase().contains("win");
+	}
+
 	/** Transport is created but not connected */
 	public static final int STATE_DISCONNECTED = 0;
 
@@ -418,7 +424,7 @@ public class StreamingTransport implements AutoCloseable {
 		// Note: --append-system-prompt adds to the default, --system-prompt replaces it
 		if (options.getSystemPrompt() != null) {
 			command.add("--system-prompt");
-			command.add(options.getSystemPrompt());
+			command.add(this.normalizeNewline(options.getSystemPrompt()));
 		}
 
 		// Handle --tools option (base set of tools) - added in Python SDK v0.1.10
@@ -539,7 +545,7 @@ public class StreamingTransport implements AutoCloseable {
 		// Add append system prompt (uses preset mode with append)
 		if (options.getAppendSystemPrompt() != null && !options.getAppendSystemPrompt().isEmpty()) {
 			command.add("--append-system-prompt");
-			command.add(options.getAppendSystemPrompt());
+			command.add(this.normalizeNewline(options.getAppendSystemPrompt()));
 		}
 
 		// ============================================================
@@ -606,6 +612,31 @@ public class StreamingTransport implements AutoCloseable {
 		}
 
 		return command;
+	}
+
+	private String normalizeNewline(String command) {
+		if (command == null || command.isEmpty()) {
+			return "";
+		}
+
+		// 第一步：统一将 \r\n、\r 转换为 \n
+		String unifiedCommand = command.replaceAll("\r\n?", "\n");
+
+		// 第二步：去除每行首尾空白，避免 ^ 后带空格
+		String[] lines = unifiedCommand.split("\n");
+		StringBuilder sb = new StringBuilder();
+		for (String line : lines) {
+			String trimmedLine = line.trim();
+			if (!trimmedLine.isEmpty()) {
+				sb.append(trimmedLine);
+				// 第三步：根据平台添加命令行连接符（最后一行不加）
+				if (!line.equals(lines[lines.length - 1])) {
+					sb.append(isWindows ? "^" : "\\");
+				}
+			}
+		}
+
+		return sb.toString();
 	}
 
 	/**
