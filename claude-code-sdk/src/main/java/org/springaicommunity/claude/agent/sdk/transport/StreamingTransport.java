@@ -83,7 +83,6 @@ public class StreamingTransport implements AutoCloseable {
 	// State Machine Constants
 	// ============================================================
 
-	// 缓存平台判断结果
 	private static boolean isWindows;
 	static {
 		isWindows = System.getProperty("os.name").toLowerCase().contains("win");
@@ -619,24 +618,11 @@ public class StreamingTransport implements AutoCloseable {
 			return "";
 		}
 
-		// 第一步：统一将 \r\n、\r 转换为 \n
-		String unifiedCommand = command.replaceAll("\r\n?", "\n");
-
-		// 第二步：去除每行首尾空白，避免 ^ 后带空格
-		String[] lines = unifiedCommand.split("\n");
-		StringBuilder sb = new StringBuilder();
-		for (String line : lines) {
-			String trimmedLine = line.trim();
-			if (!trimmedLine.isEmpty()) {
-				sb.append(trimmedLine);
-				// 第三步：根据平台添加命令行连接符（最后一行不加）
-				if (!line.equals(lines[lines.length - 1])) {
-					sb.append(isWindows ? "^" : "\\");
-				}
-			}
+		if(isWindows){
+			return command.replaceAll("\r\n?", "\n").replaceAll("\n", " ");
+		}else{
+			return command;
 		}
-
-		return sb.toString();
 	}
 
 	/**

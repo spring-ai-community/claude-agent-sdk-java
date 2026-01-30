@@ -21,6 +21,7 @@ import org.springaicommunity.claude.agent.sdk.ClaudeClient;
 import org.springaicommunity.claude.agent.sdk.ClaudeSyncClient;
 import org.springaicommunity.claude.agent.sdk.config.PermissionMode;
 import org.springaicommunity.claude.agent.sdk.parsing.ParsedMessage;
+import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
 import org.springaicommunity.claude.agent.sdk.types.SystemMessage;
 
 import java.nio.file.Path;
@@ -48,8 +49,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @DisplayName("Issue #7: PermissionMode with newline in systemPrompt on Windows")
 public class Issues7 {
 
-//    public static final String MODEL_HAIKU = "claude-haiku-4-5-20251001";
-    public static final String MODEL_HAIKU = "glm-4.7";
+    public static final String MODEL_HAIKU = "claude-haiku-4-5-20251001";
     private static final String SYSTEM_PROMPT_WITHOUT_NEWLINE = "You are an AI assistant.";
     private static final String SYSTEM_PROMPT_WITH_NEWLINE = "You are an AI assistant.\n";
     private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().contains("win");
@@ -382,6 +382,60 @@ public class Issues7 {
 
                 assertThat(foundSystemMessage)
                         .as("Should have found a SystemMessage in the response")
+                        .isTrue();
+            }
+        }
+
+        @Test
+        @DisplayName("should return correct JSON format when systemPrompt contains text block with newlines")
+        void shouldReturnCorrectJsonFormatWhenSystemPromptContainsTextBlockWithNewlines() {
+            String systemPromptTextBlock = """
+                    If you receive "hi", return a strict JSON string:
+                    ```json
+                    {
+                        "result": "hi"
+                    }
+                    ```
+                    """;
+
+            try (ClaudeSyncClient client = ClaudeClient.sync()
+                    .workingDirectory(Path.of("."))
+                    .model(MODEL_HAIKU)
+                    .systemPrompt(systemPromptTextBlock)
+                    .permissionMode(PermissionMode.BYPASS_PERMISSIONS)
+                    .build()) {
+
+                client.connect("hi");
+                Iterator<ParsedMessage> response = client.receiveResponse();
+
+                boolean foundAssistantMessage = false;
+                boolean foundSystemMessage = false;
+
+                while (response.hasNext()) {
+                    ParsedMessage msg = response.next();
+
+                    if (msg.isRegularMessage() && msg.asMessage() instanceof SystemMessage system) {
+                        String permissionMode = (String) system.data().get("permissionMode");
+                        assertThat(permissionMode)
+                                .as("PermissionMode should be 'bypassPermissions' even when systemPrompt contains text block with newlines")
+                                .isEqualTo("bypassPermissions");
+                        foundSystemMessage = true;
+                    }
+
+                    if (msg.isRegularMessage() && msg.asMessage() instanceof AssistantMessage assistantMessage) {
+                        assertThat(assistantMessage.toString().replaceAll("\n|\r\n|\s+", ""))
+                                .as("Should return the specified JSON format")
+                                .isEqualTo("```json{\"result\":\"hi\"}```");
+                        foundAssistantMessage = true;
+                    }
+                }
+
+                assertThat(foundSystemMessage)
+                        .as("Should have found a SystemMessage in the response")
+                        .isTrue();
+
+                assertThat(foundAssistantMessage)
+                        .as("Should have found an AssistantMessage in the response")
                         .isTrue();
             }
         }
