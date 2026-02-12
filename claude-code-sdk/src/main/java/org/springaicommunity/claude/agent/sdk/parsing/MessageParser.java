@@ -164,6 +164,7 @@ public class MessageParser {
 				case "text" -> parseTextBlock(blockNode);
 				case "tool_use" -> parseToolUseBlock(blockNode);
 				case "tool_result" -> parseToolResultBlock(blockNode);
+				case "thinking" -> parseThinkingBlock(blockNode);
 				default -> throw new MessageParseException("Unknown content block type: " + type);
 			};
 
@@ -224,6 +225,15 @@ public class MessageParser {
 		}
 
 		return builder.build();
+	}
+
+	private ThinkingBlock parseThinkingBlock(JsonNode node) throws MessageParseException {
+		String thinking = getStringField(node, "thinking");
+		if (thinking == null) {
+			throw new MessageParseException("Missing 'thinking' field in thinking block");
+		}
+		String signature = getStringField(node, "signature");
+		return ThinkingBlock.of(thinking, signature);
 	}
 
 	private Map<String, Object> parseDataMap(JsonNode node) {
