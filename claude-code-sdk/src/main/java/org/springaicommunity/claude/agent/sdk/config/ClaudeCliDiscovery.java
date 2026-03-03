@@ -21,6 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.zeroturnaround.exec.ProcessExecutor;
 import org.zeroturnaround.exec.ProcessResult;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -119,33 +123,106 @@ public class ClaudeCliDiscovery {
 	 */
 	private static String testAndResolveClaudeExecutable(String path) {
 		try {
-			ProcessResult result = new ProcessExecutor().command(path, "--version")
-				.timeout(5, TimeUnit.SECONDS)
-				.readOutput(true)
-				.execute();
+			// For Windows, we may need to handle scripts differently
+			String osName = System.getProperty("os.name").toLowerCase();
+			List<String[]> commandsToTry = new ArrayList<>();
 
-			if (result.getExitValue() == 0) {
-				String version = result.outputUTF8().trim();
-				logger.debug("Found Claude CLI at {} with version: {}", path, version);
+			if (osName.contains("win")) {
+				// On Windows, try with explicit cmd execution for scripts
+				if (isScriptOnWindows(path)) {
+					commandsToTry.add(new String[]{"cmd", "/c", path, "--version"});
+				} else {
+					commandsToTry.add(new String[]{path, "--version"});
+				}
+			} else {
+				commandsToTry.add(new String[]{path, "--version"});
+			}
 
-				// If this is just a command name (no path separators), resolve to full
-				// path
-				if (!path.contains("/") && !path.contains("\\")) {
-					String resolvedPath = resolveCommandPath(path);
-					if (resolvedPath != null) {
-						logger.debug("Resolved command '{}' to full path: {}", path, resolvedPath);
-						return resolvedPath;
+			// Also try with possible extensions on Windows if it's just a command name
+			if (osName.contains("win") && !path.contains("/") && !path.contains("\\")) {
+				commandsToTry.add(new String[]{"cmd", "/c", path + ".cmd", "--version"});
+				commandsToTry.add(new String[]{"cmd", "/c", path + ".bat", "--version"});
+				commandsToTry.add(new String[]{"cmd", "/c", path + ".ps1", "--version"});
+			}
+
+			// Also consider resolved path from 'where' command for Windows to ensure we test the actual file
+			if (osName.contains("win") && !path.contains("/") && !path.contains("\\")) {
+				String resolvedPath = resolveCommandPath(path);
+				if (resolvedPath != null) {
+					if (isScriptOnWindows(resolvedPath)) {
+						commandsToTry.add(new String[]{"cmd", "/c", resolvedPath, "--version"});
+					} else {
+						commandsToTry.add(new String[]{resolvedPath, "--version"});
 					}
 				}
+			}
 
-				// Return the original path (already a full path)
-				return path;
+			// Try each potential command combination
+			for (String[] command : commandsToTry) {
+				try {
+					ProcessResult result = new ProcessExecutor().command(command)
+						.timeout(5, TimeUnit.SECONDS)
+						.readOutput(true)
+						.execute();
+
+					if (result.getExitValue() == 0) {
+						String version = result.outputUTF8().trim();
+						logger.debug("Found Claude CLI at {} with version: {}", String.join(" ", command), version);
+
+						// Return the original path, not the execution command
+						if (command.length >= 2 && !command[0].equals("cmd") && !command[1].equals("/c")) {
+							return command[0];
+						} else if (command.length >= 3 && command[0].equals("cmd") && command[1].equals("/c")) {
+							// Extract the actual executable path from the cmd /c command
+							String actualPath = command[2];
+							// Strip extension if it was added for the test
+							if (actualPath.endsWith(".cmd") || actualPath.endsWith(".bat") || actualPath.endsWith(".ps1")) {
+								String basePath = actualPath.substring(0, actualPath.lastIndexOf('.'));
+								if (new java.io.File(basePath).exists() && !basePath.equals(path)) {
+									return basePath;
+								}
+							}
+							return actualPath;
+						}
+					}
+				} catch (Exception e) {
+					logger.debug("Command failed: {} ({})", String.join(" ", command), e.getMessage());
+					continue;
+				}
 			}
 		}
 		catch (Exception e) {
 			logger.debug("Claude CLI not found at: {} ({})", path, e.getMessage());
 		}
 		return null;
+	}
+
+	/**
+	 * Check if a given path looks like a script file on Windows which might need special handling
+	 */
+	private static boolean isScriptOnWindows(String path) {
+		File file = new File(path);
+		// If path exists and ends with script extensions, treat as script
+		if (file.exists() && (
+			path.toLowerCase().endsWith(".sh") ||
+			path.toLowerCase().endsWith(".ps1") ||
+			path.toLowerCase().endsWith(".cmd") ||
+			path.toLowerCase().endsWith(".bat"))) {
+			return true;
+		}
+
+		// If it's a file without extension and it looks like a POSIX script (has shebang)
+		if (file.exists() && !file.isDirectory()) {
+			try (java.io.BufferedReader br = new BufferedReader(java.nio.file.Files.newBufferedReader(file.toPath()))) {
+				String firstLine = br.readLine();
+				return firstLine != null && firstLine.startsWith("#!");
+			} catch (Exception e) {
+				// If we can't read the file to check for shebang, assume false
+				return false;
+			}
+		}
+
+		return false;
 	}
 
 	/**
