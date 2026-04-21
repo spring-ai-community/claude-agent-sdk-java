@@ -70,6 +70,7 @@ public class MessageParser {
 			case "assistant" -> parseAssistantMessage(node);
 			case "system" -> parseSystemMessage(node);
 			case "result" -> parseResultMessage(node);
+			case "stream_event" -> parseStreamEventMessage(node);
 			default -> {
 				logger.error(
 						"Unrecognized message type '{}' — skipping. "
@@ -147,6 +148,38 @@ public class MessageParser {
 			.result(getStringField(node, "result"))
 			.structuredOutput(parseStructuredOutput(node.get("structured_output")))
 			.build();
+	}
+
+	/**
+	 * Parses a {@code stream_event} message emitted by the Claude CLI when
+	 * {@code includePartialMessages} is enabled.
+	 *
+	 * <p>Stream events wrap Anthropic API streaming events (e.g. {@code message_start},
+	 * {@code content_block_delta}, {@code message_stop}) inside a CLI envelope that carries
+	 * session and correlation metadata. This method extracts the inner {@code event} object
+	 * along with the CLI metadata and returns a typed {@link StreamEventMessage}.
+	 *
+	 * @param node the root JSON node with {@code "type": "stream_event"}
+	 * @return a {@link StreamEventMessage} instance
+	 */
+	private StreamEventMessage parseStreamEventMessage(JsonNode node) {
+		JsonNode eventNode = node.get("event");
+		String eventType = null;
+		Map<String, Object> eventData = null;
+
+		if (eventNode != null && !eventNode.isNull()) {
+			eventType = getStringField(eventNode, "type");
+			eventData = parseDataMap(eventNode);
+		}
+
+		String sessionId = getStringField(node, "session_id");
+		String uuid = getStringField(node, "uuid");
+		String parentToolUseId = getStringField(node, "parent_tool_use_id");
+		JsonNode ttftNode = node.get("ttft_ms");
+		Long ttftMs = (ttftNode != null && ttftNode.isNumber()) ? ttftNode.asLong() : null;
+
+		logger.debug("Processing stream_event with inner event type '{}', session='{}'", eventType, sessionId);
+		return StreamEventMessage.of(eventType, sessionId, uuid, parentToolUseId, ttftMs, eventData);
 	}
 
 	private Object parseStructuredOutput(JsonNode node) {
