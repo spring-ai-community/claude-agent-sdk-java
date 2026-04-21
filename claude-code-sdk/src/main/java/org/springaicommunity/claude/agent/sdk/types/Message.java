@@ -26,7 +26,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({ @JsonSubTypes.Type(value = UserMessage.class, name = "user"),
 		@JsonSubTypes.Type(value = AssistantMessage.class, name = "assistant"),
 		@JsonSubTypes.Type(value = SystemMessage.class, name = "system"),
-		@JsonSubTypes.Type(value = ResultMessage.class, name = "result") })
+		@JsonSubTypes.Type(value = ResultMessage.class, name = "result"),
+		@JsonSubTypes.Type(value = StreamEventMessage.class, name = "stream_event") })
 public interface Message {
 
 	/**
