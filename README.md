@@ -1,3 +1,14 @@
+> [!IMPORTANT]
+> **This repository is no longer maintained.**
+>
+> Active development has moved to
+> [markpollack/claude-agent-sdk-java](https://github.com/markpollack/claude-agent-sdk-java).
+> Current documentation is available at [lab.pollack.ai](https://lab.pollack.ai/projects/claude-agent-sdk).
+>
+> This repository remains available for historical Spring AI Community releases.
+> Its Apache 2.0 license and historical contents are unchanged. Please submit new
+> issues and pull requests to the active repository.
+
 # Claude Agent SDK for Java
 
 Java SDK for interacting with [Claude Code CLI](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview). This is a pure Java implementation that mirrors the design of the official Python and TypeScript Claude Agent SDKs.
