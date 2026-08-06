@@ -24,6 +24,7 @@ import org.springaicommunity.claude.agent.sdk.types.AssistantMessage;
 import org.springaicommunity.claude.agent.sdk.types.ContentBlock;
 import org.springaicommunity.claude.agent.sdk.types.Message;
 import org.springaicommunity.claude.agent.sdk.types.ResultMessage;
+import org.springaicommunity.claude.agent.sdk.types.StreamEventMessage;
 import org.springaicommunity.claude.agent.sdk.types.UserMessage;
 
 import java.util.List;
@@ -302,6 +303,112 @@ class MessageParserTest {
 			UserMessage user = (UserMessage) message;
 
 			assertThat(user.content()).isNotNull();
+		}
+
+	}
+
+	@Nested
+	@DisplayName("Stream Event Message Parsing")
+	class StreamEventMessageParsing {
+
+		/**
+		 * Regression test for GitHub issue #12.
+		 * Previously, stream_event messages caused a noisy ERROR log and were silently dropped.
+		 */
+		@Test
+		@DisplayName("should parse stream_event with message_start inner event without error")
+		void shouldParseStreamEventWithMessageStart() throws Exception {
+			String json = """
+					{
+						"type": "stream_event",
+						"event": {
+							"type": "message_start",
+							"message": {
+								"id": "0632da1ab4447f86b48dc29e67e33d79",
+								"type": "message",
+								"role": "assistant",
+								"content": [],
+								"model": "claude-opus-4-5",
+								"stop_reason": null,
+								"stop_sequence": null,
+								"usage": {
+									"input_tokens": 126,
+									"output_tokens": 0
+								}
+							}
+						},
+						"session_id": "407b9016-fdf4-4ac2-adb7-78710fe677da",
+						"parent_tool_use_id": null,
+						"uuid": "5bdb223c-f202-40df-b2d7-fd446ed693f7",
+						"ttft_ms": 1186
+					}
+					""";
+
+			Message message = parser.parseMessage(json);
+
+			assertThat(message).isInstanceOf(StreamEventMessage.class);
+			StreamEventMessage streamEvent = (StreamEventMessage) message;
+
+			assertThat(streamEvent.getType()).isEqualTo("stream_event");
+			assertThat(streamEvent.sessionId()).isEqualTo("407b9016-fdf4-4ac2-adb7-78710fe677da");
+			assertThat(streamEvent.uuid()).isEqualTo("5bdb223c-f202-40df-b2d7-fd446ed693f7");
+			assertThat(streamEvent.ttftMs()).isEqualTo(1186L);
+			assertThat(streamEvent.eventType()).isEqualTo("message_start");
+			assertThat(streamEvent.event()).isNotNull();
+			assertThat(streamEvent.event()).containsKey("type");
+			assertThat(streamEvent.event()).containsKey("message");
+		}
+
+		@Test
+		@DisplayName("should parse stream_event with content_block_delta inner event")
+		void shouldParseStreamEventWithContentBlockDelta() throws Exception {
+			String json = """
+					{
+						"type": "stream_event",
+						"event": {
+							"type": "content_block_delta",
+							"index": 0,
+							"delta": {
+								"type": "text_delta",
+								"text": "Hello, streaming world!"
+							}
+						},
+						"session_id": "407b9016-fdf4-4ac2-adb7-78710fe677da",
+						"uuid": "abc-123",
+						"ttft_ms": null
+					}
+					""";
+
+			Message message = parser.parseMessage(json);
+
+			assertThat(message).isInstanceOf(StreamEventMessage.class);
+			StreamEventMessage streamEvent = (StreamEventMessage) message;
+			assertThat(streamEvent.eventType()).isEqualTo("content_block_delta");
+			assertThat(streamEvent.ttftMs()).isNull();
+			assertThat(streamEvent.event()).containsKey("delta");
+			assertThat(streamEvent.event()).containsKey("index");
+		}
+
+		@Test
+		@DisplayName("should parse stream_event with message_stop inner event")
+		void shouldParseStreamEventWithMessageStop() throws Exception {
+			String json = """
+					{
+						"type": "stream_event",
+						"event": {
+							"type": "message_stop"
+						},
+						"session_id": "407b9016-fdf4-4ac2-adb7-78710fe677da",
+						"uuid": "xyz-789"
+					}
+					""";
+
+			Message message = parser.parseMessage(json);
+
+			assertThat(message).isInstanceOf(StreamEventMessage.class);
+			StreamEventMessage streamEvent = (StreamEventMessage) message;
+			assertThat(streamEvent.eventType()).isEqualTo("message_stop");
+			assertThat(streamEvent.ttftMs()).isNull();
 		}
 
 	}
