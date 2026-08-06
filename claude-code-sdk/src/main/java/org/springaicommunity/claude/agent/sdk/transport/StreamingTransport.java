@@ -84,6 +84,11 @@ public class StreamingTransport implements AutoCloseable {
 	// State Machine Constants
 	// ============================================================
 
+	private static boolean isWindows;
+	static {
+		isWindows = System.getProperty("os.name").toLowerCase().contains("win");
+	}
+
 	/** Transport is created but not connected */
 	public static final int STATE_DISCONNECTED = 0;
 
@@ -425,7 +430,7 @@ public class StreamingTransport implements AutoCloseable {
 		// Note: --append-system-prompt adds to the default, --system-prompt replaces it
 		if (options.getSystemPrompt() != null) {
 			command.add("--system-prompt");
-			command.add(options.getSystemPrompt());
+			command.add(this.normalizeNewline(options.getSystemPrompt()));
 		}
 
 		// Handle --tools option (base set of tools) - added in Python SDK v0.1.10
@@ -549,7 +554,7 @@ public class StreamingTransport implements AutoCloseable {
 		// Add append system prompt (uses preset mode with append)
 		if (options.getAppendSystemPrompt() != null && !options.getAppendSystemPrompt().isEmpty()) {
 			command.add("--append-system-prompt");
-			command.add(options.getAppendSystemPrompt());
+			command.add(this.normalizeNewline(options.getAppendSystemPrompt()));
 		}
 
 		// ============================================================
@@ -617,6 +622,18 @@ public class StreamingTransport implements AutoCloseable {
 		}
 
 		return command;
+	}
+
+	private String normalizeNewline(String command) {
+		if (command == null || command.isEmpty()) {
+			return "";
+		}
+
+		if(isWindows){
+			return command.replaceAll("\r\n?", "\n").replaceAll("\n", " ");
+		}else{
+			return command;
+		}
 	}
 
 	/**
